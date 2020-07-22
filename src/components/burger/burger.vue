@@ -1,6 +1,7 @@
 <!-- template -->
 <template>
-           <body id="body">
+ 
+       <body id="body">
 
         <header class="header">
             
@@ -9,22 +10,16 @@
                     <div class="header__white">
 
                         <div class="header__labels">
-
-                            <i class="fas fa-bars" onclick="openToggle()" ></i>
-
+                            <i class="fas fa-bars" onclick="openToggle()"></i>
                             <div class="header__logo">
                                 <i class="fas fa-hamburger"></i>
                                 <p>BURGERS</p>
                             </div>
-
-
                             <div class="header__menu">
                                 <a href="">Burger</a>
                                 <a href="">Sushi</a>
                                 <a href="">Pizza</a>
                             </div>
-
-                           
                         </div>
   
                         <div class="header__actions">
@@ -43,7 +38,7 @@
     
                                 <p class="header__gray">Incident tu labore et doiete</p>
     
-                                <button onclick="openDetail()">More details</button>    
+                                <button onclick="openDetails()">More details</button>    
 
                             </div>
                          
@@ -54,18 +49,45 @@
                     </div>
 
                     <div class="header__red">
+                      
 
-                        <div class="header__logo--mobile">
-                            <i class="fas fa-hamburger"></i>
-                            <p>BURGERS</p>
+
+                        <div class="header__basket">
+                            
+                            <p> +10892378 3278 </p>
+                              
+                            <i class="fa fa-shopping-basket" onclick="openBasket()"></i>
+                            <button>Order Online</button> 
+                             
+
+                            <div class="header__logo--mobile">
+                                <i class="fas fa-hamburger"></i>
+                                <p>BURGERS</p>
+                            </div>
                         </div>
 
+                        <div class="header__info">
+                            <p>01</p>
+                            <p>Buzzed</p>
+                            <p>Burgers</p>
+
+
+                        </div>
+
+
+                        <div class= "header__text"> 
+                            <p>Burger</p>
+
+
+                        </div>
+                    
+
                         
+
                     </div>
                 </div>
 
                 <div class="header__burger">
-
                         <div class="header__price">
                             <p class="header__only">Only</p>
                             <p class="header__cost">$5.99</p>
@@ -80,7 +102,6 @@
                 </div>
 
                 <div class="header__toggle">
-
                     <i class="fas fa-times" onclick="closeToggle()"></i>
 
                     <div class="toggle__inner">
@@ -91,10 +112,17 @@
                         <a href="">Sushi</a>
                         <a href="">Pizza</a>
                     </div>
-                </div>
-                
-                
 
+                </div>
+                <div class="header__shop">
+                    <i class="fas fa-times" onclick="closeDetails()"></i>
+                   
+                    <div class="shop__inner">
+                        <img src="https://i2.wp.com/freepngimages.com/wp-content/uploads/2016/11/bacon-burger.png?fit=1000%2C1000" alt="">
+                        <p>Цена: 1500тг</p>
+                        <p>Два больших рубленых бифштекса из натуральной цельной говядины с двумя кусочками сыра на карамелизованной булочке, заправленной горчицей, кетчупом, луком и двумя кусочками маринованного огурчика.</p>
+                    </div>
+                </div>
         </header>
 
 
@@ -163,26 +191,20 @@
 
             </div>
             
-        </main>
-        <footer>
-
-        </footer>
-    </body>              
+        </main>   
+       </body>              
 </template>
 
 <!-- scripts -->
-
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script>
-    export default {
-    };
+    
+
 </script>
 
 <!-- style -->
 <style scoped lang="scss"> 
     
-
-body {  
+  body {  
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -203,38 +225,77 @@ p {
     justify-content: center;
     align-items: center;
 }
-
-.header__toggle .fa-times {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  align-self: flex-end;
-
-  font-size: 28px;
-  color: white;
-
-
+.header__toggle {
+    display: none;
+    flex-direction: column;
+    background-color: #2b2929;
+    height: 100vh;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 40;
+    justify-content: center;
 }
-.toggle__inner {
+.header__shop {
+    display: none;
+    flex-direction: row;
+    background-color: gray;
+    height: 100vh;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 40;
+    justify-content: center;
+}
+.header__shop .fa-times {
+    position: absolute;
+    align-self: flex-end;
+    font-size: 28px;
+    right: 20px;
+    top: 20px;
+    color:white;
+}
+.shop__inner img {
+    align-self: center;
+    width: 220px;
+    height: 220px;
+}
+.shop__inner {
+    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-family: Tahoma;
-}
-.toggle__inner p {
-    margin-bottom: 10px;
+    font-size: 20px;
     color: white;
-    font-size: 22px
+    justify-content: space-evenly;
+    font-weight: bold;
 }
+.header__toggle .fa-times {
+    position: absolute;
+    align-self: flex-end;
+    font-size: 28px;
+    right: 20px;
+    top: 20px;
+    color:white;
+}
+.toggle__inner {
+      display: flex;
+      flex-direction: column;
+      font-size: 30px;
+      align-items: center;
+  }
 .toggle__inner a {
     text-decoration: none;
-    font-size: 22px;
+    font-family: Tahoma;
     margin-bottom: 10px;
     color: white;
-  
 }
-
-
+.toggle__inner p {
+    color: white;
+    margin-bottom: 10px;
+}
 .header__burger {
     height: 100vh;
     display: flex;
@@ -242,6 +303,9 @@ p {
     justify-content: space-around;
     position: absolute;
     
+}
+.header__details {
+    display: flex;
 }
 .header__burger img {
     width: 350px;
@@ -270,7 +334,9 @@ p {
     color: red;
     font-family: cursive;
     font-size: 18px;
-    
+}
+.header__details {
+    display: none;
 }
 .header__arrow {
     z-index: 20;
@@ -305,9 +371,6 @@ p {
     flex-direction: row;
     justify-content: space-between;
 }
-.fa-bars {
-    display: none;
-}
 .header__logo {
     background-color:red;
     color: white;
@@ -315,7 +378,61 @@ p {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+.header__logo--mobile {
+    width: 50px;
+    color: white;
+    padding: 10px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    align-self: flex-end;
+}
+.header__basket {
+    width: 367px;
+    color: white;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    align-self: flex-end;
+}
+.header__basket i {
+    font-size: 25px;
+}
 
+.header__basket button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-self: flex-end;
+    align-items: flex-end;
+    width: 120px;
+    height: 33px;
+    border-radius: 20px;
+    background-color: yellow;
+    padding: 10px;
+    font-size: 14px;
+    
+    border: none;
+    color: white;
+
+
+}
+.header__busket p {
+    display: flex;
+    flex-direction: row;
+    
+    font-size: 15px;
+
+}
+.header__logo--mobile i {
+    font-size: 25px;
+}
+.header__logo--mobile p {
+    transform: rotate(-7deg);
+    font-size: 12px;
 }
 .header__logo i {
     font-size: 25px;
@@ -324,7 +441,21 @@ p {
     transform: rotate(-7deg);
     font-size: 12px;
 }
+.fa-bars {
+    display: none;
+}
 
+.header__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: center;
+    height: 350px;
+    font-size: 30px;
+    font-weight: bold;
+    font-family: sans-serif;
+    color: white;
+}
 .header__menu {
     display: flex;
     flex-direction: row;
@@ -403,28 +534,31 @@ p {
     width: 50%;
     border: 1px solid red;
     background-color: red;
-
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
 }
-.header__logo--mobile {
-    width: 50px;
-    color: white;
-    padding: 10px;
-    display: none;
-    flex-direction: column;
-    align-items: center;
+.header__text {
+    
+    width:150px;
+    margin-top: 40px;
 
-    align-self: flex-end;
- 
 }
-.header__logo--mobile i {
-    font-size: 25px;
+    
+.header__text p {
+    color: white;
+    opacity: 0.6;
+    font-size: 140px;
+    font-family: Tahoma;
+    font-weight: bold;
+    transform: rotate(-90deg);
+
 }
-.header__logo--mobile p {
-    transform: rotate(-7deg);
-    font-size: 12px;
-}
+
+
+
+
+
 
 
 /*---main---*/
@@ -527,43 +661,30 @@ p {
 
 
 @media screen and (max-width: 600px) {
-
- .header__toggle {
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    
-    background-color: #2b2929;
-
-    height: 100vh;
-    width: 80%;
-    z-index: 40;
-    position: absolute;
-    left: 0;
-    top: 0;
-}
+  .header__inner {
+      flex-direction: row;
+  }
   .header__labels {
       width: 100%;
   }
+  .toggle__inner {
+  }
   .fa-bars {
-    display: block;
-    font-size: 22px;
-    padding: 15px;
+      display: block;
+      font-size: 22px;
+      padding: 15px;
+  }
+  .header__logo--mobile {
+      display: flex;
+      flex-direction: column;
+  }
+  .header__basket {
   }
   .header__menu {
       display: none;
   }
   .header__logo {
       display: none;
-  }
-  .header__logo--mobile {
-      display: flex;
-  }
-
-
-  .header__inner {
-      flex-direction: row;
-      
   }
   .header__white {
      /* width: 50%;*/
@@ -600,13 +721,9 @@ p {
       height: 70px;
       border-radius: 35px;
       top: -130;
-      
   }
   .header__cost {
       color: red;
-  }
-  .header__arrow {
-      
   }
   .header__items button {
       width: 120px;
@@ -617,9 +734,6 @@ p {
       width: 60%;
       margin-top: 20px;
   }
-  .header__items p {
-
-  }
   .header__huge {
       margin-bottom: 10px;
       font-size: 30px;
@@ -629,13 +743,10 @@ p {
   .header__huge p {
       margin-bottom: 5px;
   }
-  .header__gray {
-      
-  }
   .header__actions {
      width: 100%;
   }
-}
+
 
   @media screen and (max-width: 380px) {
       .header__items {
@@ -663,6 +774,9 @@ p {
       }
       .header__items {
           justify-content: center;
+          color: black;
       }
-  } 
+  }
+}
+
 </style>
