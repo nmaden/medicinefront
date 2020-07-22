@@ -4,6 +4,11 @@
     Vue.use(VueRouter);
 
     // Router components
+
+
+    //burger
+
+    import Burger from '../components/burger/burger.vue';
     import AuthPage from '../components/auth/AuthPage.vue';
     import Login from '../components/auth/components/login.vue';
     import ForgotPassword from '../components/auth/components/forgotPassword.vue';
@@ -36,6 +41,13 @@
                     { path: 'check', component: Check }
                 ]
             }, 
+
+            {
+                path: '/burger',
+                component: Burger,
+                meta: { guest: true }
+            },
+
             {
                 path: '/user',
                 component: UserPage,
