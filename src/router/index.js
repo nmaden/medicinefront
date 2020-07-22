@@ -4,6 +4,15 @@
     Vue.use(VueRouter);
 
     // Router components
+
+
+    //burger 
+
+    import Burger from '../components/burger/burger.vue';
+
+   
+
+
     import AuthPage from '../components/auth/AuthPage.vue';
     import Login from '../components/auth/components/login.vue';
     import ForgotPassword from '../components/auth/components/forgotPassword.vue';
@@ -23,11 +32,13 @@
 
     const router = new VueRouter({
     routes: [
+
             {
                 path: '/',
                 component: AuthPage,
                 meta: { guest: true },
                 children: [
+
                     { path: '', component: Login },
                     { path: 'login', component: Login },
                     { path: 'forgotPassword', component: ForgotPassword },
@@ -36,6 +47,13 @@
                     { path: 'check', component: Check }
                 ]
             }, 
+
+            {
+                path: '/burger',
+                component: Burger,
+                meta: { guest: true }
+            },
+        
             {
                 path: '/user',
                 component: UserPage,

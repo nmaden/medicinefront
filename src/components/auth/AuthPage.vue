@@ -1,6 +1,8 @@
     <template>
     <div class="mainer">
         <div class="mainer-second">
+
+            <p style="font-size: 20px; color: red">Nurbol</p>
             <div class="center home">
                 <div class="left-div">
                     <h1>{{$t("message.title1")}}</h1>
