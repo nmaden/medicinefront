@@ -6,13 +6,14 @@
     // Router components
 
 
-    //burger 
-
+    // burger
     import Burger from '../components/burger/burger.vue';
 
-   
 
 
+
+
+    
     import AuthPage from '../components/auth/AuthPage.vue';
     import Login from '../components/auth/components/login.vue';
     import ForgotPassword from '../components/auth/components/forgotPassword.vue';
@@ -38,7 +39,7 @@
                 component: AuthPage,
                 meta: { guest: true },
                 children: [
-
+                    // { path: 'burger', component: Burger},
                     { path: '', component: Login },
                     { path: 'login', component: Login },
                     { path: 'forgotPassword', component: ForgotPassword },
@@ -46,14 +47,14 @@
                     { path: 'reg_confirm', component: Reg_confirm },
                     { path: 'check', component: Check }
                 ]
-            }, 
-
-            {
-                path: '/burger',
-                component: Burger,
-                meta: { guest: true }
             },
         
+        {
+            path: '/burger',
+            component: Burger,
+            meta: { guest: true },
+
+        }, 
             {
                 path: '/user',
                 component: UserPage,
