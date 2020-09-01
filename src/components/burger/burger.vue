@@ -56,7 +56,10 @@
                             
                             <p> +10892378 3278 </p>
                               
-                            <i class="fa fa-shopping-basket" onclick="openBasket()"></i>
+                            <i class="fa fa-shopping-basket"  @click="$router.push('/busket')"></i>
+
+                            <p>{{ count }}</p>
+
                             <button>Order Online</button> 
                              
 
@@ -133,59 +136,27 @@
                     <p>Burger menu</p>
                 </div>
                 <div class="main__items">
-                    <div class="main__item">
+
+
+                    <div class="main__item" v-for="(item,index) in data" :key="index">
+
                         <img src="https://i2.wp.com/freepngimages.com/wp-content/uploads/2016/11/bacon-burger.png?fit=1000%2C1000 " alt="">
-                        <p class="main__burger_name">Burger Buns</p>
-                        <p class="main__burger_description">Lorean ipnum ipnum ipnum ipnum</p>
+                        <p class="main__burger_name">{{item.name}}</p>
+                        <p class="main__burger_description">{{item.description}}</p>
                         <div class="main__actions">
                             <div class="main__price">
-                                <p>$5</p>
+                                <p>${{item.cost}}</p>
                             </div>
-                            <div class="main__order">
+                            <div class="main__order" @click="addOrder(index)">
                                 <p>Order now</p>
                             </div>
                         </div>
-                    </div>
-                    <div class="main__item">
-                        <img src="https://i2.wp.com/freepngimages.com/wp-content/uploads/2016/11/bacon-burger.png?fit=1000%2C1000 " alt="">
-                        <p class="main__burger_name">Burger Buns</p>
-                        <p class="main__burger_description">Lorean ipnum ipnum ipnum ipnum</p>
-                        <div class="main__actions">
-                            <div class="main__price">
-                                <p>$5</p>
-                            </div>
-                            <div class="main__order">
-                                <p>Order now</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="main__item">
-                        <img src="https://i2.wp.com/freepngimages.com/wp-content/uploads/2016/11/bacon-burger.png?fit=1000%2C1000" alt="">
-                        <p class="main__burger_name">Burger Buns</p>
-                        <p class="main__burger_description">Lorean ipnum ipnum ipnum ipnum</p>
-                        <div class="main__actions">
-                            <div class="main__price">
-                                <p>$5</p>
-                            </div>
-                            <div class="main__order">
-                                <p>Order now</p>
-                            </div>
-                        </div>
+
                     </div>
 
-                    <div class="main__item">
-                        <img src="https://i2.wp.com/freepngimages.com/wp-content/uploads/2016/11/bacon-burger.png?fit=1000%2C1000 " alt="">
-                        <p class="main__burger_name">Burger Buns</p>
-                        <p class="main__burger_description">Lorean ipnum ipnum ipnum ipnum</p>
-                        <div class="main__actions">
-                            <div class="main__price">
-                                <p>$5</p>
-                            </div>
-                            <div class="main__order">
-                                <p>Order now</p>
-                            </div>
-                        </div>
-                    </div>
+                    
+          
+                  
 
                 </div>
 
@@ -196,9 +167,154 @@
 </template>
 
 <!-- scripts -->
-<script>
-    
 
+<script>
+    // imports libraries
+    import Datepicker from 'vuejs-datepicker';
+    import { ru, slSI } from 'vuejs-datepicker/dist/locale';
+    export default {
+
+        components: {
+            Datepicker
+        },
+        
+        data() {
+            return {
+
+                all_data: [],
+
+                amount: [],
+                count: 0,
+
+                data: [
+
+                    {
+                        id: 1,
+                        name:"Burger",
+                        description:"Lorean ipnum ipnum ipnum ipnum",
+                        cost: 15
+                    
+                    },
+                    {
+                        id:2,
+                        name: "Pizza",
+                        description:"Lorean ipnum ipnum ipnum ipnum",
+                        cost: 20
+
+                    },
+                    {
+                        id:3,
+                        name: "Sushi",
+                        description:"Lorean ipnum ipnum ipnum ipnum",
+                        cost: 20
+                    }
+
+                ]   
+            }
+        },
+
+        mounted() {
+        },
+        methods: {
+
+            addOrder(index) {
+                this.count = this.count+1;
+
+
+                this.amount.push(parseInt(this.data[index].cost));
+              
+                let object  = {
+                    id: this.data[index].id,
+                    description: this.data[index].description,
+                    name: this.data[index].name,
+                    cost: this.data[index].cost,
+                    counter: 1
+                };
+
+
+            
+                if(this.all_data.length>=1) {
+
+                    let exist = this.check_exist(this.all_data,this.data[index].id);
+
+
+                    if(exist[0]==true) {
+
+                       
+                        let index = exist[1];
+                        
+                        // console.log("kaitalandi:");
+                        // console.log(this.all_data[index]);
+
+                        this.all_data[index].counter = this.all_data[index].counter +1;
+                        
+                        // console.log(this.all_data);
+
+                        
+                    }
+                    else {
+                        this.all_data.push(object);
+                    }
+                }
+                else {
+                    this.all_data.push(object);
+                }
+
+
+            
+                
+                localStorage.setItem("order",JSON.stringify(this.all_data));
+
+                let ready_order = localStorage.getItem("order");
+                
+                // console.log("from localstorage");
+                // console.log(JSON.parse(ready_order));
+
+
+                let sum_of_data = 0;
+            },
+
+            check_exist(all_data,id) {
+                
+                // console.log("length:: "+all_data.length);
+                let truefalse = [];
+
+                let indexes = [];
+
+                for (let index = 0; index < all_data.length; index++) {
+                    // console.log(all_data[index]["id"]+"  -  "+id);
+                    if(all_data[index]["id"]==id) {
+                        truefalse.push(true);
+
+                        indexes.push(index);
+                    }
+                    else {
+
+                        truefalse.push(false);
+                    }
+                }
+
+
+                let answer = [];
+
+                if(truefalse.includes(true)) {
+
+                   answer.push(true);
+                   answer.push(indexes[0]);
+
+                   return answer; 
+                }
+                else {
+                    answer.push(false);
+
+                    return answer;
+                }
+
+            }
+
+
+        }
+    };
 </script>
 
 <!-- style -->

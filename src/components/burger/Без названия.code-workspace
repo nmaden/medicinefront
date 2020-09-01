@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "../../../../../eqonaq2spa"
+		},
+		{
+			"path": "../../../../../../../../Applications/MAMP/htdocs/eqonaq_back"
+		},
+		{
+			"path": "../../../../../../../../Applications/MAMP/htdocs/cooperative"
+		},
+		{
+			"path": "../../.."
+		}
+	],
+	"settings": {}
+}
