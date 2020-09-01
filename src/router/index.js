@@ -6,20 +6,14 @@
     // Router components
 
 
-<<<<<<< HEAD
-    //burger
-
-    import Burger from '../components/burger/burger.vue';
-=======
     // burger
-    import Burger from '../components/burger/burger.vue';
-
+    import Burger from '../components/burger/burger.vue'; 
+    import Korzina from '../components/burger/busket.vue';
 
 
 
 
     
->>>>>>> aa2bb5d94752f50d27a0b2f1fb7c2730f8273687
     import AuthPage from '../components/auth/AuthPage.vue';
     import Login from '../components/auth/components/login.vue';
     import ForgotPassword from '../components/auth/components/forgotPassword.vue';
@@ -52,25 +46,26 @@
                     { path: 'reg_confirm', component: Reg_confirm },
                     { path: 'check', component: Check }
                 ]
-<<<<<<< HEAD
-            }, 
-
-            {
-                path: '/burger',
-                component: Burger,
-                meta: { guest: true }
-            },
-
-=======
             },
         
         {
             path: '/burger',
             component: Burger,
-            meta: { guest: true },
+
+            children: [
+                
+            ]
 
         }, 
->>>>>>> aa2bb5d94752f50d27a0b2f1fb7c2730f8273687
+        {
+            path: '/busket',
+            component: Korzina,
+
+            children: [
+                
+            ]
+
+        },
             {
                 path: '/user',
                 component: UserPage,
