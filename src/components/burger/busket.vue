@@ -1,27 +1,299 @@
+<!-- template -->
 <template>
-    <div>{{orders}}</div>
+        <div class="busket">
+            
+            <div class="busket__main">
+                <div class="busket__title">
+                    <p>Ваш заказ</p>
+                </div>
+                <div class="busket__images" v-for="(item,index) in orders" :key="index">
+                    <img :src="item.img" alt="">
+                    <div class="busket__info">
+                        <p class="busket__fire">{{item.name}}</p>
+                        <p>{{item.description}}</p>
+                        <p class="busket__count">{{item.cost}}тг</p>
+                        <div class="busket__number">
+                            <i class="fas fa-minus-circle" @click="addCount(-1,index)"></i>
+                            <p>{{item.counter}}</p>
+                            <i class="fas fa-plus-circle" @click="addCount(1,index)"></i>
+                        </div>
+                    </div>
+                </div> 
+                
+                <div class="busket__result">
+                    <b>Итого:</b>
+                    <p>{{amount}}тг</p>
+                </div>
+
+            </div>  
+            <div class="busket__contact">
+                <p class="busket__data">Ваши данные:</p>
+                <input placeholder="Ваше имя" id="strt-input" data-testid="delivery-form_street-input" type="text" autocomplete="off" class="input" value="">
+                <input placeholder="Номер телефона" id="strt-input" data-testid="delivery-form_street-input" type="text" autocomplete="off" class="input" value="">
+                <input placeholder="Улица" id="strt-input" data-testid="delivery-form_street-input" type="text" autocomplete="off" class="input" value="">
+                <div class="busket__home">
+                    <input placeholder="Дом" id="strt-input" data-testid="delivery-form_street-input" type="text" autocomplete="off" class="input-1" value="">
+                    <input placeholder="Подъезд" id="strt-input" data-testid="delivery-form_street-input" type="text" autocomplete="off" class="input-1" value="">
+                </div>
+                <div class="busket__flat">
+                    <input placeholder="Этаж" id="strt-input" data-testid="delivery-form_street-input" type="text" autocomplete="off" class="input-1" value="">
+                    <input placeholder="Квартира" id="strt-input" data-testid="delivery-form_street-input" type="text" autocomplete="off" class="input-1" value="">
+                </div>
+                <div class="radiobutton">
+                   <div class="radiobutton__cash">
+                       <input name="dzen" type="radio" value="nedzen"><p class="radiobutton">Наличными курьеру</p>
+                   </div>
+                    <div class="radiobutton__pay">
+                        <input name="dzen" type="radio" value="nedzen"><p class="radiobutton">Оплата картой на сайте</p>
+                    </div>
+                </div>
+                <div class="busket__button">
+                    <button>Оформить заказ</button>
+                </div>
+            </div>
+            <i class="fas fa-times" @click="$router.push('/burger')"></i>
+        </div>
+                        
 </template>
 
+<!-- scripts -->
 <script>
+ 
+    export default {
+        data() {
+            return {
+                amount: 0,
+                orders:[],
+                count: 0,
+            }
+        },
+        mounted() {
 
-export default {
-    
-   data() {
-       return {
-           orders: []
-       }
-   },
+            this.orders = JSON.parse(localStorage.getItem("order"));
 
-   mounted() {
-       this.orders = JSON.parse(localStorage.getItem("order"));
-   },
 
-   methods: {
+            this.amount = localStorage.getItem("amount");
+            this.count = JSON.parse(localStorage.getItem("counter"));
+        },
+        methods: {
+            addCount(count,index) {
+              
+                this.orders[index].counter = this.orders[index].counter+count;
 
-   }
-}
+                localStorage.setItem("order",JSON.stringify(this.orders));
+
+            }
+        }
+    }
 </script>
 
-<style>
- 
+<!-- style -->
+<style scoped lang="scss"> 
+
+//*BUSKET*/
+
+.busket {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100vh;
+    background-color: #333;
+}
+.busket__title {
+    font-size: 30px;
+    padding: 10px;
+    margin-left: 60px;
+    /*border: 2px solid white;*/
+}
+.busket__title p {
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+.busket__images img {
+    width: 170px;
+    height: 170px;
+    align-self: flex-start;
+    margin-left: 100px;
+}
+.busket__images {
+    width: 100%;
+    height: 200px;
+   /* border: 2px solid white;*/
+    display: flex;
+    flex-direction: row;
+    // margin-bottom: 60px;
+    
+}
+.busket__info {
+    width: 50%;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    margin-left: 100px;
+    // margin-top: 40px;
+}
+.busket__info p {
+    color: white;
+}
+.busket__count {
+    font-size: 20px;
+}
+.busket__fire {
+    font-size: 25px;
+    color: white;
+}
+.busket__fire:after {
+    content: "";
+    width: 200px;
+    height: 3px;
+    display: block;
+    background-color: red;
+    margin: 15px 0;
+}
+.busket__result {
+    display: flex;
+    flex-direction: row;
+    font-size: 30px;
+    padding: 10px;
+    margin-left: 100px;
+}
+.busket__result b {
+    color: white;
+    font-weight: bold;
+}
+.busket__result p {
+    color: red;
+    font-weight: bold;
+    margin-left: 300px;
+}
+.busket__data {
+   font-size: 30px;
+   color: white;
+   font-weight: bold;
+}
+.busket__name {
+    display: flex;
+    flex-direction: column;
+}
+.busket__contact {
+    margin-left: 500px;
+    margin-top: 155px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.busket__home {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.busket__flat {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.busket__button {
+    display: flex;
+    justify-content: center;
+}
+.busket__button button {
+    width: 200px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: red;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    color: black;
+}
+.busket__number {
+    display: flex;
+    flex-direction: row;
+}
+
+.busket__number i {
+    color: red;
+    font-size: 20px;
+}
+.busket__number p {
+    margin-left: 6px;
+}
+
+//*INPUT*/
+
+.input {
+    display: flex;
+    height: 40px;
+    background-color:black;
+    color: white;
+    font-size: 16px;
+    line-height: 40px;
+    box-sizing: border-box;
+    width: 300px;
+    border-radius: 10px;
+    border-width: 1px;
+    border-style: solid;
+    border-color:red;
+    padding: 0px 15px;
+    outline: none;
+    margin-left: 10px;
+}
+.input-1 {
+    display: flex;
+    height: 40px;
+    background-color:black;
+    color: white;
+    font-size: 16px;
+    line-height: 40px;
+    box-sizing: border-box;
+    width: 100px;
+    border-radius: 10px;
+    border-width: 1px;
+    border-style: solid;
+    border-color:red;
+    padding: 0px 15px;
+    outline: none;
+    margin-left: 10px;
+}
+
+//* RADIOBUTTON */
+
+.radiobutton {
+    align-self: center;
+    line-height: 1.5;
+}
+.radiobutton p {
+    color: white;
+    display: flex;
+    align-items: center;
+}
+.radiobutton__pay {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    
+}
+.radiobutton__cash  {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.radiobutton__cash p {
+    margin-left: 10px;
+}
+.radiobutton__pay p {
+    margin-left: 10px;
+}
+.fa-times {
+    padding: 20px;
+    font-size: 30px;
+    color: white;
+    margin-left: 50px;
+}
+.fa-plus-circle {
+    margin-left: 7px;
+}
 </style>

@@ -7,9 +7,8 @@
 
 
     // burger
-    import Burger from '../components/burger/burger.vue';
-
-    import Korzina from  '../components/burger/busket.vue';
+    import Burger from '../components/burger/burger.vue'; 
+    import Korzina from '../components/burger/busket.vue';
 
 
 
@@ -54,12 +53,11 @@
         {
             path: '/burger',
             component: Burger,
-            // meta: { guest: true }, 
-            children: [
-               
-            ]
-        }, 
 
+            children: [
+                
+            ]
+        },
         {
             path: '/busket',
             component: Korzina,
@@ -68,24 +66,30 @@
                
             ]
         }, 
-
-
         {
-            path: '/user',
-            component: UserPage,
-            // meta: { requiresAuth: true },
+            path: '/busket',
+            component: Korzina,
+
             children: [
-                { path: '/', component: User  },
-                { path: 'profile', component: Korzina },
-                { path: 'settings', component: Settings },
-                { path: 'faq', component: Faq },
+                
             ]
-        },
 
-        {
-            path: '*',
-            component: ErrorPage,
-        }
+        },
+            {
+                path: '/user',
+                component: UserPage,
+                // meta: { requiresAuth: true },
+                children: [
+                    { path: '/', component: User  },
+                    { path: 'profile', component: Profile },
+                    { path: 'settings', component: Settings },
+                    { path: 'faq', component: Faq },
+                ]
+            },
+            {
+                path: '*',
+                component: ErrorPage,
+            }
     ],
 
     mode: 'history'
