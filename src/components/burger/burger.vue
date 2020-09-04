@@ -140,10 +140,10 @@
                         <p class="main__burger_description">{{item.description}}</p>
                         <div class="main__actions">
                             <div class="main__price">
-                                <p>${{item.cost}}</p>
+                                <p>{{item.cost}}тг</p>
                             </div>
                             <div class="main__order" @click="addOrder(index)">
-                                <p>Order now</p>
+                                <button>Order now</button>
                             </div>
                         </div>
                     </div>
@@ -188,7 +188,7 @@
                         name:"Pizza", 
                         description:"Lorean ipnum ipnum ipnum ipnum",
                         cost:2000,
-                        img: "https://st.depositphotos.com/2640119/3010/i/450/depositphotos_30103299-stock-photo-pepperoni-pizza.jpg"
+                        img: "https://st.depositphotos.com/1044737/1853/i/950/depositphotos_18534039-stock-photo-sliced-pepperoni-pizza.jpg"
                     },
                     {
                         id:3,
@@ -202,9 +202,31 @@
                 
             }  
         },
+
+        mounted() {
+            let all_count = localStorage.getItem("all_count");
+            if (all_count!==null && all_count!="") {
+                this.count = parseInt(all_count);
+            }
+
+            else {
+                this.count = 0;
+            }
+        },
         methods: {
             addOrder(index) {
+
+                let orders = JSON.parse(localStorage.getItem("order"));
+                if(orders!==null && orders.length>0) {
+                    this.all_data = orders;
+                }
+
+                else {
+                    this.all_data = [];
+                }
+
                 this.count = this.count+1;
+                localStorage.setItem("all_count",this.count);
                 this.amount.push(parseInt(this.data[index].cost));
                 let object = {
                     name: this.data[index].name,
@@ -223,7 +245,7 @@
                     if(exist[0]==true) {
                        
                         let index = exist[1];
-                         console.log("kaitalandi:");
+                        console.log("kaitalandi:");
                         console.log(this.all_data[index]);
                         this.all_data[index].counter = this.all_data[index].counter +1;
                         console.log(this.all_data);
@@ -239,7 +261,7 @@
                 }
 
                 localStorage.setItem("order",JSON.stringify(this.all_data));
-                localStorage.setItem("counter",this.all_data[index].counter);
+                localStorage.setItem("counter",JSON.stringify(this.all_data[index].counter));
                 let ready_order = localStorage.getItem("order");
                 // console.log( this.all_data);
                 let sum_of_data = 0;
@@ -267,6 +289,7 @@
                     else {
                         truefalse.push(false);
                     }
+
                 }
 
                 
@@ -504,7 +527,7 @@ p {
     font-size: 14px;
     
     border: none;
-    color: white;
+    color: red;
 
 
 }
@@ -719,32 +742,42 @@ p {
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 190px;
+    width: 200px;
     justify-content: space-between;
 
 }
 .main__price {
-    width: 20px;
-    height: 20px;
+    width: 29px;
+    height: 29px;
     padding: 10px;
-    border-radius: 20px;
+    border-radius: 25px;
     background-color: red;
     display: flex;
     justify-content: center;
     flex-direction: row;
     color: white;
 }
-.main__order {
-    width: 120px;
+.main__price p {
+    color: white;
+    font-size: 15px;
+    padding: 3px;
+}
+.main__order button {
+    width: 140px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     padding: 10px;
-    border-radius: 20px;
-    border: 1px solid red;
+    border-radius: 25px;
     color: red;
+    background-color: white;
+    border: 1px solid red;
+    font-size: 15px;
 
+}
+.main__order button:hover {
+    background-color: yellow;
 }
 
 

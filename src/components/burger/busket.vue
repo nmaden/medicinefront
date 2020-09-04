@@ -1,23 +1,24 @@
 <!-- template -->
 <template>
         <div class="busket">
-            
             <div class="busket__main">
                 <div class="busket__title">
                     <p>Ваш заказ</p>
                 </div>
                 <div class="busket__images" v-for="(item,index) in orders" :key="index">
-                    <img src="https://i2.wp.com/freepngimages.com/wp-content/uploads/2016/11/bacon-burger.png?fit=1000%2C1000" alt="">
+                    <img :src="item.img">
                     <div class="busket__info">
                         <p class="busket__fire">{{item.name}}</p>
                         <p>{{item.description}}</p>
                         <p class="busket__count">{{item.cost}}тг</p>
                         <div class="busket__number">
-                            <i class="fas fa-minus-circle"></i>
+                            <i class="fas fa-minus-circle" @click="addCount(-1,index)"></i>
                             <p>{{item.counter}}</p>
-                            <i class="fas fa-plus-circle"></i>
+                            <i class="fas fa-plus-circle" @click="addCount(1,index)"></i>
                         </div>
+                        
                     </div>
+                    <i class="far fa-trash-alt" v-on:click="addDelete(index)"></i>
                 </div> 
                 
                 <div class="busket__result">
@@ -40,9 +41,9 @@
                     <input placeholder="Квартира" id="strt-input" data-testid="delivery-form_street-input" type="text" autocomplete="off" class="input-1" value="">
                 </div>
                 <div class="radiobutton">
-                   <div class="radiobutton__cash">
-                       <input name="dzen" type="radio" value="nedzen"><p class="radiobutton">Наличными курьеру</p>
-                   </div>
+                <div class="radiobutton__cash">
+                    <input name="dzen" type="radio" value="nedzen"><p class="radiobutton">Наличными курьеру</p>
+                </div>
                     <div class="radiobutton__pay">
                         <input name="dzen" type="radio" value="nedzen"><p class="radiobutton">Оплата картой на сайте</p>
                     </div>
@@ -69,13 +70,35 @@
         },
         mounted() {
             this.orders = JSON.parse(localStorage.getItem("order"));
-            this.amount = localStorage.getItem("amount");
+            this.amount = JSON.parse(localStorage.getItem("amount"));
             this.count = JSON.parse(localStorage.getItem("counter"));
         },
         methods: {
+            addCount(count,index,cost,) {
+                this.orders[index].counter = this.orders[index].counter+count;
 
+                localStorage.setItem("order",JSON.stringify(this.orders));
+
+                if(this.orders[index].counter==0) {
+                    this.amount = this.amount-this.orders[index].cost;
+                    this.orders.splice(index, 1);
+                    localStorage.setItem("order",JSON.stringify(this.orders));
+                    localStorage.setItem("amount",JSON.stringify(this.amount));
+                }
+            },
+            addDelete: function name(index,cost) {
+                 this.amount = this.amount-this.orders[index].cost;
+                
+                this.orders.splice(index, 1);
+                localStorage.setItem("order",JSON.stringify(this.orders));
+                localStorage.setItem("amount",JSON.stringify(this.amount));
+            }
+               
+               
+            
         }
     }
+    
 </script>
 
 <!-- style -->
@@ -89,6 +112,11 @@
     width: 100%;
     height: 100vh;
     background-color: #333;
+    justify-content: space-between;
+}
+.busket__inner {
+    display: flex;
+    flex-direction: row;
 }
 .busket__title {
     font-size: 30px;
@@ -116,6 +144,7 @@
     // margin-bottom: 60px;
     
 }
+
 .busket__info {
     width: 50%;
     height: 200px;
@@ -149,6 +178,7 @@
     font-size: 30px;
     padding: 10px;
     margin-left: 100px;
+    justify-content: space-between;
 }
 .busket__result b {
     color: white;
@@ -157,7 +187,7 @@
 .busket__result p {
     color: red;
     font-weight: bold;
-    margin-left: 300px;
+    margin-right: 50px;
 }
 .busket__data {
    font-size: 30px;
@@ -169,7 +199,6 @@
     flex-direction: column;
 }
 .busket__contact {
-    margin-left: 500px;
     margin-top: 155px;
     height: 400px;
     display: flex;
@@ -283,6 +312,12 @@
     font-size: 30px;
     color: white;
     margin-left: 50px;
+}
+.fa-trash-alt {
+    
+    padding: 20px;
+    font-size: 20px;
+    color: white;
 }
 .fa-plus-circle {
     margin-left: 7px;
