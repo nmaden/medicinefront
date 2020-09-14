@@ -1,13 +1,13 @@
 {
 	"folders": [
 		{
-			"path": "../../../../../eqonaq2spa"
+			"path": "../../../../../../eqonaq2spa"
 		},
 		{
-			"path": "../../../../../../../../Applications/MAMP/htdocs/eqonaq_back"
+			"path": "../../../../../../../../../Applications/MAMP/htdocs/eqonaq_back"
 		},
 		{
-			"path": "../../../../../../../../Applications/MAMP/htdocs/cooperative"
+			"path": "../../../../../../../../../Applications/MAMP/htdocs/altyn-orda"
 		},
 		{
 			"path": "../../.."
