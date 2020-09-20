@@ -4,22 +4,32 @@
             <div class="busket__main">
                 <div class="busket__title">
                     <p>Ваш заказ</p>
+                    <i class="fas fa-times" @click="$router.push('/burger')"></i>
                 </div>
-                <div class="busket__images" v-for="(item,index) in orders" :key="index">
-                    <img :src="item.img">
-                    <div class="busket__info">
-                        <p class="busket__fire">{{item.name}}</p>
-                        <p>{{item.description}}</p>
-                        <p class="busket__count">{{item.cost}}тг</p>
-                        <div class="busket__number">
-                            <i class="fas fa-minus-circle" @click="addCount(-1,index)"></i>
-                            <p>{{item.counter}}</p>
-                            <i class="fas fa-plus-circle" @click="addCount(1,index)"></i>
+              
+
+                <div  v-for="(category,i) in orders" :key="i">
+
+                    <div class="busket__images" v-for="(item,index) in category  " :key="index" >
+
+                        <img :src="item.img">
+
+                        <div class="busket__info">
+                            <p class="busket__fire">{{item.name}}</p>
+                            <p>{{item.description}}</p>
+                            <p class="busket__count">{{item.cost}}тг</p>
+                            <div class="busket__number">
+                                <i class="fas fa-minus-circle" @click="addCount(-1,index)"></i>
+                                <p>{{item.counter}}</p>
+                                <i class="fas fa-plus-circle" @click="addCount(1,index)"></i>
+                            </div>
+                            
                         </div>
+                        <i class="far fa-trash-alt" v-on:click="addDelete(index)"></i>
                         
-                    </div>
-                    <i class="far fa-trash-alt" @click="addDelete(index)"></i>
-                </div> 
+                    </div> 
+                </div>
+             
                 
                 <div class="busket__result">
                     <b>Итого:</b>
@@ -52,9 +62,9 @@
                     <button>Оформить заказ</button>
                 </div>
             </div>
-            <i class="fas fa-times" @click="$router.push('/burger')"></i>
+            <a class="fas fa-times" @click="$router.push('/burger')"></a>
         </div>
-                        
+        
 </template>
 
 <!-- scripts -->
@@ -72,50 +82,44 @@
         mounted() {
 
             this.orders = JSON.parse(localStorage.getItem("order"));
-            this.amount = parseInt(localStorage.getItem("amount"));
 
+
+            this.amount = parseInt(localStorage.getItem("amount"));
             this.count = JSON.parse(localStorage.getItem("counter"));
 
             this.all_count = parseInt(localStorage.getItem("all_count"));
         },
         methods: {
+
             addCount(count,index) {
 
-              
                 this.orders[index].counter = this.orders[index].counter+count;
-
                 localStorage.setItem("order",JSON.stringify(this.orders));
-
-                if(count>0) {
+                if (count>0){
                     this.amount = this.amount+this.orders[index].cost; // общая сумма
                     
                 }
                 else {
-                    this.amount = this.amount-this.orders[index].cost; // общая сумма
+                    this.amount = this.amount-this.orders[index].cost;  // общая сумма
+                    
                 }
-
+                
                 this.all_count = this.all_count + count; // общий коунтер
 
                 localStorage.setItem("all_count",this.all_count);
-                localStorage.setItem("amount",this.amount);
-
+                localStorage.setItem("amount",JSON.stringify(this.amount));
+                
                 if(this.orders[index].counter==0) {
                     this.orders.splice(index, 1);
                     localStorage.setItem("order",JSON.stringify(this.orders));
                   
                 }
             },
-
-            addDelete(index,cost) {
-           
-                this.amount = this.amount-(this.orders[index].cost*this.orders[index].counter);
-                
-                this.all_count = this.all_count - this.orders[index].counter;
-
+            addDelete: function name(index,cost) {
+                 this.amount = this.amount-this.orders[index].cost*this.orders[index].counter;
+                this.all_count = this.all_count -this.orders[index].counter;
                 this.orders.splice(index, 1);
-
                 localStorage.setItem("all_count",this.all_count);
-
                 localStorage.setItem("order",JSON.stringify(this.orders));
 
                 localStorage.setItem("amount",JSON.stringify(this.amount));
@@ -155,6 +159,9 @@
     color: white;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
+}
+.busket__title i {
+    display: none;
 }
 .busket__images img {
     width: 170px;
@@ -338,7 +345,7 @@
     padding: 20px;
     font-size: 30px;
     color: white;
-    margin-left: 50px;
+    
 }
 .fa-trash-alt {
     
@@ -349,4 +356,59 @@
 .fa-plus-circle {
     margin-left: 7px;
 }
+
+@media screen and (max-width: 600px) {
+    .busket__main {
+        height: 100vh;
+        flex-direction: row;
+    }
+    .busket__images {
+        flex-direction: row;
+    }
+    .busket {
+        flex-direction: column;
+    }
+    .busket__info {
+        margin-left: 0px;
+    }
+    .busket__images img {
+        margin-left: 0px;
+    }
+    .busket__fire:after {
+        width: 145px;
+    }
+    .busket__title {
+        display: flex;
+        flex-direction: row;
+        margin-left: 0px;
+        justify-content: space-between;
+    }
+    .busket__title i {
+        display: flex;
+        margin-top: -15px;
+    }
+    .busket__result {
+        justify-content: space-around;
+        margin-left: 0px;
+    }
+    .busket__home {
+        justify-content: space-between;
+        margin-right: 80px;
+    }
+    .busket__flat {
+        justify-content: space-between;
+        margin-right: 80px;
+    }
+    .busket a {
+        display: none;
+    }
+    .busket {
+        height: 100vh;
+    }
+    .busket__contact {
+        margin-top: 0px;
+    }
+    
+}
+
 </style>
