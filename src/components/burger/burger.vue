@@ -97,9 +97,7 @@
                 </div>
                 <div class="main__items">
                     <div class="main__item" v-for="(item,index) in collections" :key="index">
-                        <div class="box" @click="addPopup()">
-                            <p>asfasgasgasgasgas</p>
-                        </div>
+                       
                         <img :src="item.img">
                         <p class="main__burger_name">{{item.name}}</p>
                         <p class="main__burger_description">{{item.description}}</p>
@@ -108,16 +106,17 @@
                             <div class="main__price">
                                 <p>{{item.cost}}тг</p>
                             </div>    
-                            <div class="busket__number">
-                                <i class="fas fa-minus-circle" @click="addMinus(index)"></i>
-                                    <p>{{ num }}</p>
-                                <i class="fas fa-plus-circle" @click="addPlus(index)"></i>
-                            </div>
+                            <!-- <div class="busket__number" >
+                                <i class="fas fa-minus-circle" @click="addCount(-1,index)"></i>
+                                    <p>{{}}</p>
+                                <i class="fas fa-plus-circle" @click="addCount(1,index)"></i>
+                            </div> -->
                             
                
-                        </div>
-                        <div class="main__order" @click="addOrder(index)">
-                            <button>В корзину</button>
+                        
+                            <div class="main__order" @click="addOrder(index)">
+                                <button>В корзину</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -141,10 +140,10 @@
         data() {
             return {
                
+                menu_id: 0,
                 all_data: [],
                 amount: [],
                 count: 0,
-                num:0,
                 collections: null,
                 data: 
                 [
@@ -295,7 +294,7 @@
         
         mounted() {
             this.collections = this.data_all[0].menu;
-            
+           
             window.onscroll = function() {
                 let left_side = document.getElementById("header__labels");
                 let ride_side = document.getElementById("header__basket");
@@ -322,11 +321,10 @@
             }
         },
         methods: {
-            addPlus() {
-                this.num++;
-            },
-            addMinus() {
-                this.num--;
+            addCount(count,index) {
+                this.orders[index].counter = this.orders[index].counter+count;
+                localStorage.setItem("order",JSON.stringify(this.orders));
+             
             },
             openToggle() {
                 document.querySelector('.header__toggle').style.display = "flex";
@@ -337,6 +335,7 @@
                 document.querySelector('#body').style.cssText = "overflow-y: scroll";
             },
             changeMenu(id) {
+                this.menu_id = id;
                 
                 for(let index = 0; index < this.data_all.length; index++) {
                     
@@ -353,7 +352,7 @@
                 
             },
             addOrder(index) {
-
+                
                 let orders = JSON.parse(localStorage.getItem("order"));
                 if(orders!==null && orders.length>0) {
                     this.all_data = orders;
@@ -365,21 +364,21 @@
 
                 this.count = this.count+1;
                 localStorage.setItem("all_count",this.count);
-                this.amount.push(parseInt(this.data[index].cost));
+                this.amount.push(parseInt(this.data_all[this.menu_id].menu[index].cost));
                 let object = {
-                    name: this.data[index].name,
-                    cost: this.data[index].cost,
-                    id: this.data[index].id,
-                    description: this.data[index].description,
+                    name: this.data_all[this.menu_id].menu[index].name,
+                    cost: this.data_all[this.menu_id].menu[index].cost,
+                    id: this.data_all[this.menu_id].menu[index].id,
+                    description: this.data_all[this.menu_id].menu[index].description,
                     counter: 1,
-                    img: this.data[index].img
+                    img: this.data_all[this.menu_id].menu[index].img
                 };
 
 
                 
                 let pivot = 0;
                 if(this.all_data.length>=1) {
-                    let exist = this.check__exist(this.all_data,this.data[index].id);
+                    let exist = this.check__exist(this.all_data,this.data_all[this.menu_id].menu[index].id);
                     if(exist[0]==true) {
                        
                         pivot = exist[1];
@@ -409,7 +408,7 @@
                
             }
             localStorage.setItem("amount",sum_of_data);
-
+            
 
             },
             check__exist(all_data,id) {
@@ -929,10 +928,10 @@ p {
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 160px;
+    width: 200px;
     justify-content: space-evenly;
     margin-bottom: 10px;
-    
+    margin-left: 45px;
    
 
 }
