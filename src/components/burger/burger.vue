@@ -97,10 +97,6 @@
                 </div>
                 <div class="main__items">
                     <div class="main__item" v-for="(item,index) in collections" :key="index">
-<<<<<<< HEAD
-                       
-=======
->>>>>>> 70b37edda565b3cc73da9f71c15c92559fd94a08
                         <img :src="item.img">
                         <p class="main__burger_name">{{item.name}}</p>
                         <p class="main__burger_description">{{item.description}}</p>
@@ -109,19 +105,11 @@
                             <div class="main__price">
                                 <p>{{item.cost}}тг</p>
                             </div>    
-<<<<<<< HEAD
-                            <!-- <div class="busket__number" >
-                                <i class="fas fa-minus-circle" @click="addCount(-1,index)"></i>
-                                    <p>{{}}</p>
-                                <i class="fas fa-plus-circle" @click="addCount(1,index)"></i>
-                            </div> -->
-=======
                             <div class="busket__number">
                                 <i class="fas fa-minus-circle" @click="addCount(-1,index)"></i>
                                     <p>{{ num }}</p>
                                 <i class="fas fa-plus-circle" @click="addCount(1,index)"></i>
                             </div>
->>>>>>> 70b37edda565b3cc73da9f71c15c92559fd94a08
                             
                
                         
@@ -153,10 +141,6 @@
          
         data() {
             return {
-<<<<<<< HEAD
-               
-=======
->>>>>>> 70b37edda565b3cc73da9f71c15c92559fd94a08
                 menu_id: 0,
                 all_data: [],
                 amount: [],
@@ -331,11 +315,6 @@
         
         mounted() {
             this.collections = this.data_all[0].menu;
-<<<<<<< HEAD
-           
-=======
-
->>>>>>> 70b37edda565b3cc73da9f71c15c92559fd94a08
             window.onscroll = function() {
                 let left_side = document.getElementById("header__labels");
 
@@ -402,13 +381,9 @@
                 }
             },
             changeMenu(id) {
-<<<<<<< HEAD
-                this.menu_id = id;
-=======
 
                 this.menu_id = id;
 
->>>>>>> 70b37edda565b3cc73da9f71c15c92559fd94a08
                 
                 for(let index = 0; index < this.data_all.length; index++) {
                     if(index==id) {
@@ -422,11 +397,8 @@
             },
             addOrder(index) {
                 
-<<<<<<< HEAD
-=======
               
 
->>>>>>> 70b37edda565b3cc73da9f71c15c92559fd94a08
                 let orders = JSON.parse(localStorage.getItem("order"));
                 
             
@@ -452,14 +424,10 @@
 
                 this.count = this.count+1;
                 localStorage.setItem("all_count",this.count);
-<<<<<<< HEAD
-                this.amount.push(parseInt(this.data_all[this.menu_id].menu[index].cost));
-=======
                 
                 this.amount.push(parseInt(this.data_all[this.menu_id].menu[index].cost));
 
                 
->>>>>>> 70b37edda565b3cc73da9f71c15c92559fd94a08
                 let object = {
                     name: this.data_all[this.menu_id].menu[index].name,
                     cost: this.data_all[this.menu_id].menu[index].cost,
@@ -472,10 +440,6 @@
 
                 
                 let pivot = 0;
-<<<<<<< HEAD
-                if(this.all_data.length>=1) {
-                    let exist = this.check__exist(this.all_data,this.data_all[this.menu_id].menu[index].id);
-=======
 
                 if(this.all_data[this.menu_id].length>=1) {
 
@@ -484,7 +448,6 @@
                     let exist = this.check__exist(this.all_data[this.menu_id],this.data_all[this.menu_id].menu[index].id);
                   
                 
->>>>>>> 70b37edda565b3cc73da9f71c15c92559fd94a08
                     if(exist[0]==true) {
                        
                         pivot = exist[1];
@@ -522,11 +485,6 @@
                 orders = JSON.parse(localStorage.getItem("order"));
         
                
-<<<<<<< HEAD
-            }
-            localStorage.setItem("amount",sum_of_data);
-            
-=======
                 for (let index = 0; index < orders.length; index++) {
                 
                     this.calc_sum(orders[index]);
@@ -565,7 +523,6 @@
                 localStorage.setItem("amount",amount);
 
 
->>>>>>> 70b37edda565b3cc73da9f71c15c92559fd94a08
 
             },
             check__exist(all_data,id) {
