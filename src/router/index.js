@@ -31,22 +31,24 @@
 
     import ErrorPage from '../components/error/404.vue';
 
+
     const router = new VueRouter({
     routes: [
-            {
-                path: '/',
-                component: AuthPage,
-                meta: { guest: true },
-                children: [
-                    // { path: 'burger', component: Burger},
-                    { path: '', component: Login },
-                    { path: 'login', component: Login },
-                    { path: 'forgotPassword', component: ForgotPassword },
-                    { path: 'register', component: Register },
-                    { path: 'reg_confirm', component: Reg_confirm },
-                    { path: 'check', component: Check }
-                ]
-            },
+
+        {
+            path: '/',
+            component: AuthPage,
+            meta: { guest: true },
+            children: [
+                // { path: 'burger', component: Burger},
+                { path: '', component: Login },
+                { path: 'login', component: Login },
+                { path: 'forgotPassword', component: ForgotPassword },
+                { path: 'register', component: Register },
+                { path: 'reg_confirm', component: Reg_confirm },
+                { path: 'check', component: Check }
+            ]
+        },
         
         {
             path: '/burger',
@@ -55,7 +57,14 @@
             children: [
                 
             ]
-
+        },
+        {
+            path: '/busket',
+            component: Korzina,
+            // meta: { guest: true }, 
+            children: [
+               
+            ]
         }, 
         {
             path: '/busket',
@@ -82,31 +91,32 @@
                 component: ErrorPage,
             }
     ],
+
     mode: 'history'
     });
 
-    router.beforeEach((to, from, next) => {
-    if(to.matched.some(record => record.meta.requiresAuth)) {
-        if ($cookies.get('token') == null) {
-            next({
-                path: '/login',
-                params: { nextUrl: to.fullPath }
-            })
-        } 
-        else {
-            next()
-        }
-    } else if(to.matched.some(record => record.meta.guest)) {
-        if($cookies.get('token') == null){
-            next()
-        }
-        else{
-            next({ path: '/'})
-        }
-    }else {
-        next() 
-    }
-    })
+    // router.beforeEach((to, from, next) => {
+    // if(to.matched.some(record => record.meta.requiresAuth)) {
+    //     if ($cookies.get('token') == null) {
+    //         next({
+    //             path: '/login',
+    //             params: { nextUrl: to.fullPath }
+    //         })
+    //     } 
+    //     else {
+    //         next()
+    //     }
+    // } else if(to.matched.some(record => record.meta.guest)) {
+    //     if($cookies.get('token') == null){
+    //         next()
+    //     }
+    //     else{
+    //         next({ path: '/'})
+    //     }
+    // }else {
+    //     next() 
+    // }
+    // })
 
     export default router;
 

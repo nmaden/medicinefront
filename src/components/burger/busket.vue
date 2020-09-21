@@ -8,22 +8,30 @@
                     <p>Ваш заказ</p>
                     <i class="fas fa-times" @click="$router.push('/burger')"></i>
                 </div>
-                <div class="busket__images" v-for="(item,index) in orders" :key="index">
-                    <img :src="item.img">
-                    <div class="busket__info">
-                        <p class="busket__fire">{{item.name}}</p>
-                        <p>{{item.description}}</p>
-                        <p class="busket__count">{{item.cost}}тг</p>
-                        <div class="busket__number">
-                            <i class="fas fa-minus-circle" @click="addCount(-1,index)"></i>
-                            <p>{{item.counter}}</p>
-                            <i class="fas fa-plus-circle" @click="addCount(1,index)"></i>
+              
+
+                <div  v-for="(category,i) in orders" :key="i">
+
+                    <div class="busket__images" v-for="(item,index) in category  " :key="index" >
+
+                        <img :src="item.img">
+
+                        <div class="busket__info">
+                            <p class="busket__fire">{{item.name}}</p>
+                            <p>{{item.description}}</p>
+                            <p class="busket__count">{{item.cost}}тг</p>
+                            <div class="busket__number">
+                                <i class="fas fa-minus-circle" @click="addCount(-1,index)"></i>
+                                <p>{{item.counter}}</p>
+                                <i class="fas fa-plus-circle" @click="addCount(1,index)"></i>
+                            </div>
+                            
                         </div>
+                        <i class="far fa-trash-alt" v-on:click="addDelete(index)"></i>
                         
-                    </div>
-                    <i class="far fa-trash-alt" v-on:click="addDelete(index)"></i>
-                    
-                </div> 
+                    </div> 
+                </div>
+             
                 
                 <div class="busket__result">
                     <b>Итого:</b>
@@ -74,14 +82,19 @@
             }
         },
         mounted() {
+
             this.orders = JSON.parse(localStorage.getItem("order"));
+
+
             this.amount = parseInt(localStorage.getItem("amount"));
             this.count = JSON.parse(localStorage.getItem("counter"));
 
             this.all_count = parseInt(localStorage.getItem("all_count"));
         },
         methods: {
+
             addCount(count,index) {
+
                 this.orders[index].counter = this.orders[index].counter+count;
                 localStorage.setItem("order",JSON.stringify(this.orders));
                 if (count>0){
@@ -99,10 +112,9 @@
                 localStorage.setItem("amount",JSON.stringify(this.amount));
                 
                 if(this.orders[index].counter==0) {
-                    this.amount = this.amount-this.orders[index].cost;
                     this.orders.splice(index, 1);
                     localStorage.setItem("order",JSON.stringify(this.orders));
-                    localStorage.setItem("amount",JSON.stringify(this.amount));
+                  
                 }
             },
             addDelete: function name(index,cost) {
@@ -111,6 +123,7 @@
                 this.orders.splice(index, 1);
                 localStorage.setItem("all_count",this.all_count);
                 localStorage.setItem("order",JSON.stringify(this.orders));
+
                 localStorage.setItem("amount",JSON.stringify(this.amount));
             }
                
