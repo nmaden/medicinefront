@@ -1,5 +1,7 @@
 <!-- template -->
 <template>
+    <div>
+
         <div class="busket">
             <div class="busket__main">
                 <div class="busket__title">
@@ -37,7 +39,7 @@
                 </div>
 
             </div>  
-            <div class="busket__contact">
+            <!-- <div class="busket__contact">
                 <p class="busket__data">Ваши данные:</p>
                 <input placeholder="Ваше имя" id="strt-input" data-testid="delivery-form_street-input" type="text" autocomplete="off" class="input" value="">
                 <input placeholder="Номер телефона" id="strt-input" data-testid="delivery-form_street-input" type="text" autocomplete="off" class="input" value="">
@@ -61,10 +63,10 @@
                 <div class="busket__button">
                     <button>Оформить заказ</button>
                 </div>
-            </div>
+            </div> -->
             <a class="fas fa-times" @click="$router.push('/burger')"></a>
         </div>
-        
+    </div>   
 </template>
 
 <!-- scripts -->
