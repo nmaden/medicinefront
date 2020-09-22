@@ -1,4 +1,4 @@
-<!-- template -->
+
 <template>
  
     <div>
@@ -490,21 +490,7 @@
                 for (let index = 0; index < orders.length; index++) {
                 
                     this.calc_sum(orders[index]);
-                    // array = this.all_data[this.menu_id];
-
-                    // for (let j = 0; j < array.length; j++) {
-
-                    //     console.log(array[index].cost+' + '+array[index].counter);
-
-                    //     const element = array[index].cost*array[index].counter;
-                        
-
-
-                    // }
-                    // a = this.all_data[index].cost*this.all_data[index].counter;
-                    
-                    // sum_of_data = sum_of_data+a;
-                
+               
                 }
           
              
@@ -565,7 +551,7 @@
     
 </script>
 
-<!-- style -->
+
 <style scoped lang="scss"> 
 .sticky {
   position: fixed;
