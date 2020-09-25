@@ -9,7 +9,6 @@
                     <i class="fas fa-times" @click="$router.push('/burger')"></i>
                 </div>
               
-
                 <div  v-for="(category,i) in orders" :key="i">
 
                     <div class="busket__images" v-for="(item,index) in category  " :key="index" >
@@ -84,10 +83,11 @@
         mounted() {
 
             this.orders = JSON.parse(localStorage.getItem("order"));
-
+            
+            console.log(this.orders);
 
             this.amount = parseInt(localStorage.getItem("amount"));
-            this.count = JSON.parse(localStorage.getItem("counter"));
+            // this.count = JSON.parse(localStorage.getItem("counter"));
 
             this.all_count = parseInt(localStorage.getItem("all_count"));
         },

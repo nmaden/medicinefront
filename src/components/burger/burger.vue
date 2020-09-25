@@ -1,4 +1,4 @@
-
+<!-- template -->
 <template>
  
     <div>
@@ -97,7 +97,6 @@
                 </div>
                 <div class="main__items">
                     <div class="main__item" v-for="(item,index) in collections" :key="index">
-                       
                         <img :src="item.img">
                         <p class="main__burger_name">{{item.name}}</p>
                         <p class="main__burger_description">{{item.description}}</p>
@@ -106,17 +105,16 @@
                             <div class="main__price">
                                 <p>{{item.cost}}тг</p>
                             </div>    
-                            <!-- <div class="busket__number" >
+                            <div class="busket__number">
                                 <i class="fas fa-minus-circle" @click="addCount(-1,index)"></i>
-                                    <p>{{}}</p>
+                                    <p>{{ num }}</p>
                                 <i class="fas fa-plus-circle" @click="addCount(1,index)"></i>
-                            </div> -->
+                            </div>
                             
                
-                        
-                            <div class="main__order" @click="addOrder(index)">
-                                <button>В корзину</button>
-                            </div>
+                        </div>
+                        <div class="main__order" @click="addOrder(index)">
+                            <button>В корзину</button>
                         </div>
 
                     </div>
@@ -142,11 +140,11 @@
          
         data() {
             return {
-               
                 menu_id: 0,
                 all_data: [],
                 amount: [],
                 count: 0,
+                num:0,
                 collections: null,
                 data: 
                 [
@@ -317,7 +315,7 @@
         
         mounted() {
             this.collections = this.data_all[0].menu;
-           
+
             window.onscroll = function() {
                 let left_side = document.getElementById("header__labels");
 
@@ -346,10 +344,11 @@
             }
         },
         methods: {
-            addCount(count,index) {
-                this.orders[index].counter = this.orders[index].counter+count;
-                localStorage.setItem("order",JSON.stringify(this.orders));
-             
+            addPlus() {
+                this.num++;
+            },
+            addMinus() {
+                this.num--;
             },
             openToggle() {
                 document.querySelector('.header__toggle').style.display = "flex";
@@ -384,7 +383,9 @@
                 }
             },
             changeMenu(id) {
+
                 this.menu_id = id;
+
                 
                 for(let index = 0; index < this.data_all.length; index++) {
                     if(index==id) {
@@ -398,32 +399,38 @@
             },
             addOrder(index) {
                 
+              
+
                 let orders = JSON.parse(localStorage.getItem("order"));
                 
-            
+                
                 if(orders==null) {
                     this.all_data[this.menu_id] = [];
-                }
-                else if(orders[this.menu_id]!==undefined) {
 
-                 
+                    console.log("11");
+                }
+                else if(typeof orders[this.menu_id]==='undefined') {   
+                    
+                    console.log("22");
+                    this.all_data[this.menu_id] = [];              
+                   
+                }
+                else {
+
+                    console.log("33");
+                    
                     this.all_data = orders;
                 }
 
-                else {
-
-           
-
-                    this.all_data[this.menu_id] = [];
-                }
-
+     
              
-
-
 
                 this.count = this.count+1;
                 localStorage.setItem("all_count",this.count);
+                
                 this.amount.push(parseInt(this.data_all[this.menu_id].menu[index].cost));
+
+                
                 let object = {
                     name: this.data_all[this.menu_id].menu[index].name,
                     cost: this.data_all[this.menu_id].menu[index].cost,
@@ -436,8 +443,11 @@
 
                 
                 let pivot = 0;
-                if(this.all_data.length>=1) {
-                    let exist = this.check__exist(this.all_data,this.data_all[this.menu_id].menu[index].id);
+
+                if(this.all_data[this.menu_id].length>=1) {
+                    let exist = this.check__exist(this.all_data[this.menu_id],this.data_all[this.menu_id].menu[index].id);
+                  
+                
                     if(exist[0]==true) {
                        
                         pivot = exist[1];
@@ -460,8 +470,12 @@
 
                 localStorage.setItem("order",JSON.stringify(this.all_data));
 
+                console.log("there data");
+                console.log(JSON.parse(localStorage.getItem("order")));
+
+                
                
-                localStorage.setItem("counter",this.all_data[pivot].counter);
+                // localStorage.setItem("counter",this.all_data[pivot].counter);
 
                 let ready_order = localStorage.getItem("order");
             
@@ -473,10 +487,39 @@
                 let array = [];
 
                 orders = JSON.parse(localStorage.getItem("order"));
-        
+
+                
                
-            }
-            localStorage.setItem("amount",sum_of_data);
+                for (let index = 0; index < orders.length; index++) {
+                
+                    this.calc_sum(orders[index]);
+                
+                }
+          
+             
+            },
+
+            calc_sum(array) {
+
+                let menu = [];
+                let amount = 0;
+
+               
+                if (localStorage.getItem("amount") !== null) {
+                    amount = parseInt(localStorage.getItem("amount"));
+                }
+                
+            
+                for (let index = 0; index < array.length; index++) {
+
+                    amount= amount+array[index].counter*array[index].cost;
+                   
+                }
+
+              
+                  
+                localStorage.setItem("amount",amount);
+
             
 
             },
@@ -518,7 +561,7 @@
     
 </script>
 
-
+<!-- style -->
 <style scoped lang="scss"> 
 .sticky {
   position: fixed;
@@ -1007,10 +1050,10 @@ p {
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 200px;
+    width: 160px;
     justify-content: space-evenly;
     margin-bottom: 10px;
-    margin-left: 45px;
+    
    
 
 }
