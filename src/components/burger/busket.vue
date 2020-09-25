@@ -1,7 +1,5 @@
 <!-- template -->
 <template>
-    <div>
-
         <div class="busket">
             <div class="busket__main">
                 <div class="busket__title">
@@ -18,12 +16,16 @@
 
                         <div class="busket__info">
                             <p class="busket__fire">{{item.name}}</p>
-                            <p>{{item.description}}</p>
-                            <p class="busket__count">{{item.cost}}тг</p>
+                            <p class="busket__description">{{item.description}}</p>
+                            
                             <div class="busket__number">
-                                <i class="fas fa-minus-circle" @click="addCount(-1,index)"></i>
-                                <p>{{item.counter}}</p>
-                                <i class="fas fa-plus-circle" @click="addCount(1,index)"></i>
+                                <p class="busket__count">{{item.cost}}тг</p>
+                                <div class="busket__counter">
+                                    <i class="fas fa-minus-circle" @click="addCount(-1,index)"></i>
+                                    <p>{{item.counter}}</p>
+                                    <i class="fas fa-plus-circle" @click="addCount(1,index)"></i>
+                                </div>
+                              
                             </div>
                             
                         </div>
@@ -35,7 +37,10 @@
                 
                 <div class="busket__result">
                     <b>Итого:</b>
-                    <p>{{amount}}тг</p>
+                    <div class="busket__amount">
+                        <p>{{amount}}тг</p>
+                    </div>
+                    
                 </div>
 
             </div>  
@@ -66,7 +71,7 @@
             </div> -->
             <a class="fas fa-times" @click="$router.push('/burger')"></a>
         </div>
-    </div>   
+        
 </template>
 
 <!-- scripts -->
@@ -82,19 +87,13 @@
             }
         },
         mounted() {
-
             this.orders = JSON.parse(localStorage.getItem("order"));
-
-
             this.amount = parseInt(localStorage.getItem("amount"));
-            this.count = JSON.parse(localStorage.getItem("counter"));
-
+            // this.count = JSON.parse(localStorage.getItem("counter"));
             this.all_count = parseInt(localStorage.getItem("all_count"));
         },
         methods: {
-
             addCount(count,index) {
-
                 this.orders[index].counter = this.orders[index].counter+count;
                 localStorage.setItem("order",JSON.stringify(this.orders));
                 if (count>0){
@@ -107,7 +106,6 @@
                 }
                 
                 this.all_count = this.all_count + count; // общий коунтер
-
                 localStorage.setItem("all_count",this.all_count);
                 localStorage.setItem("amount",JSON.stringify(this.amount));
                 
@@ -123,7 +121,6 @@
                 this.orders.splice(index, 1);
                 localStorage.setItem("all_count",this.all_count);
                 localStorage.setItem("order",JSON.stringify(this.orders));
-
                 localStorage.setItem("amount",JSON.stringify(this.amount));
             }
                
@@ -136,14 +133,11 @@
 
 <!-- style -->
 <style scoped lang="scss"> 
-
 //*BUSKET*/
-
 .busket {
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: 100vh;
     background-color: #333;
     justify-content: space-between;
 }
@@ -169,18 +163,18 @@
     width: 170px;
     height: 170px;
     align-self: flex-start;
-    margin-left: 100px;
+    margin-left: 50px;
 }
 .busket__images {
-    width: 100%;
+    width: 50%;
     height: 200px;
    /* border: 2px solid white;*/
     display: flex;
     flex-direction: row;
-    // margin-bottom: 60px;
+    margin-bottom: 50px;
+
     
 }
-
 .busket__info {
     width: 50%;
     height: 200px;
@@ -212,9 +206,13 @@
     display: flex;
     flex-direction: row;
     font-size: 30px;
-    padding: 10px;
+    padding: 15px;
+    
+    
+    margin-left: 50px;
+}
+.busket__amount {
     margin-left: 100px;
-    justify-content: space-between;
 }
 .busket__result b {
     color: white;
@@ -268,15 +266,18 @@
 .busket__number {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    
 }
-
+.busket__counter {
+    display: flex;
+    flex-direction: row;
+}
 .busket__number i {
     color: red;
     font-size: 20px;
 }
-.busket__number p {
-    margin-left: 6px;
-}
+
 
 //*INPUT*/
 
@@ -349,29 +350,73 @@
     color: white;
     
 }
+.fa-plus-circle {
+    margin-left: 5px;
+}
+.fa-minus-circle {
+    margin-right: 5px;
+}
 .fa-trash-alt {
+    margin-left: 50px;
     
-    padding: 20px;
-    font-size: 20px;
     color: white;
 }
-.fa-plus-circle {
-    margin-left: 7px;
+@media screen and (max-width: 370px) {
+    .busket__info {
+        font-size: 15px;
+    }
+    .busket__result {
+        margin-left: 35px;
+    }
+    .busket__images img {
+        width: 150px;
+    }
+    
+
+}
+@media screen and (max-height: 580px) {
+    .busket__images img {
+        width: 120px;
+        height: 160px;
+    }
+    .busket__info {
+        font-size: 14px;
+    }
+    
+    .busket__title {
+       margin-left: 10px;
+    }
+   
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (min-height: 800px) {
+
     .busket__main {
-        height: 100vh;
         flex-direction: row;
     }
     .busket__images {
         flex-direction: row;
     }
+    .busket__images img {
+        width: 150px;
+    }
+    .busket__count {
+        font-size: 20px;
+    }
+    .busket__fire {
+        font-size: 25px;
+    }
     .busket {
         flex-direction: column;
     }
+    .busket__counter {
+        margin-left: 30px;
+    }
     .busket__info {
-        margin-left: 0px;
+        margin-left: 15px;
+    }
+    .busket__info p {
+        
     }
     .busket__images img {
         margin-left: 0px;
@@ -391,7 +436,7 @@
     }
     .busket__result {
         justify-content: space-around;
-        margin-left: 0px;
+        
     }
     .busket__home {
         justify-content: space-between;
@@ -405,12 +450,82 @@
         display: none;
     }
     .busket {
-        height: 100vh;
+       
     }
     .busket__contact {
         margin-top: 0px;
     }
-    
+    .busket__description {
+        margin-bottom: 10px;
+    }
+}
+@media screen and (max-width: 600px) {
+    .busket__main {
+        flex-direction: row;
+    }
+    .busket__images {
+        flex-direction: row;
+    }
+   
+    .busket__count {
+        font-size: 20px;
+    }
+    .busket__fire {
+        font-size: 25px;
+    }
+    .busket {
+        flex-direction: column;
+    }
+    .busket__counter {
+        margin-left: 30px;
+    }
+    .busket__info {
+        margin-left: 15px;
+    }
+    .busket__info p {
+        
+    }
+    .busket__images img {
+        margin-left: 0px;
+    }
+    .busket__fire:after {
+        width: 145px;
+    }
+    .busket__title {
+        display: flex;
+        flex-direction: row;
+        margin-left: 0px;
+        justify-content: space-between;
+    }
+    .busket__title i {
+        display: flex;
+        margin-top: -15px;
+    }
+    .busket__result {
+        justify-content: space-around;
+        
+    }
+    .busket__home {
+        justify-content: space-between;
+        margin-right: 80px;
+    }
+    .busket__flat {
+        justify-content: space-between;
+        margin-right: 80px;
+    }
+    .busket a {
+        display: none;
+    }
+    .busket {
+       
+    }
+    .busket__contact {
+        margin-top: 0px;
+    }
+    .busket__description {
+        margin-bottom: 10px;
+    }
+  
 }
 
 </style>
