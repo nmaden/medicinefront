@@ -4,10 +4,9 @@
             <div class="busket__main">
                 <div class="busket__title">
                     <p>Ваш заказ</p>
-                    <i class="fas fa-times" @click="$router.push('/burger')"></i>
+                    <i class="fas fa-times" @click="closeToggle()"></i>
                 </div>
               
-
                 <div  v-for="(category,i) in orders" :key="i">
 
                     <div class="busket__images" v-for="(item,index) in category  " :key="index" >
@@ -88,11 +87,29 @@
         },
         mounted() {
             this.orders = JSON.parse(localStorage.getItem("order"));
-            this.amount = parseInt(localStorage.getItem("amount"));
-            // this.count = JSON.parse(localStorage.getItem("counter"));
+            // calc_sum
+            
+            for (let index = 0; index < this.orders.length; index++) {
+                this.calc_sum(this.orders[index]);
+            }
+
+
             this.all_count = parseInt(localStorage.getItem("all_count"));
         },
         methods: {
+            calc_sum(array) {
+               
+              
+                for (let index = 0; index < array.length; index++) {
+                    this.amount= this.amount+array[index].counter*array[index].cost;
+                } 
+                
+                localStorage.setItem("amount",this.amount)
+            },
+             closeToggle() {
+                document.querySelector('.busket').style.display = "none";
+                document.querySelector('#body').style.cssText = "overflow-y: scroll";
+            },
             addCount(count,index) {
                 this.orders[index].counter = this.orders[index].counter+count;
                 localStorage.setItem("order",JSON.stringify(this.orders));
