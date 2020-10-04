@@ -130,8 +130,7 @@
 <script>
     // imports libraries
     import Datepicker from 'vuejs-datepicker';
-    import { ru, fa } from 'vuejs-datepicker/dist/locale';
-    
+  
     export default {
         
         components: {
@@ -322,13 +321,22 @@
                 let right_side = document.getElementById("header__basket");
 
                 if(window.pageYOffset > right_side.offsetTop+100) {
+
+                    right_side.classList.add("bg__white");
+
+                    left_side.classList.add("bg__white");
+
+                 
                     right_side.classList.add("sticky");
 
                     left_side.classList.add("sticky");
                 }
                 else {
-                
+                    right_side.classList.remove("bg__white");
+                    left_side.classList.remove("bg__white");
+
                     right_side.classList.remove("sticky");
+                    
 
                     left_side.classList.remove("sticky");
                 }
@@ -361,7 +369,11 @@
 
             addCount(count,index) {
                 this.orders[index].counter = this.orders[index].counter+count;
+                
+                
                 localStorage.setItem("order",JSON.stringify(this.orders));
+                
+                
                 if (count>0){
                     this.amount = this.amount+this.orders[index].cost; // общая сумма
                     
@@ -402,28 +414,17 @@
               
 
                 let orders = JSON.parse(localStorage.getItem("order"));
-                
-                
+
                 if(orders==null) {
                     this.all_data[this.menu_id] = [];
-
-                    console.log("11");
                 }
                 else if(typeof orders[this.menu_id]==='undefined') {   
-                    
-                    console.log("22");
+                    this.all_data = orders;
                     this.all_data[this.menu_id] = [];              
-                   
                 }
                 else {
-
-                    console.log("33");
-                    
                     this.all_data = orders;
                 }
-
-     
-             
 
                 this.count = this.count+1;
                 localStorage.setItem("all_count",this.count);
@@ -470,59 +471,15 @@
 
                 localStorage.setItem("order",JSON.stringify(this.all_data));
 
-                console.log("there data");
-                console.log(JSON.parse(localStorage.getItem("order")));
-
-                
+    
                
-                // localStorage.setItem("counter",this.all_data[pivot].counter);
 
-                let ready_order = localStorage.getItem("order");
-            
-                let sum_of_data = 0;
-                let a = 0;
-
-
-
-                let array = [];
-
-                orders = JSON.parse(localStorage.getItem("order"));
-
-                
-               
-                for (let index = 0; index < orders.length; index++) {
-                
-                    this.calc_sum(orders[index]);
-                
-                }
+             
           
              
             },
 
-            calc_sum(array) {
-
-                let menu = [];
-                let amount = 0;
-
-               
-                if (localStorage.getItem("amount") !== null) {
-                    amount = parseInt(localStorage.getItem("amount"));
-                }
-                
-            
-                for (let index = 0; index < array.length; index++) {
-
-                    amount= amount+array[index].counter*array[index].cost;
-                   
-                }
-
-              
-                  
-                localStorage.setItem("amount",amount);
-
-            
-
-            },
+          
             check__exist(all_data,id) {
                
                 let truefalse = [];
@@ -563,6 +520,11 @@
 
 <!-- style -->
 <style scoped lang="scss"> 
+.bg__white {
+    width: 50% !important;
+    background-color: white;
+}
+
 .sticky {
   position: fixed;
   top: 0;
@@ -789,15 +751,19 @@ p {
     flex-direction: row;
     justify-content: center;
     align-self: flex-end;
-    align-items: flex-end;
+    align-items: center;
+    
     width: 120px;
     height: 33px;
     border-radius: 20px;
-    background-color: yellow;
-    padding: 10px;
+    background-color: var(--main-project-color);
+    padding: 20px;
     font-size: 14px;
     border: none;
-    color: red;
+    color: white;
+    
+    outline: none;
+
 }
 .header__toggle button {
     z-index: 40;

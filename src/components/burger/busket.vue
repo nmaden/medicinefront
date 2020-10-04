@@ -2,34 +2,38 @@
 <template>
     <div>
 
-        <div class="busket">
+        <div class="busket" >
             <div class="busket__main">
                 <div class="busket__title">
                     <p>Ваш заказ</p>
                     <i class="fas fa-times" @click="$router.push('/burger')"></i>
                 </div>
-              
-                <div  v-for="(category,i) in orders" :key="i">
+
+
+                <div  class="busket__block" >
+                <div v-for="(category,i) in orders" :key="i">
 
                     <div class="busket__images" v-for="(item,index) in category  " :key="index" >
 
                         <img :src="item.img">
 
-                        <div class="busket__info">
+                        <div class="busket__info" >
                             <p class="busket__fire">{{item.name}}</p>
-                            <p>{{item.description}}</p>
+                            <p class="busket__description">{{item.description}}</p>
                             <p class="busket__count">{{item.cost}}тг</p>
                             <div class="busket__number">
-                                <i class="fas fa-minus-circle" @click="addCount(-1,index)"></i>
+                                <i class="fas fa-minus-circle" @click="addCount(i,-1,index)"></i>
                                 <p>{{item.counter}}</p>
-                                <i class="fas fa-plus-circle" @click="addCount(1,index)"></i>
+                                <i class="fas fa-plus-circle" @click="addCount(i,1,index)"></i>
                             </div>
                             
                         </div>
-                        <i class="far fa-trash-alt" v-on:click="addDelete(index)"></i>
+                        <i class="far fa-trash-alt busket__delete" v-on:click="addDelete(i,index,item.cost)"></i>
                         
                     </div> 
                 </div>
+                </div>
+          
              
                 
                 <div class="busket__result">
@@ -38,7 +42,7 @@
                 </div>
 
             </div>  
-            <!-- <div class="busket__contact">
+            <div class="busket__contact">
                 <p class="busket__data">Ваши данные:</p>
                 <input placeholder="Ваше имя" id="strt-input" data-testid="delivery-form_street-input" type="text" autocomplete="off" class="input" value="">
                 <input placeholder="Номер телефона" id="strt-input" data-testid="delivery-form_street-input" type="text" autocomplete="off" class="input" value="">
@@ -52,17 +56,22 @@
                     <input placeholder="Квартира" id="strt-input" data-testid="delivery-form_street-input" type="text" autocomplete="off" class="input-1" value="">
                 </div>
                 <div class="radiobutton">
+
+
                 <div class="radiobutton__cash">
                     <input name="dzen" type="radio" value="nedzen"><p class="radiobutton">Наличными курьеру</p>
                 </div>
-                    <div class="radiobutton__pay">
-                        <input name="dzen" type="radio" value="nedzen"><p class="radiobutton">Оплата картой на сайте</p>
-                    </div>
+                <div class="radiobutton__pay">
+                    <input name="dzen" type="radio" value="nedzen"><p class="radiobutton">Оплата картой на сайте</p>
+                </div>
+
                 </div>
                 <div class="busket__button">
-                    <button>Оформить заказ</button>
+                    <button type="submit">
+                        <p>Оформить заказ</p>
+                    </button>
                 </div>
-            </div> -->
+            </div>
             <a class="fas fa-times" @click="$router.push('/burger')"></a>
         </div>
     </div>   
@@ -77,32 +86,50 @@
                 amount: 0,
                 orders:[],
                 count: 0,
-                all_count: 0
+                all_count: 0,
+                isActive: true
             }
         },
         mounted() {
-
+        
             this.orders = JSON.parse(localStorage.getItem("order"));
             
-            console.log(this.orders);
-
-            this.amount = parseInt(localStorage.getItem("amount"));
-            // this.count = JSON.parse(localStorage.getItem("counter"));
-
+            //calling sum
+            for (let index = 0; index < this.orders.length; index++) {
+                this.calc_sum(this.orders[index]);
+            }
             this.all_count = parseInt(localStorage.getItem("all_count"));
+            
+          
+            if(this.all_count>3) {
+                this.isActive = false;
+            }
         },
         methods: {
 
-            addCount(count,index) {
+            calc_sum(array) {
+                
+                for (let index = 0; index < array.length; index++) {
+                    this.amount = this.amount+array[index].counter*array[index].cost;
+                }
+              
+                localStorage.setItem("amount",this.amount);            
 
-                this.orders[index].counter = this.orders[index].counter+count;
+            },
+            addCount(category_id,count,index) {
+
+                this.orders[category_id][index].counter = this.orders[category_id][index].counter+count;
+
+
                 localStorage.setItem("order",JSON.stringify(this.orders));
+
+
                 if (count>0){
-                    this.amount = this.amount+this.orders[index].cost; // общая сумма
+                    this.amount = this.amount+this.orders[category_id][index].cost; // общая сумма
                     
                 }
                 else {
-                    this.amount = this.amount-this.orders[index].cost;  // общая сумма
+                    this.amount = this.amount-this.orders[category_id][index].cost;  // общая сумма
                     
                 }
                 
@@ -111,17 +138,25 @@
                 localStorage.setItem("all_count",this.all_count);
                 localStorage.setItem("amount",JSON.stringify(this.amount));
                 
-                if(this.orders[index].counter==0) {
-                    this.orders.splice(index, 1);
+                if(this.orders[category_id][index].counter==0) {
+                    this.orders[category_id].splice(index, 1);
                     localStorage.setItem("order",JSON.stringify(this.orders));
                   
                 }
             },
-            addDelete: function name(index,cost) {
-                 this.amount = this.amount-this.orders[index].cost*this.orders[index].counter;
-                this.all_count = this.all_count -this.orders[index].counter;
-                this.orders.splice(index, 1);
+
+            addDelete(category_id,index,cost) {
+
+                let order = this.orders[category_id][index];
+                this.amount = this.amount-order.cost*order.counter;
+
+
+                this.all_count = this.all_count -this.orders[category_id][index].counter;
+
+                this.orders[category_id].splice(index, 1);
+                
                 localStorage.setItem("all_count",this.all_count);
+
                 localStorage.setItem("order",JSON.stringify(this.orders));
 
                 localStorage.setItem("amount",JSON.stringify(this.amount));
@@ -140,21 +175,31 @@
 //*BUSKET*/
 
 .busket {
+  
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: 100vh;
-    background-color: #333;
+    background-color: #131313;
     justify-content: space-between;
+    height: 100vh;
+ 
 }
+.busket__main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+      height: 90vh;
+    padding: 20px;
+}
+
 .busket__inner {
     display: flex;
     flex-direction: row;
 }
 .busket__title {
     font-size: 30px;
-    padding: 10px;
-    margin-left: 60px;
+    margin-bottom: 20px;
+  
     /*border: 2px solid white;*/
 }
 .busket__title p {
@@ -169,17 +214,41 @@
     width: 170px;
     height: 170px;
     align-self: flex-start;
-    margin-left: 100px;
+    margin-right: 100px;
 }
-.busket__images {
-    width: 100%;
-    height: 200px;
-   /* border: 2px solid white;*/
-    display: flex;
-    flex-direction: row;
-    // margin-bottom: 60px;
-    
+
+.busket__block {
+    height: 100vh;
+ 
+    overflow-y: auto;
+    .busket__images {
+        width: 60%;
+        height: 200px;
+        margin-bottom: 30px;
+        display: flex;
+        flex-direction: row;
+        // margin-bottom: 60px;
+
+        .busket__delete {
+            cursor: pointer;
+        }
+        
+    }
 }
+.busket__block::-webkit-scrollbar {
+    width: 5px;
+    background-color: red;
+}
+
+.busket__block::-webkit-scrollbar-track {
+background-color: #e8e8e8;
+}
+.busket__block::-webkit-scrollbar-thumb {
+        width: 5px;
+        height: 50px;
+background-color:red;
+}
+
 
 .busket__info {
     width: 50%;
@@ -187,14 +256,17 @@
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    margin-left: 100px;
     // margin-top: 40px;
+    .busket__description {
+        margin-bottom: 10px;
+    }
 }
 .busket__info p {
     color: white;
 }
 .busket__count {
     font-size: 20px;
+    margin-bottom: 10px;
 }
 .busket__fire {
     font-size: 25px;
@@ -209,11 +281,11 @@
     margin: 15px 0;
 }
 .busket__result {
+    margin-top: 40px;
+    width: 60%;
     display: flex;
     flex-direction: row;
     font-size: 30px;
-    padding: 10px;
-    margin-left: 100px;
     justify-content: space-between;
 }
 .busket__result b {
@@ -223,9 +295,9 @@
 .busket__result p {
     color: red;
     font-weight: bold;
-    margin-right: 50px;
 }
 .busket__data {
+   margin-bottom: 20px;
    font-size: 30px;
    color: white;
    font-weight: bold;
@@ -235,11 +307,15 @@
     flex-direction: column;
 }
 .busket__contact {
-    margin-top: 155px;
-    height: 400px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    margin: 60px 20px;
+    padding: 40px;
+    height: 70vh;
+    border-radius: 20px;
+    -webkit-box-shadow: 1px -2px 20px 9px rgba(0,0,0,0.75);
+    -moz-box-shadow: 1px -2px 20px 9px rgba(0,0,0,0.75);
+    box-shadow: 1px -2px 20px 9px rgba(0,0,0,0.75);
 }
 .busket__home {
     display: flex;
@@ -256,14 +332,21 @@
     justify-content: center;
 }
 .busket__button button {
-    width: 200px;
-    height: 40px;
-    border-radius: 20px;
+      display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 15px;
+    border-radius: 25px;
     background-color: red;
     font-size: 20px;
     font-weight: bold;
     border: none;
     color: black;
+    p {
+        color: black;
+        font-weight: bold;
+    }
 }
 .busket__number {
     display: flex;
@@ -281,38 +364,40 @@
 //*INPUT*/
 
 .input {
+    margin-bottom: 10px;
     display: flex;
-    height: 40px;
+
     background-color:black;
     color: white;
     font-size: 16px;
-    line-height: 40px;
+
     box-sizing: border-box;
     width: 300px;
-    border-radius: 10px;
+    border-radius: 25px;
     border-width: 1px;
     border-style: solid;
     border-color:red;
-    padding: 0px 15px;
+    padding:  15px;
     outline: none;
-    margin-left: 10px;
+    
 }
 .input-1 {
     display: flex;
-    height: 40px;
+
     background-color:black;
     color: white;
     font-size: 16px;
-    line-height: 40px;
+
     box-sizing: border-box;
     width: 100px;
-    border-radius: 10px;
+    border-radius: 25px;
     border-width: 1px;
     border-style: solid;
     border-color:red;
-    padding: 0px 15px;
+    padding:  15px;
+    margin-bottom: 10px;
     outline: none;
-    margin-left: 10px;
+    
 }
 
 //* RADIOBUTTON */
@@ -330,6 +415,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin-bottom: 10px;
     
 }
 .radiobutton__cash  {
@@ -360,21 +446,27 @@
 }
 
 @media screen and (max-width: 600px) {
-    .busket__main {
-        height: 100vh;
-        flex-direction: row;
-    }
-    .busket__images {
-        flex-direction: row;
-    }
     .busket {
+        height: 100%;
+    }
+    .busket__main {
+        height: 80vh;
+        height: unset;
         flex-direction: column;
+    }
+    
+    .busket {
+        height: 100%;
+        flex-direction: column;
+
     }
     .busket__info {
         margin-left: 0px;
     }
+  
     .busket__images img {
-        margin-left: 0px;
+ 
+        margin-right: 0;
     }
     .busket__fire:after {
         width: 145px;
@@ -404,12 +496,18 @@
     .busket a {
         display: none;
     }
-    .busket {
-        height: 100vh;
-    }
+
     .busket__contact {
         margin-top: 0px;
     }
+         .busket__images {
+           width: 100%;
+        flex-direction: column !important;
+        height: unset !important;
+        align-items: center;
+
+    }
+    
     
 }
 
