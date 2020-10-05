@@ -395,7 +395,6 @@
                 }
             },
             changeMenu(id) {
-
                 this.menu_id = id;
 
                 

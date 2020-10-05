@@ -12,7 +12,7 @@
 
                 <div  class="busket__block" >
                 <div v-for="(category,i) in orders" :key="i">
-
+                    
                     <div class="busket__images" v-for="(item,index) in category  " :key="index" >
 
                         <img :src="item.img">
@@ -147,13 +147,15 @@
 
             addDelete(category_id,index,cost) {
 
-                let order = this.orders[category_id][index];
+                let order = this.orders[category_id][index]; //get one category
+
                 this.amount = this.amount-order.cost*order.counter;
 
 
-                this.all_count = this.all_count -this.orders[category_id][index].counter;
+                this.all_count = this.all_count - this.orders[category_id][index].counter;
 
                 this.orders[category_id].splice(index, 1);
+                
                 
                 localStorage.setItem("all_count",this.all_count);
 
@@ -221,10 +223,12 @@
     height: 100vh;
  
     overflow-y: auto;
+  
     .busket__images {
-        width: 60%;
+        width: 80%;
         height: 200px;
-        margin-bottom: 30px;
+        margin-top: 30px;
+        margin-bottom: 60px;
         display: flex;
         flex-direction: row;
         // margin-bottom: 60px;
@@ -233,6 +237,10 @@
             cursor: pointer;
         }
         
+    }
+    
+    .busket__images:nth-child(1) {
+        margin-top: 50px;
     }
 }
 .busket__block::-webkit-scrollbar {
@@ -430,9 +438,11 @@ background-color:red;
     margin-left: 10px;
 }
 .fa-times {
-    padding: 20px;
+ 
     font-size: 30px;
     color: white;
+    margin-right: 20px;
+    margin-top: 20px;
     
 }
 .fa-trash-alt {
