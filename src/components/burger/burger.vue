@@ -170,7 +170,6 @@
     // imports libraries
     import Datepicker from 'vuejs-datepicker';
   
-    
     export default {
         
         components: {
@@ -455,14 +454,32 @@
                 let left_side = document.getElementById("header__labels");
                 let right_side = document.getElementById("header__basket");
                 if(window.pageYOffset > right_side.offsetTop+100) {
+
                     right_side.classList.add("bg__white");
+
+                    left_side.classList.add("bg__white");
+
+                 
                     right_side.classList.add("sticky");
                     left_side.classList.add("sticky");
                     left_side.classList.add("bg__white");
                 }
                 else {
+                    right_side.classList.remove("bg__white");
+                    left_side.classList.remove("bg__white");
+
+                    right_side.classList.remove("sticky");
+                    
+
+                    left_side.classList.remove("sticky");
+                     left_side.classList.remove("bg__white");
+                }
+            };
+            let all_count = localStorage.getItem("all_count");
+            if (all_count!==null && all_count!="") {
                 this.count = parseInt(all_count);
             }
+            else {
                 this.count = 0;
             }
         },
@@ -544,20 +561,12 @@
 
                 if(orders==null) {
                     this.all_data[this.menu_id] = [];
-
                 }
                 else if(typeof orders[this.menu_id]==='undefined') {   
-                    
-                    
                     this.all_data = orders;
-                    this.all_data[this.menu_id] = []; 
-
-                   
+                    this.all_data[this.menu_id] = [];              
                 }
                 else {
-
-                    
-                    
                     this.all_data = orders;
                 }
 
@@ -602,11 +611,15 @@
                 }
                 localStorage.setItem("order",JSON.stringify(this.all_data));
 
+    
                
 
+             
+          
+             
             },
 
-           
+          
             check__exist(all_data,id) {
                
                 let truefalse = [];
@@ -877,10 +890,13 @@ p {
     height: 33px;
     border-radius: 20px;
     background-color: var(--main-project-color);
-    padding: 5px;
+    padding: 20px;
     font-size: 14px;
     border: none;
     color: white;
+    
+    outline: none;
+
 }
 .header__toggle button {
     z-index: 40;

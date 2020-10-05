@@ -77,7 +77,7 @@
             </div>
             <a class="fas fa-times" @click="$router.push('/burger')"></a>
         </div>
-        
+    </div> 
 </template>
 
 <!-- scripts -->
