@@ -4,7 +4,8 @@
     <div>
 
         <header class="header">
-            
+
+          
                 <div class="header__inner">
                     
                     <div class="header__white">
@@ -30,8 +31,10 @@
                                     <p>Best Deal</p>
                                 </div>
                                 <div class="header__huge">
+                                    
                                     <p>Double</p>
                                     <p>Decker</p>
+
                                 </div>
                                 <p class="header__gray">Incident tu labore et doiete</p>
                                 <button onclick="openDetails()">More details</button>    
@@ -65,7 +68,7 @@
                             <p class="header__only">Only</p>
                             <p class="header__cost">$5.99</p>
                         </div>
-                        <img src="https://i2.wp.com/freepngimages.com/wp-content/uploads/2016/11/bacon-burger.png?fit=1000%2C1000" alt="">
+                        <!-- <img src="https://i2.wp.com/freepngimages.com/wp-content/uploads/2016/11/bacon-burger.png?fit=1000%2C1000" alt=""> -->
                         <div class="header__arrow">
                             <i class="fas fa-chevron-circle-left"></i>
                             <i class="fas fa-chevron-circle-right"></i>
@@ -95,6 +98,8 @@
                     </div>
                 </div>
         </header>
+
+        
         <main class="main">
             <div class="main__inner">
               
@@ -115,7 +120,8 @@
                             </div>    
                             <div class="busket__number">
                                 <i class="fas fa-minus-circle" @click="addCount(-1,index)"></i>
-                                    <p>{{ num }}</p>
+                                {{ current_counters}}
+                                    <p>{{ current_counters[menu_id][index] }}</p>
                                 <i class="fas fa-plus-circle" @click="addCount(1,index)"></i>
                             </div>
                             
@@ -178,6 +184,7 @@
          
         data() {
             return {
+                current_counters: [],
                 menu_id: 0,
                 all_data: [],
                 amount: [],
@@ -449,6 +456,34 @@
         },
         
         mounted() {
+
+            let orders = JSON.parse(localStorage.getItem("order"));
+        
+            if(orders[this.menu_id]) {
+                
+                console.log(orders[this.menu_id]);
+                this.current_counters[this.menu_id] = [];
+
+                let collection_id = [];
+
+                for (let index = 0; index < this.data_all[this.menu_id].length; index++) {
+                    
+                    let menu = this.data_all[index][this.menu_id];
+                    console.log(menu.id); 
+                    console.log(orders[this.menu_id]); 
+                    let result = this.check_id(menu.id,orders[this.menu_id]);
+                    
+                    this.current_counters[this.menu_id].push(result);
+
+                }
+            }
+            
+
+
+    
+
+
+                
             this.collections = this.data_all[0].menu;
             window.onscroll = function() {
                 let left_side = document.getElementById("header__labels");
@@ -484,18 +519,18 @@
             }
         },
         methods: {
-            // addVK() {
-            //     document.location.href = "https://vk.com/rus_lan01";
-            // },
-            // addInstagram() {
-            //     document.location.href = "https://www.instagram.com/kz_rusya/";
-            // },
-            // addFacebook() {
-            //     document.location.href = "https://www.facebook.com/profile.php?id=100009792858439";
-            // },
-            // addGmail() {
-            //     document.location.href = "";
-            // },
+            check_id(id,array) {
+                for (let index = 0; index < array.length; index++) {
+
+                   if(id==array[index].id) {
+                       return array[index].counter;
+                   }
+                   else {
+                       return 0;
+                   }
+
+                }
+            },
             addPlus() {
                 this.num++;
             },
@@ -558,17 +593,19 @@
                 
               
                 let orders = JSON.parse(localStorage.getItem("order"));
-
+                
+                
                 if(orders==null) {
                     this.all_data[this.menu_id] = [];
                 }
-                else if(typeof orders[this.menu_id]==='undefined') {   
+                else if(!orders[this.menu_id]) {   
                     this.all_data = orders;
                     this.all_data[this.menu_id] = [];              
                 }
                 else {
                     this.all_data = orders;
                 }
+
 
                 this.count = this.count+1;
                 localStorage.setItem("all_count",this.count);

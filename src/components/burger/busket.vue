@@ -77,7 +77,7 @@
             </div>
             <a class="fas fa-times" @click="$router.push('/burger')"></a>
         </div>
-    </div> 
+    </div>    
 </template>
 
 <!-- scripts -->
@@ -94,13 +94,15 @@
             }
         },
         mounted() {
-        
+           
             this.orders = JSON.parse(localStorage.getItem("order"));
             // calc_sum
             
-            //calling sum
+
             for (let index = 0; index < this.orders.length; index++) {
-                this.calc_sum(this.orders[index]);
+                if(this.orders[index]) {
+                    this.calc_sum(this.orders[index]);
+                }
             }
             this.all_count = parseInt(localStorage.getItem("all_count"));
             
@@ -112,7 +114,7 @@
         methods: {
 
             calc_sum(array) {
-                
+            
                 for (let index = 0; index < array.length; index++) {
                     this.amount = this.amount+array[index].counter*array[index].cost;
                 }
@@ -555,8 +557,9 @@ background-color:red;
     }
 }
 @media screen and (max-width: 600px) {
-    .busket__main {
-        flex-direction: row;
+    .busket__block {
+        overflow-y: none;
+        height: unset;
     }
     .busket__images {
         flex-direction: row;
