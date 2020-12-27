@@ -4,7 +4,8 @@ import router from './router';
 import VueCookies from 'vue-cookies'
 import axios from 'axios';
 import VModal from 'vue-js-modal';
-
+import VueMask from 'v-mask'
+Vue.use(VueMask);
 import VueI18n from 'vue-i18n';
 Vue.use(VueI18n);
 
@@ -21,10 +22,15 @@ Vue.prototype.$http = axios.create({
 const messages = {
   en: {
     message: {
+
+      adver_text_1: "You can buy an apartment in the residential complex «Kaspi» in a 1-2-3-room layout",
+      adver_text_2: "with an area of 55 to 116 square meters and ceilings of 3.2 meters.",
       password: 'Password',
-      title1: 'ONE ACCOUNT',
-      title2: 'FOR ALL SERVICES',
-      sign_in: 'Sign in',
+      main_title: "HOUSING STOCK",
+      send_request: "Leave a request",
+      title1: 'Invest',
+      title2: 'in the future',
+      sign_in: 'Submit',
       forgot_pass: 'Did you forget your password?',
       registration:'Registration',
       name: 'Name',
@@ -70,10 +76,14 @@ const messages = {
   },
   ru: {
     message: {
+      adver_text_1: "Купить квартиру в жилом комплексе «Каспий» можно в 1-2-3-комнатной планировке",
+      adver_text_2:"площадью от 55 до 116 квадратных метров и с потолками 3.2 метра.",
+      send_request: "Оставить заявку",
+      main_title: "ЖИЛОЙ ФОНД",
       password: 'Пароль',
-      title1: 'ЕДИНЫЙ АККАУНТ',
-      title2: 'ДЛЯ ВСЕХ СЕРВИСОВ',
-      sign_in: 'Войти',
+      title1: 'Инвестируй',
+      title2: 'в будущее',
+      sign_in: 'Оставить заявку',
       forgot_pass: 'Забыли пароль?',
       registration:'Регистрация',
       name: 'Имя',
@@ -119,10 +129,15 @@ const messages = {
   },
   kaz: {
     message: {
+  
+      adver_text_1: "«Каспий» тұрғын үй кешенінен пәтерді 1-2-3 бөлме көлемінде сатып алуға болады",
+      adver_text_2: "ауданы 55-тен 116 шаршы метрге дейін және төбелері 3.2 метр.",
+      send_request: "Өтінім қалдыру",
+      main_title: "тұрғын үй қоры",
       password: 'Құпия сөз',
-      title1: 'Бір жүйе Барлық',
-      title2: 'қызметтер үшін',
-      sign_in: 'Кіру',
+      title1: 'Болашаққа ',
+      title2: 'инвестиция жасаңыз',
+      sign_in: 'Енгізу',
       forgot_pass: 'Құпия сөзді ұмыттыңызба?',
       registration:'Тіркелу',
       name: 'Аты',

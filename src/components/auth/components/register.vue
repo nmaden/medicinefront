@@ -320,6 +320,7 @@ export default {
         }
         ::placeholder {
           margin-top: 20px;
+          color: white;
         }
         .img-input input, .img-input select {
             border: none;
@@ -346,17 +347,17 @@ export default {
             color: var(--a-hover);
         }
         .right-div button {
-                    height: 32px;
-                    width: 100%;
-                    color: var(--main-white-color);
-                    background-color: var(--auth-color);
-                    border-radius: 20px;
-                    border: none;
-                    outline: none;
-                    cursor: pointer;
-                    font-size: 14px;
-                    margin-bottom: 10px;
-                    margin-top: 10px;
+                height: 32px;
+                width: 100%;
+                color: var(--main-white-color);
+                background-color:red;
+                border-radius: 20px;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                font-size: 14px;
+                margin-bottom: 10px;
+                margin-top: 10px;
         }
         .right-div button:hover {
             background-color: var(--button-hover);

@@ -1,39 +1,43 @@
-  <template>
+<template>
       <form @submit.prevent="confirmation" novalidate="true">
             <div class="div-login">
                 <div class="img-input">
-                  <img src="../../../assets/images/name.png">
+                  <i class="fas fa-user-alt"></i>
                   <input
-                    class= "placeholder"
+                      class= "placeholder phone_us"
                       type="text"
                       v-model="login"
-                      placeholder="Email"
-                      autocomplete="new-password"
+                      :placeholder='$t("message.name")'
+
                       autocorrect= "off"
                       aucapitalize= "off"
+                      
                       >
                 </div> 
                 <div class="img-input">
-                  <img src="../../../assets/images/password.png">
+                  <i class="fas fa-phone-alt"></i>
                   <input
                     class="placeholder"
-                      type="password"
-                      v-model="password"
-                      :placeholder='$t("message.password")'
-                      autocomplete="new-password">
-                </div>   
+                 
+                      v-model="phone"
+                      placeholder="+7 xxx xx xx"
+                      v-mask="mask"
+                      type="text"
+                     >
+                </div>
+                  
                 <p>{{ info }}</p> 
-                  <button type="submit">{{$t("message.sign_in")}}</button>
-                  <a ><router-link to="/forgotPassword" >{{$t("message.forgot_pass")}}</router-link></a>
-                  <a ><router-link to="/register" >{{$t("message.registration")}}</router-link></a>
+                  <button class="" type="submit">{{$t("message.sign_in")}}</button>
+                  <!-- <a ><router-link to="/forgotPassword" >{{$t("message.forgot_pass")}}</router-link></a>
+                  <a ><router-link to="/register" >{{$t("message.registration")}}</router-link></a> -->
             </div>
       </form>
-  </template>
+</template>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/v-mask/dist/v-mask.min.js"></script>
 
-  <script>
+<script>
 
-
-//   import PhoneInput from './PhoneInput.vue';
 export default {
 
   name: 'Login',
@@ -42,10 +46,8 @@ export default {
     },
   data() {
     return {
-      phone: {
-        code: '',
-        number: '',
-      },
+       mask: ['+',/\d/,'(', /\d/, /\d/, /\d/, ') ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
+      phone: '',
       info: null,
       checkHome: true,
       login: '',
@@ -71,9 +73,12 @@ export default {
       };
     }
   },
-  
+
 
   methods: {
+    setMask() {
+      
+    },
     toLogin() {
       this.isLogin = 'login';
     },
@@ -106,18 +111,17 @@ export default {
       }
     },
     confirmation() {
-      this.$http.post('/oauth/auth', {
-        service_id: '49f4632cad344f14b1bf54fd96bd63e7',
-        redirect_uri: 'http://192.168.56.1:8080/check',
-        state: "1111111111111111",
-        username_or_email: this.login,
-        password: this.password
-      }).then(response => (this.info = response.data.success))
-        .catch(error => {
-            console.log(error.response.data.error);
-      });
+
     },
   },
 };
 </script>
 
+<style  lang="scss">
+  .img-input {
+    i {
+      font-size: 12px;
+      color: red;
+    }
+  }
+</style>

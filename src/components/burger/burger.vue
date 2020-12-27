@@ -349,104 +349,7 @@
                             }
                         ]
                     },
-                    {   id:4,
-                        menu: [
-                            {  id:1,
-                                name:"Coca-Cola", 
-                                
-                                cost:250,
-                                img: "https://kubarik.kz/upload/iblock/676/676db285d75bcfc3b8b64e56903ba349.jpg"
-                            },
-                            {
-                                id:2,
-                                name:"Pepsi", 
-                               
-                                cost:250,
-                                img: "https://mdb.kz/img/uploads/provider_products/b9/50/ea/9501/main.575x440s.jpg"
-                            },
-                            {
-                                id:3,
-                                name:"Sprite", 
-                               
-                                cost:250,
-                                img: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhIRExMSExMXGBAWGBIYFxYYFRUVFxIWGBUWGBcYHCggGRolGxYVITEhJSkuLjAuFx8zODMsNyktMCsBCgoKDg0OGxAQGy0iHyYtLi8tLS0tLSstLS0vLy0tLS0tLS0tLS0tLS8tNSsvLy0tLS0tKzU1LS0tLS0tLS0tLf/AABEIAMsA+AMBEQACEQEDEQH/xAAbAAEAAwEBAQEAAAAAAAAAAAAABQYHBAMCAf/EAEgQAAIBAgMEBwQGBAsJAAAAAAABAgMRBBIhBTFBUQYHEyJhcYEUMpGhI0JScrHRNZLB8DNTYoKisrPCw9LxFiRDY3ODk6O0/8QAGgEBAAMBAQEAAAAAAAAAAAAAAAIDBAUBBv/EADcRAQACAgAEAgkDAgUFAQAAAAABAgMRBBIhMQVRIjJBYXGBobHBE5HRI/AkMzRCUhRywtLxBv/aAAwDAQACEQMRAD8A3EAAAAAAAAAAAAAAABDdJtueywg1HPKcsqV7JWV238tPEjadM3E5/wBGsTEbmZUPGdZOKT7tOglaT1jNvu1FH7fiQ55c2fEc3lH7T/LjfWpi03enh3ZJ+7UW+/8AzPAc8vY8QzeUftP8rV0N6dvGVewnSUJNSalFuzcd6afhre5KtttXDcbOW/JaF3JugAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKR1ipyq4OC4+0v9Xsn+ZXdzPENzakR7/wzPbWHdN2bW6S0vxqKX7CtybejOkBVrJt+Nl8L/mE4iVx6r7+30Hw+mv/AOCf7USr3W8HP+Ir8/tLcS59CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKL1t0pRwksQqklKHZwhSSSjKdWrCF5Tiu0Ss90ZJPLrcjadRtRnrXl559nX+VL2zsKrRdKOeTbgpStKdlJu1kr7tHvuZMvoz0cvPWcdunXaMlgZtyjepbK3dZt+nMrm0+SmbzPsj9li6oNifTVq3b1M9OVO8HGDjKE4yX1k5QektYtcjXitzQ6PB2pl9LliJhr5c6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAApPWms9HDYdPWrXptr+TBN/wBd0yjPPo682Lj76xcnttOnn0ko3qR8IpfNkckblXxFd2RuCwqdRJ7ndfJkax1UUrHN1dfV9QVLF4mF334x08ac5Wt6TfwPcHozNVvAeha2NoJqdMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUfbcu22pRp740IpvwnJdo/kqRmv6WWI8nNzT+pxVa+yvX5/3p9bYd60/DKv6KFu6WX15cVPSUXyaPI7q46Tt8qr2OPp1PqyaT8pLKzyZ5ckSjv8AT4iJ82imt1gAAAAAAAAAAAAAAAAAAAAAAAAAAAADxxmJjSpzqzdoQjKUnyUVdnkzqNy8taKxuVB6HTlUq1sRP3p5pNcnOV0vRK3oZcXXdvNyuDmb3tkn2/39nTjXepN/ypfJ2JT3WX62l4DSLj2vrlfFHlo2pzddSvuwcd21CE+KWWXmv3T9TRWdw6uHJz0iUiSWgAAAAAAAAAAAAAAAAAAAAAAAAAAAM861ekWRU8HDvSnapUV91NPuRfnJX8oeJRnnccrneI5orTk8/s+Oi1eUMOqjjGObNLe/dWi/Bv1I0jlqq4W0xj5tIWn0jqS17KGt377/AMpV+rLNHFWn2fV0U9q1HvpR/Xf5HsZPcnGW0+x8YutVlG/ZwXhnb/uibyjebzHb6unoN0jdLFez1VlhV7qd9FU+rw47vNonhv10t4HNNb8k9p+7UjU7IAAAAAAAAAAAAAAAAAAAAAAAAAAHPj8ZCjSqVpu0IRlOT8Iq7suL8DyZ1G3lrRWNyxXCUKmOxU6sl3qks83vyQ0Sin4LLFeRljd52+dtFuIy/wB9IWjpNi40aHYx0lNZFH7MFo/lp6k8k6jTXxF4pTlj2/ZV8KjKwVS2HiShqpCQiromuV3buHt3lo1xRXPSVFvRlqfQ7bXtWFhUb767lT78Urv1TT9TdjtzV27GDJ+pSJTZNcAAAAAAAAAAAAAAAAAAAAAAAAACqdZ8mtnVUuMsOn5dvBv5Iry+qzcZaK4bTKodCdo0KVOrnlaTlD6sndJPkubZVjtER1crhM2OsW3KN6U46FTEOUJZo5YJaNc21Zrm2QydZZ+KzUtk3WXLh8TFc/gyrohS3un9kjR2nTW/N+rL8j2LR5tNcsR5/tLpjtqivrSX8yX5HvNCf69I/wDkoza206U4tKV35S/I8mNqb58c9pWXqaqO2Mi/dTw7S8X2qb/or4GnD7XS8PvFotET5NKL3RAAAAAAAAAAAAAAAAAAAAAAAAABVOs79H1PvUf7RFeX1WLxH/Tz8vuoPQzZMq97pqkpd6XPT3Vzb+XwvyuL4uuCvT1vZH5/vu5nh3B2z26x6Ptn8R/fRccZSq5tMyS5VEtLcsmm7gfKcRfDz+lrev8Ajv8A8n1lMebXTev+6P8A1fFNVY30vf7U720W7u83L4L0yXnBfv015V1v6+WvqupXNT2b+M719PPf0eUNrRbcF36iu3Cm89kucnaK14Nk7eH2iIv6tfO3o/TrM/shXj6TM0j0rR7K9fr0iPnKPq9KlFSl2FZRjLI5OySnZvK/Gybt4HRp/wDn72rFv1I1PluYc7J4/Sm947dJ111HXyfWO2pGdDPVpVqVKonBVJR7rzRe5pt7rtO1iVPBeK4e0ZKatqd+Xb4rp8V4fNimMkWrW0a3MdOvw3P0enU9G0sarp29mV1qnZ1tU+R9hgne5+H5cTwuvLN69+3b5tKNLrgAAAAAAAAAAAAAAAAAAAAAAAAAqnWd+j6v3qP9pEry+qxeIf6e3y+7OdgbTrQi8tWas1ZXbju3ZXoc+/C4b73WOvu6/v3cfh+Lz17Xnp79x+3Zc8DtqNWEpTtCUEs/K2tpLwdn8D5HxXgL4s9a06xbt/D67w7j6ZcM2v0mvf8An4Kft/pHOs3Cm3Clu5Sn4vkvD4+Hc8O8Ix8PEXydb/SPh/P7Pm/E/GcnETNMU6p9Z+Pu937vvoY8R2rVGj2qlaMrvLGO9pudrLS+m98DVx/h8cbWK71MT3V+D8TmwZJ/TrzRPf2fVd6OzqM6GGhOMazr4qUpyvJRjUjTquaS+slGjKnrvvmN+DBTDhpijrHb6S6Vq1yxE3jc2tufLfX7a19Vc6bYuUliaC7sY11UqTldRzZI06NGH/bjn3cHw1c7z1mPew8ZeZi1O0b3O/2iI+XV2dTe/GeWG/xieHvPy/KXhH+/5flpZe7IAAAAAAAAAAAAAAAAAAAAAAAAAKr1m/o+r96j/axK8vqsXiH+nt8vuy7ZC0aWrutPQzPn8PZbMdg8HhJRoYqFetWqwi5KDapxvJqCtGUXPvJ8927gStTHFo5o3MfT2OleuHB/TybmbRG9dvd5b6o3DdBazp1JTqUoVoQVT2a96mXW2Zp9y9nbf6CMc697PXwy/LM2mImOul5w9SNHH08FSpwp0exlXairN1G3TTf82PrfUuidX5Y7adasxTPGKkREa38+ypbT2/GlhMLClUXtFPE16uXflj2uIXe4K6mtN9mUzb0Y13if5c/NxUY8VYrPpRaZ+sq30j6RV8W4uq42j7sIpqCb3uzbbfi2eTabd2HPxeTPPpdvKFu6m9+M8sN/jFmHvPy/LpeEf7/l+Wlmh2QAAAAAAAAAAAAAAAAAAAAAAAAAQnTPCRq4SpTk7Julrv3VIvmuXMheN1UcRSL45rLMauzpYWtOndNxlFp7+TjfRX0twM0xyy4N8M4LzXylfHisPtGhNyhlq0FGeu+EtZJxlxi3Bprw3bi/cXj4OtF8fFUmZjrXr8HF0mxqw1fGV5OzlQpUKa4ynJycmlygsrf3lzI3nVpn3K+JyRhvfJPlER8ev2U7pL0olXxLr0c9Fdn2Kd++4ZpSbbXut34PhvKrW3bblcTx05MvPj6dNIvA7Lq1YynCN1F2bvu7rl+C+aPIiZ7M+Lh8mWOar2l0crtpJRbazLvLVWi7p7t04v1PYrK6OCy+5cOp6NnjVy9mXNaOsW4e8ul4VGuePh+Wkl7sAAAAAAAAAAAAAAAAAAAAAAAAAAgum9fJg6ss2Szo9617XqwW71t6kMk6qo4m3Ljmd67fdnuDx1PE4mEq004dxVKj7qlaFm+Fty5atmfe7dXGjJTNmibT09s9kltjbmGw8VhcHf6SVN1a7v7ilrFN79Lrkk3xekrWiOlVuXicOL+ni9sxufcgOnO1aeJxUqlJuUFGEVJq12r3aT1trxI3tFrbhh8QzUy5t07aQNKVmm1dJp24Oz3Fdo3ExHRjpaK2iZjfuSNDGwlJRdKjHNJLPJK0Lve9For39DL/ANNbcenP7uhTjMdp5f06xv2+X2SNSOHi7qWGbumrcNYrjJbsyfO0ZNXsJ4S8xr9WW2uXh6zuK12sXU/r7ZLnKjwt/GPdw3nSwRqNJeF9ee3nP8tGL3WAAAAAAAAAAAAAAAAAAAAAAAAABVOtH9G13/Kwv/1UkV5fVZ+LjeG21T6u8PTnCup04Ts6Vs0U7XU+a8CnFqd7cvgcdZ5omInsiunFCMMVljGMY9nTdkklvlwRDL0ln42lYy9I9jhwdKL3xT9CrbPSsb7JnDYGm99OHwQ220xU8oSEdm0bfwVP9Vfker/0Mf8Axj9kL0gwkIxbjCC8opCZZs2Osa1ELD1K/wAHi/v0v6sjXi7OrwdYrTpDSi5sAAAAAAAAAAAAAAAAAAAAAAAAABXOsSlm2diVpupu8naKtVg7t8ErXuRtG4VZq82OYUTq7xOSOLnZtRp055V7zyqo7Jc9TNinW3I4K2uefdH5R3Syu6s6WJtlVSFlC98qioy32V7qovW+9WIZJ31UcVM3mL+f9/l+bIwzks10ldIriNoYcc26pTDV45snG7Xqt/7+IaqWjekm5Wi3vsm7eSPWiZ1CD6SvuP8Af/VHksufvCf6lY/QYp2/40VfnalCX9424uzp8H6jRi1rAAAAAAAAAAAAAAAAAAAAAAAAABCdNoX2fjf+hXf6tNv9hG/qyhljdJ+DOurSr9LWXOmpfqzX+Yz4uky4nAT/AFLRPl+Xh0+rRqVqVSm80HBxVRO8W4ybaXlmT8cxHLMT1hHjpi1otHZwbKlLdG9uPIpZsXNvUJrCU0pX+trv379bX8UG3HWN79qUUrK7PWhXelMrRPPay5/Whb+pyC9iqNX1r1N7T1VOmuG7duNuLs6fBRMY535r2WtYAAAAAAAAAAAAAAAAAAAAAAAAAOLbVHPh68PtUq0fjBo8ns8nrDIurmebEPN3s1Gpe+ua8oN3531MuPrZwOD/AM+d+U/eHr09w8aLw9Cn3aaVSWXvN5nJXbk3rxfm23vGSIrqIS46Iry1jsjtj4qUU4q1t/iUbZcWSa9IS2Fpd7O2766ebu/38Txqx167lKOzVnuPWnvCr9LJacF8uAjuyZfXhonVTSy7Opu6eadZ3V7PvtcfI3YvVdfhP8qPmuBY0gAAAAAAAAAAAAAAAAAAAAAAAAA+akLprmmvigMQ6uqv+8wvZXhPRJJe7uSW7cZaT6b5/hp/xM/N0dM8BHDU6FGLc80qtRzlbPfxtvvm1fHIuQvXUae8VSMdYrHxcGxcTlTWVO9teO8o2zYr8s9kvhoNyzN/a0XG8r6+W74EWqkbttJtXVt278bnrRPWFT6Wy3Lce19ZkyT/AFGp9WlJR2bhkne/bSv96vUf7Tbj9V2uF/yo2s5YvAAAAAAAAAAAAAAAAAAAAAAAAAAAwnq/qKWKpyikllqOy5dm9fXf6mWvrvn8O54qfm7enOGdGFKE6jqynUqzU5e9CKVnGzk9Hmjusu4tOS8aS4uvLWImd9UbsOo1e0M3N2ei8ylkxzMT0jaXwsoubalqrrLdPe76/gRlppNZtuJSjV1vtu/Hd+wNM9lR6XSs0/x/IlXuy2jeRrXVzJPZuFy3tlmld3elSa1fFm2nqu3g/wAuFkJrgAAAAAAAAAAAAAAAAAAAAAAAAARXSraHs+DxFbjGnPL4zkssF6ycV6kbTqJlDJfkpNpZT1b4VvESnZJRhK9tycmkklwVlL4GfH1s4vCV3lmzx6ZwUJQwzqTrTi3UdWd80VNaU974WbtZe7pvv5fp0ecT6Pob37XDstWadrq6duF07opZK9J2n8PSjmlNLf5X3vj6/INdIje4SKhdWvbxDRrcK90sweaN1wPd6lmyxq8SvPVFjVPBOmlbsqk42u3pK0768Lyl8DZino63CW3TXku5Y0gAAAAAAAAAAAAAAAAAAAAAAAAAp3WtN+w5eEqtFPyTcvxiirN6rFx9uXBKE6vcMoYeU+M5v4R7qXxzP1K8XbbLwMf0+bzVrpzQaxs5cJxpyXpBRfziV5PWZ+KjWSXNgStliU5hpbg10lIU5BoiUftqF4SEqM/qu3qYUozxkXdJqhJX8HUTa+KNOGe7X4ffm5o+H5aiaHSAAAAAAAAAAAAAAAAAAAAAAAAABV+sqlfZ9V2vllRl/wC2KfybKs3qMfiEb4e3y+6vdEZKOFhJ2V87bcmorvy1tey0SIYo1Vj4PpiiXztHFYTF/QKpSlV1yO0nZ8oy0TvyTPZ5bdFl5x5fR3G1RoUZ05zpzVpQdnqreDTfBrVGaY1LmWia2mspLDYpXtdfFHiymSN6TEJWV2e6bIno8sXG8Xpe/A90hfrD96p3P2vFKTbSpxXr2mn7S7At8N72amaXVAAAAAAAAAAAAAAAAAAAAAAAAABF9KcK6uDxNNK8nSq5Vzkotx+aRG8brMK81OfHavnDE8biZ1MFQjH3M0r71m+tHTykZd9NPnpvyUis9o6GDpOpBxtacO9CW6/ON+fH/Q8jTyJifVS2LqSrulVzZZSp5Z8G503aXlvi/UZI3qU8u72i0T3j7KxjMTPtcvvO6SS4u/4ka1jTPFOaNp3DbRtKbqSvGDyxXBZFaTXqnbz8BrTRN+XvLg2j03fZxjGCjN+/Ky5uyir8ra39C3laaxfJXUaX3qboKVLEYrv/AEkoQvK2uRNtxtwvU+RZhrrbVwGOaRbbRi50AAAAAAAAAAAAAAAAAAAAAAAAAAcWOruKulcDIdpbGlHtKcFak5ylGLTTp3T7sWtHFX0vuSSM18U+xxuK4DJM7x6mN7c2z8NKkmpNy8ou/hq91uZ5GK0zvshi8Pzb3OofFKM3ZSSffzPfGycWm1zb0v5I9thnl13TycBeKx/ucj2VKNZ1YuOl5R1btK7y6W4OzPIpbWlNOEzb5dafT2X9GoxTc9b507NcLW4/vfgk4bLMnhuXe4mHN/szVqOEckUlvnZ3d7abvP4nsUsli4TiI37Pn/DZ+iNBUcPToxi1GKt5t6tvzbZorGo06uHHGOkVhYj1YAAAAAAAAAAAAAAAAAAAAAAAAADzqRQHJVw0HvigOaeBp/YiB5vZ1L7EQPxbOpfxcQPSOApfYiB0U8LBbooDrpQS3ID2AAAAAAAAAAAAD//Z"
-                            },
-                            {
-                                id:4,
-                                name:"Fanta", 
-                                
-                                cost:250,
-                                img: "https://sudjin-roll.ru/wp-content/uploads/2019/01/fanta-portagal-1l.jpg"
-                            },
-                        
-                        ]
-                    },
-                    {
-                        id:5,
-                        menu: [
-                            {  id:1,
-                                name:"Кетчуп", 
-                                
-                                cost:100,
-                                img: "https://mcdonalds.kz/storage/634/acLMsZP4La.jpeg"
-                            },
-                            {
-                                id:2,
-                                name:"Соус барбекю", 
-                               
-                                cost:100,
-                                img: "https://mcdonalds.kz/storage/651/UQmBOEOsY3.jpeg"
-                            },
-                            {
-                                id:3,
-                                name:"Горчичный соус", 
-                               
-                                cost:100,
-                                img: "https://mcdonalds.kz/storage/635/vBSU291c8O.jpeg"
-                            },
-                            {
-                                id:4,
-                                name:"Соус Кисло-сладкий", 
-                                
-                                cost:100,
-                                img: "https://mcdonalds.kz/storage/650/kVVBT8uk5Q.jpeg"
-                            },
-                        
-                        ]
-                    }, 
-                    {
-                        id:6,
-                        menu: [
-                            {  id:1,
-                                name:"Картофель фри", 
-                                
-                                cost:300,
-                                img: "https://mcdonalds.kz/storage/666/4NCA4Oc4Ba.png"
-                            },
-                            {
-                                id:2,
-                                name:"Креветки", 
-                               
-                                cost:800,
-                                img: "https://mcdonalds.kz/storage/791/2Lrdb0kE8v.jpeg"
-                            },
-                            {
-                                id:3,
-                                name:"Чикен", 
-                               
-                                cost:700,
-                                img: "https://mcdonalds.kz/storage/615/lZqJHSVGz26irvruEtfLvKzkH9Uw5IgK.jpg"
-                            },
-                            {
-                                id:4,
-                                name:"Крылышки", 
-                                
-                                cost:800,
-                                img: "https://mcdonalds.kz/storage/834/WjNxTzhFfE.jpeg"
-                            },
-                        
-                        ]
-                    }, 
+                    
                       
                 ]
                 
@@ -457,26 +360,26 @@
         
         mounted() {
 
-            let orders = JSON.parse(localStorage.getItem("order"));
+            // let orders = JSON.parse(localStorage.getItem("order"));
         
-            if(orders[this.menu_id]) {
+            // if(orders[this.menu_id]) {
                 
-                console.log(orders[this.menu_id]);
-                this.current_counters[this.menu_id] = [];
+            //     console.log(orders[this.menu_id]);
+            //     this.current_counters[this.menu_id] = [];
 
-                let collection_id = [];
+            //     let collection_id = [];
 
-                for (let index = 0; index < this.data_all[this.menu_id].length; index++) {
+            //     for (let index = 0; index < this.data_all[this.menu_id].length; index++) {
                     
-                    let menu = this.data_all[index][this.menu_id];
-                    console.log(menu.id); 
-                    console.log(orders[this.menu_id]); 
-                    let result = this.check_id(menu.id,orders[this.menu_id]);
+            //         let menu = this.data_all[index][this.menu_id];
+            //         console.log(menu.id); 
+            //         console.log(orders[this.menu_id]); 
+            //         let result = this.check_id(menu.id,orders[this.menu_id]);
                     
-                    this.current_counters[this.menu_id].push(result);
+            //         this.current_counters[this.menu_id].push(result);
 
-                }
-            }
+            //     }
+            // }
             
 
 

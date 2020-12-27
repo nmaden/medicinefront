@@ -12,7 +12,10 @@
 
 
 
-
+    import KenesMain from '../components/kenes/index.vue'; 
+    import Main from '../components/kenes/main.vue'; 
+    import Product from '../components/kenes/about_product.vue'; 
+    
     
     import AuthPage from '../components/auth/AuthPage.vue';
     import Login from '../components/auth/components/login.vue';
@@ -49,6 +52,16 @@
                 { path: 'check', component: Check }
             ]
         },
+        {
+            path: '/kenes',
+            component: KenesMain,
+            meta: { guest: true },
+            children: [
+                { path: 'product-:id', component: Product },
+                { path: '', component: Main },
+            ]
+        },
+        
         
         {
             path: '/burger',
