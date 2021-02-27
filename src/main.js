@@ -12,10 +12,13 @@ Vue.use(VueI18n);
 Vue.config.productionTip = false;
 Vue.use(VueCookies);
 
+import VueSimpleAlert from "vue-simple-alert";
+ 
+Vue.use(VueSimpleAlert, { reverseButtons: true });
 Vue.use(VModal, { dialog: true });
 
 Vue.prototype.$http = axios.create({
-  baseURL: 'http://192.168.0.2:8000/v1',
+  baseURL: 'http://127.0.0.1:8000/api/v1',
 });
 
 

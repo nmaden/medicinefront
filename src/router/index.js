@@ -7,6 +7,12 @@
 
 
     // burger
+
+    import calculator_header from '../components/calculator/calc_header.vue'; 
+    import calc_admin  from '../components/calculator/calc_admin.vue'; 
+    import calc_body  from '../components/calculator/calculator.vue';
+    import calc_login  from '../components/calculator/login.vue'; 
+
     import Burger from '../components/burger/burger.vue'; 
     import Korzina from '../components/burger/busket.vue';
 
@@ -57,8 +63,18 @@
             component: KenesMain,
             meta: { guest: true },
             children: [
-                { path: 'product-:id', component: Product },
+                { path: '/', component: Product },
                 { path: '', component: Main },
+            ]
+        },
+        {
+            path: '/calculator',
+            component: calculator_header,
+            meta: { guest: true },
+            children: [
+                { path: '/', component: calc_login },
+                { path: 'main', component: calc_body },
+                { path: 'admin', component: calc_admin },
             ]
         },
         
