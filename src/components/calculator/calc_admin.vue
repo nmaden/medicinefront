@@ -1,8 +1,8 @@
 <template>
     <div class="calc calc__column calc__ac">
 
-        <p class="calc__mb" style="font-size: 16px;margin-top: 10px;font-weight: bold;">Страница админ системы</p>
-        <p class="calc__mb" style="font-size: 16px">Для создание элементов для рассчета и просмотра заказов</p>
+        <p class="calc__mb calc__toptext" style="font-size: 16px;margin-top: 10px;font-weight: bold;">Страница админ системы</p>
+        <p class="calc__mb calc__toptext" style="font-size: 16px">Для создание элементов для рассчета и просмотра заказов</p>
 
         <div class="calc__menu calc__row calc__jb calc__mb">
 
@@ -15,17 +15,17 @@
 
             <div class="calc__modal" v-if="show_modal">
 
-                <a class="calc__modal__close" @click="show_modal=false">Закрыть</a>
                 
                 <form   class="calc__column calc__modal__form" v-if="modal_type==1" @submit.prevent="update_element(1)">
                     
+                    <i class="far fa-window-close calc__mb" @click="show_modal=false"></i>
                     <p class="calc__modal__title">Редактировать</p>
                     
-                    <div class="calc__column calc__mb">
+                    <div class="calc__column calc__mb calc__ac">
                         <p>Тип</p>
                         <input type="text" v-model="edit_data.type">
                     </div>
-                    <div class="calc__column calc__mb">
+                    <div class="calc__column calc__mb calc__ac">
                         <p>Название</p>
                         <input type="text" v-model="edit_data.name">
                     </div>
@@ -35,17 +35,18 @@
 
                 <form   class="calc__column calc__modal__form" v-if="modal_type==2" @submit.prevent="update_element(2)">
                     
+                    <i class="far fa-window-close calc__mb" @click="show_modal=false"></i>
                     <p class="calc__modal__title">Редактировать</p>
                     
-                    <div class="calc__column calc__mb">
+                    <div class="calc__column calc__mb calc__ac">
                         <p>Название</p>
                         <input type="text"  v-model="edit_data.name">
                     </div>
-                    <div class="calc__column calc__mb">
+                    <div class="calc__column calc__mb calc__ac">
                         <p>Примечание</p>
                         <input type="text"  v-model="edit_data.comment">
                     </div>
-                    <div class="calc__column calc__mb">
+                    <div class="calc__column calc__mb calc__ac">
                         <p>Тип рассчета</p>
                       
                         <select  v-model="edit_data.type_calc">
@@ -54,10 +55,10 @@
                             <option value="by_height">По толшине</option>
                         </select>
                     </div>
-                    <div class="calc__column calc__mb" >
+                    <!-- <div class="calc__column calc__mb" >
                         <p>Цена</p>
                         <input type="text"  v-model="edit_data.price">
-                    </div>
+                    </div> -->
 
                     <button type="submit">Редактировать</button>
                 </form>
@@ -68,11 +69,10 @@
 
               
                 <form class="calc__element calc__column" @submit.prevent="create_element()" v-if="page==1"> 
-                    
+
                     <div class="calc__column calc__mb">
                         <p>Выберите тип</p>
                         <select name="" id="" placeholder="Выберите тип" v-model="calculator.type_el" required>
-                            <option value="1">Дверь</option>
                             <option value="2">Фрезировка</option>
                             <option value="3">Пленка</option>
                             <option value="4">Декор</option>
@@ -137,19 +137,10 @@
 
                 <div class="calc__column elements" v-else-if="page==2">
 
-                    <div class="calc__row elements__header elements__row calc__mb" >
-
-                        <p>Тип</p>
-                        <p>Название</p>
-                        
-                        <div class="calc__row ">
-                            <a>Действие</a>
-                        </div>
-                    </div>
 
                     <div class="calc__column elements__row" v-for="(item,index) in elements" :key="index">
 
-                        <div class="calc__row elements__row calc__mb elements__body" @click="show_calcs(index)" >
+                        <div class="calc__row elements__row calc__mb elements__body"  >
                             <p>{{ item.type}}</p>
                             <p>{{ item.name}}</p>
 
@@ -169,11 +160,7 @@
 
                                 <div class="calc__column">
 
-                                    <div class="calc__row elements__header calc__mb" v-if="j==0">
-                                        <p>Название</p>
-                                        <p>Примечание</p>
-                                   
-                                    </div>
+                                  
 
                                     <div class="calc__row elements__body__yellow">  
                                         <p>{{ el.name}}</p>
@@ -213,6 +200,7 @@
                                     
                                     <div class="calc__row calc__ac calc__border__line">
                                         <p class="calc__user__label">{{index+1}} - заказ</p>
+                                        <i class="fas fa-trash-alt" style="margin-left: 50px" @click="delete_order(index)"></i>
                                     </div>
 
 
@@ -318,10 +306,10 @@
 
                     <button class="calc__save__order" v-if="show_save_btn" @click="saveOrder()">Сохранить</button>
 
-                    <download-excel class="calc__save__order" :data="json_data" v-if="show_save_btn">
+                    <!-- <download-excel class="calc__save__order" :data="json_data" v-if="show_save_btn">
                         Скачать excel
  
-                    </download-excel>
+                    </download-excel> -->
                     <button class="calc__save__order" v-if="show_save_btn" @click="getPdf(current_user_index)">Скачать PDF</button>
                 </div>
              
@@ -450,7 +438,33 @@
           
         },
         methods: {
-            
+            delete_order(index) {
+              
+                let data = {
+                    id: this.orders[index].id
+                };
+
+                const config = {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                };
+
+                this.$http.post('/calculator/delete/order', data, config)
+                .then(res => { 
+
+                    this.$fire({
+                        title: res.data.message,
+                        text: "",
+                        type: "success",
+                        timer: 3000
+                    }).then(r => {
+                        console.log(r.value);
+                    });
+
+                    this.get_orders();
+                 
+                });
+
+            },        
             get_profile() {
                 this.$http.post('user/me', 
                 {
@@ -898,7 +912,7 @@
             width: 100%;
             height: 100%;
             background-color:black;
-            
+          
 
             .calc__modal__close {
                 position: absolute;
@@ -918,6 +932,20 @@
                 width: 400px;
                 background-color: white;
                 padding: 20px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                i {
+                    font-size: 24px;
+                    cursor: pointer;
+                    align-self: flex-end;
+                    margin-right: 20px;
+                }
+                .calc__close {
+                    font-weight: bold;
+                    font-size: 20px;
+                }
                 .calc__modal__title {
                     font-size: 22px;
                     font-weight: bold;
@@ -1097,7 +1125,26 @@
                 align-items: center;
             }
         }
-       
+        .calc__toptext {
+            font-size: 18px;
+            text-align: center;
+            font-weight: bold;
+            width: 200px;
+        }
+        .elements__body {
+            padding: 0;
+            p {
+                padding: 10px;
+            }
+            i {
+                padding: 10px;
+            }
+        }
+        .calc__order__title {
+            text-align: center;
+            font-size: 18px;
+        }
+   
 
     }
        

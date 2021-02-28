@@ -49,7 +49,7 @@
             logout() {
                 localStorage.removeItem("access_token");
 
-                this.$router.push("calculator");
+                this.$router.push("/login");
             },
             get_profile() {
                 this.$http.post('user/me', 
@@ -144,9 +144,17 @@
             
             .calc__header {
                 justify-content: space-between;
+                padding: 0;
+                p {
+                    padding: 10px;
+                }
                 .calc__column {
                     width: unset;
+                    p {
+                        padding: 5px;
+                    }
                 }
+              
 
             }
         }

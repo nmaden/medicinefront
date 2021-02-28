@@ -6,18 +6,12 @@
 
                    
                     <div class="calc__column elements__row" v-for="(item,index) in elements" :key="index">
-
-                        <div class="calc__row elements__row calc__mb elements__body calc__ac" @click="show_calcs(index)">
+                        <div class="calc__row elements__row calc__mb elements__body calc__ac" @click="show_calcs(index)" >
                             <p>{{ item.type}}</p>
                            
-                            <div class="calc__row ">
-                             
-                                <!-- <i  class="fas fa-pencil-alt"></i>
-                                <i  class="fas fa-trash-alt"></i> -->
-                               
-                             
-                                <!-- <i    @click="show_calcs(index)" v-if="show_hide[index]==1" class="fas fa-chevron-up"></i>
-                                <i    @click="show_calcs(index)" v-else class="fas fa-chevron-down"></i> -->
+                            <div class="calc__row ">         
+                                <i    @click="show_calcs(index)" v-if="show_hide[index]==1" class="fas fa-chevron-up"></i>
+                                <i    @click="show_calcs(index)" v-else class="fas fa-chevron-down"></i>
                             </div>
                         </div>
 
@@ -30,7 +24,7 @@
 
                             <div class="calc__row elements__row calc__mb"   >
                                 
-                                <div v-if="item.type=='Фрезировка' || item.type=='Пленка'" class="calc__row" >
+                                <!-- <div v-if="item.type=='Фрезировка' || item.type=='Пленка'" class="calc__row" >
                                     
 
                                   
@@ -39,14 +33,10 @@
                                     
                                         <div>
                                             
-                                            <div class="calc__row calc__ac calc__mb calc__search">
-                                              
-                                                <input type="text" placeholder="поиск" class="calc__mr" @input="search_el()">
-                                                <i style="color:black" class="fas fa-search"></i>
-                                            </div>
+                                         
 
                                             <div class="calc__menu" >   
-                                                <div class="calc__column "  v-for="(el,j) in item.type_calculate" :key="j" >
+                                                <div class=" "  v-for="(el,j) in item.type_calculate" :key="j" >
                                                     <div class="calc__column calc__menu__item calc__mr" v-if="el.type=='easy'" @click="choose_item(index,el.id,el.calculation_id)">
                                                     
                                                         <img :src="'https://api.frezerovka04.kz'+el.image_path" alt="">
@@ -63,13 +53,9 @@
                                     <div class="calc__column">
                                         
                                         <div >
-                                            <div class="calc__row calc__ac calc__mb calc__search">
-                                               
-                                                <input type="text" placeholder="поиск" class="calc__mr" @input="search_el()">
-                                                <i style="color:black" class="fas fa-search"></i>
-                                            </div>
+                                       
                                             <div class="calc__menu">
-                                                <div class="calc__column " v-for="(el,j) in item.type_calculate" :key="j">
+                                                <div class=" " v-for="(el,j) in item.type_calculate" :key="j">
                                                     <div class="calc__column calc__menu__item calc__mr" v-if="el.type=='hard'" @click="choose_item(index,el.id,el.calculation_id)">
                                                         <img :src="'https://api.frezerovka04.kz/'+el.image_path" alt="">
                                                 
@@ -82,22 +68,19 @@
                                         </div>
                                     </div>
                                    
-                                </div>
-                                <div v-else>
+                                </div>  -->
+                                <div >
                                     <div class="calc__column">
                                     
                                         <div >
-                                             <div class="calc__row calc__ac calc__mb calc__search">
-                                             
-                                                <input type="text" placeholder="поиск" class="calc__mr" @input="search_el()">
-                                                <i style="color:black" class="fas fa-search"></i>
-                                            </div>
+     
 
                                             <div class="calc__menu">
-                                                <div class="calc__column "  v-for="(el,j) in item.type_calculate" :key="j">
-                                                    <div class="calc__column calc__menu__item" @click="choose_item(index,el.id,el.calculation_id)">
+                                                <div class=" "  v-for="(el,j) in item.type_calculate" :key="j">
+                                                    <div class="calc__column calc__menu__item calc__mr" @click="choose_item(index,el.id,el.calculation_id)">
                                                         <img :src="'https://api.frezerovka04.kz/'+el.image_path" alt="">
-                                                
+                                                        <p v-if="el.type && el.type=='hard'">Сложный</p>
+                                                        <p v-if="el.type && el.type=='easy'">Простой</p>
                                                         <p>{{el.name}}</p>
                                                     </div>
                                                 </div>
@@ -174,12 +157,12 @@
                     
                     <div class="calc__column">
                         <p class="calc__mb">Примечание о заказе необезательно</p>
-                        <textarea name="" v-model="order_comment" id="" cols="50" rows="10" placeholder="Примечание о заказе необезательно"></textarea>
+                        <textarea name=""  class="calc__mb" v-model="order_comment" id="" cols="20" rows="5" placeholder="Примечание о заказе необезательно"></textarea>
       
                     </div>
                   
 
-                    <button class="calc__send" type="submit" v-if="orders.length!=0">Завершить заказ</button>
+                    <button class="calc__send calc__ac" type="submit" v-if="orders.length!=0">Завершить заказ</button>
                 </form>
             </div>
     </div>
@@ -470,6 +453,7 @@
         display: flex;
         flex-wrap: wrap;
         overflow-y: auto;
+        overflow-x: hidden;
         img {
             width: 80px;
             height: 80px;
@@ -597,6 +581,9 @@
                 font-size: 24px;
                 color: white;
             }
+            i {
+                font-size: 24px;
+            }
         }
         .elements__body__yellow {
             background-color: black;
@@ -686,6 +673,7 @@
         }
 
         @media only screen and (max-width: 600px) {
+          
             .elements {
                 width: 100%;
             }
@@ -712,7 +700,10 @@
                 width: 100%;
             }
             .elements__body {
-                padding: 10px;
+                padding: 0;
+                p {
+                    padding: 20px;
+                }
             }
             .calc__amount {
                 font-size: 16px;
@@ -724,9 +715,10 @@
                     padding: 20px;
                     
                 }
-                input {
-                    margin: 20px;
-                }
+             
+            }
+            .calc__inputs {
+             
             }
         }
     </style>
