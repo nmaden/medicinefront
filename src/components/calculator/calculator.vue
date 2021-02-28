@@ -49,7 +49,7 @@
                                                 <div class="calc__column "  v-for="(el,j) in item.type_calculate" :key="j" >
                                                     <div class="calc__column calc__menu__item calc__mr" v-if="el.type=='easy'" @click="choose_item(index,el.id,el.calculation_id)">
                                                     
-                                                        <img :src="'http://127.0.0.1:8000'+el.image_path" alt="">
+                                                        <img :src="'https://api.frezerovka04.kz'+el.image_path" alt="">
                                                 
                                                         <p>{{el.name}}</p>
                                                         <p>{{el.price}}</p>
@@ -71,7 +71,7 @@
                                             <div class="calc__menu">
                                                 <div class="calc__column " v-for="(el,j) in item.type_calculate" :key="j">
                                                     <div class="calc__column calc__menu__item calc__mr" v-if="el.type=='hard'" @click="choose_item(index,el.id,el.calculation_id)">
-                                                        <img :src="'http://127.0.0.1:8000'+el.image_path" alt="">
+                                                        <img :src="'https://api.frezerovka04.kz/'+el.image_path" alt="">
                                                 
                                                         <p>{{el.name}}</p>
                                                         <p>{{el.price}}</p>
@@ -96,7 +96,7 @@
                                             <div class="calc__menu">
                                                 <div class="calc__column "  v-for="(el,j) in item.type_calculate" :key="j">
                                                     <div class="calc__column calc__menu__item" @click="choose_item(index,el.id,el.calculation_id)">
-                                                        <img :src="'http://127.0.0.1:8000'+el.image_path" alt="">
+                                                        <img :src="'https://api.frezerovka04.kz/'+el.image_path" alt="">
                                                 
                                                         <p>{{el.name}}</p>
                                                     </div>
@@ -168,13 +168,7 @@
                                 </div>
                             </div>
                              
-                             <!-- <p  class="calc__mr" v-if="i.type_calculate=='by_height'">По толшине</p>
-                             <p class="calc__mr" v-else-if="i.type_calculate=='by_size'">По размерам</p>
-                             <p class="calc__mr" v-else-if="i.type_calculate=='by_count'">По количеству</p> -->
-
-                          
-                            
-                             
+                 
                          </div>
                     </div>
                     
@@ -197,6 +191,11 @@
     name: 'AccountPage' ,
         data() {
             return {
+                  user: {
+                      role: null,
+                      name: null,
+                      surname: null
+                  },
                   calc_height: null,
                   order_comment: '',
                   amount: "",
@@ -208,7 +207,7 @@
                   collect_id: [],
                   orders: [],
                   show_hide: [],
-                  token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiZjM1MGUyYTBkZDI1MzIxMGIzZDQ0YjM1YmZiMTc4NDVlODAyYzVmYjU1MjMzODg3M2Q0NTkxZTFmOGMyMWY2OTJmNGZkMDdmMWVmNDJlZjciLCJpYXQiOjE2MTQwOTg1ODcsIm5iZiI6MTYxNDA5ODU4NywiZXhwIjoxNjI5NzM2OTg2LCJzdWIiOiIxOCIsInNjb3BlcyI6W119.umhjH7mgq2TsuBKTeRLRP956sXykMKZ8HYfwRY4Y46PZx9brJzREfpwKF8g2-ShD4ZAaRUuNS8qTM6mvxnLnY7X2OwXVtpsBmwWcQq2sSrX2udo76giyy39X_8AY4SvrN8ncfQyFtbousxqv1PTkqPH5v5nNSRtZfmqiqFp7ribCI2dhAL-NPfYuubpQ_VTFwfgJKNgtwaqUzCNYdnWpZFeMMv-9RdageBTlQ3TlWq1OH2FB_exMUDb90l-LMFSPkmbzN24Ia9kJMtlJceRXZFzrJwLbNLcNzyhest2HXt8uU8uA6N-QTJuHJ9Vo19LfZbzcFwY-g26fjnGo4txn4yCeXANu2tVMusfiC65O4MKnwduhficxhXHzAQwZyvmkoGBt7nJgu-U-zjCwzs9D4YFY3taocYkqiyrjPeJFFfYO65ZRTnIlVau5pBRioP-q1Dam_Qg_PTnMumxT4dW5aBid6Lr6t0kJcfrc-K43-2U2KZuD4DDBRipsz-vaUlhKNC5VFoIBP7WfEXSDRoN9WW6zl0LXtGjXVJNVMIHVHRhT_zkURTkChx9XG4pT4LxXvTA-4tP2fexGvIVDWC1WInLDgRFJ7gsYNkLv7DONwbpAGwwtYYEPPcizGTizrnp5vtVDQlPRylXze4y1soauXJDwSRDvsNzCdjAl5ZMaFzE",
+                  token: "",
                   elements: '',
                   current_image: 1,
                   current_slide: 1,
@@ -228,6 +227,28 @@
         components: {
         },
         methods: {
+            get_profile() {
+                this.$http.post('user/me', 
+                {
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${this.token}` 
+                    }
+                }
+                )
+                .then(res => { 
+                    this.user.role = res.data.roles[0].id;
+                    this.user.name = res.data.name;
+                    this.user.surname = res.data.surname;
+                    if(this.user.role != 4) {
+                        this.$router.push("/login");
+                    }
+                    else {
+                        this.get_el();
+                    }
+                    
+                });
+            },
             calculation(type,index) {
                 
                 if(type=="by_size") {
@@ -347,7 +368,14 @@
             }
         },
         mounted() {
-            this.get_el();
+            if(!localStorage.getItem("access_token")) {
+                this.$router.push("/login");
+            }
+            else {
+                this.token = localStorage.getItem("access_token");
+                this.get_profile();
+            }
+            
         }
     }
     </script>

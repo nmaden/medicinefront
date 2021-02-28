@@ -7,7 +7,7 @@
             <p class="calc__title">KENES CALCULATOR</p>
         
             <div class="calc__column"> 
-                <p class="calc__user">USER</p>
+                <p class="calc__user">{{user.name+" "+user.surname}}</p>
                 <p class="calc__logout" @click="logout">Выход из системы</p>
             </div> 
         </div>
@@ -23,6 +23,11 @@
  
         data() {
             return {
+                 user: {
+                      role: '',
+                      name: null,
+                      surname: null
+                  },
                   current_image: 1,
                   current_slide: 1,
                   object: {
@@ -45,6 +50,34 @@
                 localStorage.removeItem("access_token");
 
                 this.$router.push("calculator");
+            },
+            get_profile() {
+                this.$http.post('user/me', 
+                {
+            
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${this.token}` 
+                    }
+                }
+                )
+                .then(res => { 
+                    this.user.role = res.data.roles[0].id;
+                    this.user.name = res.data.name;
+                    this.user.surname = res.data.surname;
+                    
+                
+                });
+            },
+
+        },
+        mounted() {
+            if(!localStorage.getItem("access_token")) {
+                this.$router.push("/login");
+            }
+            else {
+                this.token = localStorage.getItem("access_token");
+                this.get_profile();
             }
         }
     }

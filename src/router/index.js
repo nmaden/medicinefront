@@ -44,20 +44,20 @@
     const router = new VueRouter({
     routes: [
 
-        {
-            path: '/',
-            component: AuthPage,
-            meta: { guest: true },
-            children: [
-                // { path: 'burger', component: Burger},
-                { path: '', component: Login },
-                { path: 'login', component: Login },
-                { path: 'forgotPassword', component: ForgotPassword },
-                { path: 'register', component: Register },
-                { path: 'reg_confirm', component: Reg_confirm },
-                { path: 'check', component: Check }
-            ]
-        },
+        // {
+        //     path: '/',
+        //     component: AuthPage,
+        //     meta: { guest: true },
+        //     children: [
+        //         // { path: 'burger', component: Burger},
+        //         { path: '', component: Login },
+        //         { path: 'login', component: Login },
+        //         { path: 'forgotPassword', component: ForgotPassword },
+        //         { path: 'register', component: Register },
+        //         { path: 'reg_confirm', component: Reg_confirm },
+        //         { path: 'check', component: Check }
+        //     ]
+        // },
         {
             path: '/kenes',
             component: KenesMain,
@@ -68,17 +68,22 @@
             ]
         },
         {
+            path: '/',
+            component: calc_login,
+            meta: { guest: true },
+            children: [
+                { path: 'login', component: calc_login }
+            ]
+        },
+        {
             path: '/calculator',
             component: calculator_header,
             meta: { guest: true },
             children: [
-                { path: '/', component: calc_login },
                 { path: 'main', component: calc_body },
                 { path: 'admin', component: calc_admin },
             ]
         },
-        
-        
         {
             path: '/burger',
             component: Burger,

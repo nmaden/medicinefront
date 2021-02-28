@@ -1,8 +1,8 @@
 <template>
     <div class="calc calc__column calc__ac">
 
-        <p>Страница админ системы</p>
-        <p class="calc__mb">Для создание элементов для рассчета и просмотра заказов</p>
+        <p class="calc__mb" style="font-size: 16px;margin-top: 10px;font-weight: bold;">Страница админ системы</p>
+        <p class="calc__mb" style="font-size: 16px">Для создание элементов для рассчета и просмотра заказов</p>
 
         <div class="calc__menu calc__row calc__jb calc__mb">
 
@@ -314,9 +314,14 @@
 
                     </div>
 
+    
 
                     <button class="calc__save__order" v-if="show_save_btn" @click="saveOrder()">Сохранить</button>
 
+                    <download-excel class="calc__save__order" :data="json_data" v-if="show_save_btn">
+                        Скачать excel
+ 
+                    </download-excel>
                     <button class="calc__save__order" v-if="show_save_btn" @click="getPdf(current_user_index)">Скачать PDF</button>
                 </div>
              
@@ -339,6 +344,52 @@
     name: 'CalcAdmin' ,
         data() {
             return { 
+                    json_fields: {
+                        "Complete name": "name",
+                        City: "city",
+                        Telephone: "phone.mobile",
+                        "Telephone 2": {
+                            field: "phone.landline",
+                            callback: (value) => {
+                            return `Landline Phone - ${value}`;
+                            },
+                        },
+                        },
+                        json_data: [
+                        {
+                            name: "Tony Peña",
+                            city: "New York",
+                            country: "United States",
+                            birthdate: "1978-03-15",
+                            phone: {
+                            mobile: "1-541-754-3010",
+                            landline: "(541) 754-3010",
+                            },
+                        },
+                        {
+                            name: "Thessaloniki",
+                            city: "Athens",
+                            country: "Greece",
+                            birthdate: "1987-11-23",
+                            phone: {
+                            mobile: "+1 855 275 5071",
+                            landline: "(2741) 2621-244",
+                            },
+                        },
+                        ],
+                        json_meta: [
+                        [
+                            {
+                            key: "charset",
+                            value: "utf-8",
+                            },
+                        ],
+                        ],
+                  user: {
+                      role: '',
+                      name: null,
+                      surname: null
+                  },
                   current_order: '',
                   show_save_btn: false,
                   current_user_index: 0,
@@ -350,7 +401,7 @@
                   show_hide: [],
                   elements: '',
                   page: 1,
-                  token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiZjM1MGUyYTBkZDI1MzIxMGIzZDQ0YjM1YmZiMTc4NDVlODAyYzVmYjU1MjMzODg3M2Q0NTkxZTFmOGMyMWY2OTJmNGZkMDdmMWVmNDJlZjciLCJpYXQiOjE2MTQwOTg1ODcsIm5iZiI6MTYxNDA5ODU4NywiZXhwIjoxNjI5NzM2OTg2LCJzdWIiOiIxOCIsInNjb3BlcyI6W119.umhjH7mgq2TsuBKTeRLRP956sXykMKZ8HYfwRY4Y46PZx9brJzREfpwKF8g2-ShD4ZAaRUuNS8qTM6mvxnLnY7X2OwXVtpsBmwWcQq2sSrX2udo76giyy39X_8AY4SvrN8ncfQyFtbousxqv1PTkqPH5v5nNSRtZfmqiqFp7ribCI2dhAL-NPfYuubpQ_VTFwfgJKNgtwaqUzCNYdnWpZFeMMv-9RdageBTlQ3TlWq1OH2FB_exMUDb90l-LMFSPkmbzN24Ia9kJMtlJceRXZFzrJwLbNLcNzyhest2HXt8uU8uA6N-QTJuHJ9Vo19LfZbzcFwY-g26fjnGo4txn4yCeXANu2tVMusfiC65O4MKnwduhficxhXHzAQwZyvmkoGBt7nJgu-U-zjCwzs9D4YFY3taocYkqiyrjPeJFFfYO65ZRTnIlVau5pBRioP-q1Dam_Qg_PTnMumxT4dW5aBid6Lr6t0kJcfrc-K43-2U2KZuD4DDBRipsz-vaUlhKNC5VFoIBP7WfEXSDRoN9WW6zl0LXtGjXVJNVMIHVHRhT_zkURTkChx9XG4pT4LxXvTA-4tP2fexGvIVDWC1WInLDgRFJ7gsYNkLv7DONwbpAGwwtYYEPPcizGTizrnp5vtVDQlPRylXze4y1soauXJDwSRDvsNzCdjAl5ZMaFzE",
+                  token: "",
                   types: ["Дверь","Фрезировка","Пленка","Декор","Обкат"],
                   calculator: {
                       type_el:'',
@@ -388,12 +439,41 @@
         components: {
         },
         mounted() {
-            this.get_elements();  
 
-            this.get_orders();
+            if(!localStorage.getItem("access_token")) {
+                this.$router.push("/login");
+            }
+            else {
+                this.token = localStorage.getItem("access_token");
+                this.get_profile();
+            }
+          
         },
         methods: {
-           
+            
+            get_profile() {
+                this.$http.post('user/me', 
+                {
+            
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${this.token}` 
+                    }
+                }
+                )
+                .then(res => { 
+                    this.user.role = res.data.roles[0].id;
+                    this.user.name = res.data.name;
+                    this.user.surname = res.data.surname;
+                    if(this.user.role != 1) {
+                        this.$router.push("/login");
+                    }
+                    else {
+                        this.get_elements();  
+                        this.get_orders();
+                    }
+                });
+            },
             saveOrder() {
                
                 let data = {
@@ -420,28 +500,8 @@
 
                
             },
-            getPdf(id) {
-
-                const config = {
-                    headers: { 'Authorization': `Bearer ${this.token}` }
-                };
-                this.$http.get('calculator/get/pdf?id='+id,config, {
-                    responseType: 'blob'
-                })
-                .then(response => {
-                    const url = window.URL.createObjectURL(new Blob([response.data]));
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.setAttribute('download', 'Заказ-'+id+'.pdf'); //or any other extension
-                    document.body.appendChild(link);
-                    link.click();
-                })
-                .catch(error => {
-                    this.$q.loading.hide()
-                    let errors = error.response.data.error;
-                });
-
-                window.open("http://127.0.0.1:8000/kenes/pdf?id="+this.current_order,"_blank");
+            getPdf() {
+                window.open("https://api.frezerovka04.kz/kenes/pdf?id="+this.current_order,"_blank");
             },
             convert_date(val) {
                let year =  val.split(" ")[0].split("-")[0];
@@ -895,6 +955,8 @@
             color: white;
             cursor: pointer;
             margin-bottom: 20px;
+            text-align: center;
+            font-size: 14px;
         }
 
 

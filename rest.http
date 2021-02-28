@@ -1,2 +1,2 @@
-POST http://127.0.0.1:8000/api/v1/guest/one/migration
+POST https://api.frezerovka04.kz//api/v1/guest/one/migration
 content-type: application/json

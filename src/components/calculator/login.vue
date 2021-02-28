@@ -1,135 +1,126 @@
+<!-- template -->
 <template>
-    <div class="calc calc__column">
+        <div class="sign__page">
 
-
-        <div class="calc__header calc__row calc__ja calc__ac">
-
-            <form action="" @submit.prevent="login">
-                <input type="text" v-model="email">
-
-                <input type="text" v-model="password">
-
-                <button type="submit">SEND</button>
+            <p class="sign__page__title">KENES CALCULATOR</p>
+            <form class="sign__page__block" @submit.prevent="login_sign">
+                <input type="text" placeholder="Логин" v-model="login" >
+                <input type="text" placeholder="Пароль" v-model="password" >
+                <button type="submit"><p>Войти</p></button>
             </form>
-        </div>
 
-        <router-view></router-view>
-
-    </div>
+        </div>                   
 </template>
 
-
-    <script>
+<!-- scripts -->
+<script>
     export default {
- 
-        data() {
-            return {
-                  email: '',
-                  password: '',
-                  current_image: 1,
-                  current_slide: 1,
-                  object: {
-                    ru: 'RU',
-                    kaz: 'KAZ',
-                    en: 'USA',
-                  },
-                  languages: {
-                    ru: require('../../assets/images/ru.png'),
-                    kaz: require('../../assets/images/kaz.png'),
-                    en: require('../../assets/images/en.png'),
-                  },
-                  link: require('../../assets/images/kaz.png')
+      data() {
+          return {
+            login: '',
+            password: '',
+            user: {
+                role: ''
             }
-        },
-        components: {
-        },
-        methods: {
-            login() {
-                let data = {
-                    email: this.email,
+          }
+      },
+      mounted() {
+        
+      },
+      methods: {
+        login_sign() {
+              let obj = {
+                    email: this.login,
                     password: this.password
-                };
+              }
+              this.$http.post('auth/login',
+               obj 
+              )
+              .then(res => {
+                  localStorage.setItem("access_token",res.data.token);
 
+                  this.token = localStorage.getItem("access_token");
+                  this.get_profile();
+              })
+              .catch(errors => {
+                  console.log('Ошибка ' + error.response.data.errors);
+              })
 
-                this.$http.post('/auth/login', data)
-                .then(res => { 
-                   console.log(res.data);
-                });
-            },
-            logout() {
-                localStorage.removeItem("access_token");
-
-                this.$router.push("calculator");
-            }
-        }
-    }
-    </script>
-
-
-
-    <style scoped lang="scss"> 
-    .calc__column {
-    display: flex;
-    flex-direction: column;
-    }
-    .calc__row {
-    display: flex;
-    flex-direction: row;
-    }
-    .calc__ac {
-    align-items: center;
-    }
-    .calc__jb {
-    justify-content: space-between;
-    }
-    .calc__ja {
-    justify-content: space-around;
-    } 
-    
-    .calc {
-        background-color: #fafafd;
-    }
-
-        .calc__header {
-
-            background-color: var(--main-kenes-blue);
-            padding: 15px;
-
-            .calc__title {
-                font-size: 22px;
-                color: white;
-                font-weight: bold;
-            }
-            .calc__user {
-                margin-bottom: 5px;
-            }
-
-            .calc__logout {
-                color: white;
-                cursor: pointer;
-            }
-            .calc__logout:hover {
-                border-bottom: 2px solid white;
-            }
-        }
-
-        @media only screen and (max-width: 600px) {
-            .calc__column {
-                width: 100%;
-            }   
-            .calc__row {
-                width: 100%;
-            }
-            .calc__title {
-                font-size: 14px !important;
-            }
-            
-            .calc__header {
-                justify-content: space-between;
-                .calc__column {
-                    width: unset;
+        },
+        get_profile() {
+      
+            this.$http.post('user/me', 
+            {
+        
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${this.token}` 
                 }
-
             }
+            )
+            .then(res => { 
+                this.user.role = res.data.roles[0].id;
+                if(this.user.role == 1) {
+                    this.$router.push("/calculator/admin");
+                }else {
+                    this.$router.push("/calculator/main");
+                }
+            });
         }
-    </style>
+      }
+    };
+</script>
+
+<style scoped lang="scss"> 
+    .sign__page {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 70vh;
+      @media only screen and (max-width: 764px) {
+        width: 100%;
+      }
+      .sign__page__title {
+        font-weight: bold;
+        font-size: 26px;
+        margin-bottom: 20px;
+        color: #333;
+      }
+      .sign__page__block {
+        display: flex;
+        flex-direction: column;
+        input {
+          width: 300px;
+          padding: 20px;
+          margin-bottom: 20px;
+          @media only screen and (max-width: 764px) {
+             width: 200px;
+          }
+        }
+        ::placeholder {
+          color: #333;
+        }
+        button {
+          cursor: pointer;
+          text-transform: uppercase;
+          width: 350px;
+          outline: none;
+          border: none;
+          background-color: cornflowerblue;
+          padding: 20px;
+          @media only screen and (max-width: 764px) {
+             width: 250px;
+          }
+          p {
+            color: white;
+            font-weight: bold;
+          }
+        }
+        button:hover {
+          background-color: #285bb6;
+        }
+      }
+      
+    }
+</style>
