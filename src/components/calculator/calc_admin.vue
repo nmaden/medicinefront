@@ -140,13 +140,13 @@
 
                     <div class="calc__column elements__row" v-for="(item,index) in elements" :key="index">
 
-                        <div class="calc__row elements__row calc__mb elements__body"  >
+                        <div class="calc__row  calc__mb elements__body calc__ac"  >
                             <p>{{ item.type}}</p>
                             <p>{{ item.name}}</p>
 
                             <div class="calc__row ">
                              
-                                <i @click="edit_element(1,item.id)" class="fas fa-pencil-alt"></i>
+                                <i @click="edit_element(1,item.id)" class="fas fa-pencil-alt" style="margin-left: 10px"></i>
                                 <i @click="delete_element(1,item.id)" class="fas fa-trash-alt"></i>
                                
                              
@@ -156,7 +156,7 @@
                         </div>
 
                         <div class="calc__column elements__row calc__mb" v-if="show_hide[index]==1">
-                            <div class="calc__row elements__row calc__mb" v-for="(el,j) in item.type_calculate" :key="j"  >
+                            <div class="calc__row elements__row calc__ac calc__mb" v-for="(el,j) in item.type_calculate" :key="j"  >
 
                                 <div class="calc__column">
 
@@ -200,7 +200,9 @@
                                     
                                     <div class="calc__row calc__ac calc__border__line">
                                         <p class="calc__user__label">{{index+1}} - заказ</p>
-                                        <i class="fas fa-trash-alt" style="margin-left: 50px" @click="delete_order(index)"></i>
+                                        <i class="fas fa-trash-alt"  @click="delete_order(index)"></i>
+
+                                        <i class="fas fa-eye" @click="show_ordered_elements(index)"></i>
                                     </div>
 
 
@@ -248,17 +250,17 @@
                                         <p class="calc__order__title">{{order.type_name}}</p>
                                         
                                         
-                                        <div class="calc__column">
+                                        <div class="calc__data calc__row calc__ac">
                                             <p class="calc__input__label">Количество</p>
                                             <p>{{order.count}}</p>
                                         </div>
-                                       <div class="calc__column">
+                                       <div class="calc__data calc__row calc__ac">
                                             <p class="calc__input__label">Цена</p>
                                              <input type="text" placeholder="Цена" v-model="order.price" @input="set_price(order.price,i,current_user_index,order.count,order.dlina,order.wirina,order.type_calculate)">
                                         </div>
 
 
-                                        <div class="calc__column">
+                                        <div class=" calc__data calc__row calc__ac">
                                             <p class="calc__input__label">Сумма</p>
                                             <input type="text" placeholder="Сумма"    v-model="order.amount_sum">
                                         </div>
@@ -269,28 +271,28 @@
                                         <p class="calc__order__title">{{order.type_name}}</p>
                                        
                                        
-                                        <div class="calc__column">
+                                        <div class="calc__data calc__row calc__ac">
                                             <p class="calc__input__label">Количество</p>
                                             <p>{{ order.count }}</p>
                                         </div>
-                                        <div class="calc__column">
+                                        <div class="calc__data calc__row calc__ac">
                                             <p class="calc__input__label">Длина</p>
                                             <p>{{order.dlina}}</p>
                                         </div>
-                                        <div class="calc__column">
+                                        <div class="calc__data calc__row calc__ac">
                                             <p class="calc__input__label">Ширина</p>
                                             <p>{{order.wirina}}</p>
                                         </div>
-                                        <div>
+                                        <div class="calc__data calc__row calc__ac">
                                             <p class="calc__input__label">Площадь</p>
                                             <p>{{order.size}}</p>
                                         </div>
 
-                                         <div class="calc__column">
+                                         <div class="calc__data calc__row calc__ac">
                                             <p class="calc__input__label">Цена</p>
                                             <input type="text" placeholder="Цена" v-model="order.price" @input="set_price(order.price,i,current_user_index,order.count,order.dlina,order.wirina,order.type_calculate)">
                                         </div>
-                                        <div class="calc__column">
+                                        <div class="calc__data calc__row calc__ac">
                                             <p class="calc__input__label">Сумма</p>
                                             <input type="text" placeholder="Сумма"    v-model="order.amount_sum">
                                         </div>
@@ -299,8 +301,6 @@
                                     
                                 </div>
                         </div>
-
-                    </div>
 
     
 
@@ -311,6 +311,8 @@
  
                     </download-excel> -->
                     <button class="calc__save__order" v-if="show_save_btn" @click="getPdf(current_user_index)">Скачать PDF</button>
+                    </div>
+
                 </div>
              
 
@@ -759,7 +761,11 @@
 
 
 <style scoped lang="scss"> 
-
+select {
+       -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+}
         .active_color {
             background-color: rgb(200, 60, 60) !important;
         }
@@ -866,10 +872,9 @@
         }   
         .elements__row {
             width: 100%;
-            a,p {
-                margin-right: 50px;
-                width: 180px;
-            }
+            display: flex;
+            justify-content: space-evenly;
+          
             i {
                 color: white;
                 cursor: pointer;
@@ -891,11 +896,18 @@
             }
         }
         .elements__body__yellow {
+            width: 100%;
+            justify-content: space-evenly;
             background-color: black;
-            padding: 10px;
+           
             p,a {
                 color: white;
+                padding: 10px;
             }
+            i {
+                padding: 10px;
+            }
+            
         }
 
         .elements {
@@ -993,23 +1005,20 @@
             overflow-y: auto;
         }
         .calc__order__bottom {
-            height: 350px;
-            overflow-y: auto;
-        }
-        .calc__order__bottom::-webkit-scrollbar {
-            width: 7px;
-            height: 10px;
-        }
 
-        .calc__order__bottom::-webkit-scrollbar-track {
-            border-radius: 2px;
-            background-color: #ccc;
+            overflow-y: auto;
+            .calc__data {
+                margin-bottom: 10px;
+                border-bottom: 1px solid #ccc;
+                padding-bottom: 10px;
+                input {
+                    margin: 0;
+                    margin-left: 10px;
+                    
+                }
+            }
         }
-        .calc__order__bottom::-webkit-scrollbar-thumb {
-            background-color: var(--main-kenes-blue);
-            border-radius: 2px;
-            height: 10px;
-        }
+     
 
         .calc__order__top::-webkit-scrollbar {
             width: 7px;
@@ -1042,6 +1051,15 @@
 
             .calc__border__line {
                 border-bottom: 2px solid #cbe7ff;
+                i {
+                    margin-left: 10px;
+                }
+                .fa-trash-alt:hover {
+                    color: red;
+                }
+                .fa-eye:hover {
+                    color: var(--main-kenes-blue);
+                }
             }
             
             p {

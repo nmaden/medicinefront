@@ -124,7 +124,7 @@
                             
 
 
-                            <div class="calc__row calc__jb calc__width100">
+                            <div class="calc__row  calc__width100">
                 
                                 <p class="calc__mr calc__mb__xs calc__order__title">{{i.name}}</p>
 
@@ -156,10 +156,15 @@
                     </div>
                     
                     <div class="calc__column">
-                        <p class="calc__mb">Примечание о заказе необезательно</p>
-                        <textarea name=""  class="calc__mb" v-model="order_comment" id="" cols="20" rows="5" placeholder="Примечание о заказе необезательно"></textarea>
+                        <p class="calc__mb">Примечание о заказе(Адрес заказа,Телефон клиента) (обьязательное поле)</p>
+                        <textarea name=""  class="calc__mb" v-model="order_comment" id="" cols="20" rows="5" required></textarea>
       
                     </div>
+                    <div class="calc__column calc__height">
+                        <p class="calc__mb">Ваше имя (обьязательное поле)</p>
+                        <input name=""  class="calc__mb" v-model="user_name" id=""  required />
+                    </div>
+                  
                   
 
                     <button class="calc__send calc__ac" type="submit" v-if="orders.length!=0">Завершить заказ</button>
@@ -174,6 +179,7 @@
     name: 'AccountPage' ,
         data() {
             return {
+                 user_name: '',
                   user: {
                       role: null,
                       name: null,
@@ -325,6 +331,7 @@
                 let data = {
                     data: this.orders,
                     comment: this.order_comment,
+                    user_name: this.user_name,
                     height: this.calc_height
                 };
 
@@ -366,7 +373,11 @@
 
 
     <style scoped lang="scss"> 
-
+select {
+       -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+}
     .calc__width100 {
         width: 100%;
     }
@@ -436,7 +447,7 @@
         font-size: 16px;
         text-transform: uppercase;
         width: 200px;
-        align-self: flex-end;
+        align-self: center;
         opacity: 0.8;
     }
     .calc__send:hover {
@@ -556,10 +567,10 @@
         }   
         .elements__row {
             width: 100%;
-            a,p {
-                margin-right: 50px;
-                width: 180px;
-            }
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+         
             i {
                 color: white;
                 cursor: pointer;
@@ -673,7 +684,13 @@
         }
 
         @media only screen and (max-width: 600px) {
-          
+           
+            .calc__row {
+                .calc__inputs {
+                    margin-left: 0;
+                    margin-top: 20px;
+                }
+            }
             .elements {
                 width: 100%;
             }
@@ -689,6 +706,7 @@
                     width: unset;
 
                 }
+                
                 div {
                     width: unset;
                 }
@@ -719,6 +737,12 @@
             }
             .calc__inputs {
              
+            }
+
+             .elements__row {
+                a,p {
+                    width: unset !important;
+                }
             }
         }
     </style>
