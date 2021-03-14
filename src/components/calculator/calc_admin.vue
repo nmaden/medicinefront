@@ -120,13 +120,7 @@
                     </div>
 
                     
-                  
-
-                   
-                    <!-- <div class="calc__column calc__mb">
-                        <p>Цена</p>
-                        <input type="number" required  v-model="calculator.price">
-                    </div> -->
+            
                     <div class="calc__column calc__mb">
                         <p>Примечание</p>
                         <input type="text" required v-model="calculator.comment"> 
@@ -270,28 +264,28 @@
                                     <div class="calc__column calc__order" v-else>
                                         <p class="calc__order__title">{{order.type_name}}</p>
                                        
-                                       
-                                        <div class="calc__data calc__row calc__ac">
-                                            <p class="calc__input__label">Количество</p>
-                                            <p>{{ order.count }}</p>
-                                        </div>
-                                        <div class="calc__data calc__row calc__ac">
-                                            <p class="calc__input__label">Длина</p>
-                                            <p>{{order.dlina}}</p>
-                                        </div>
-                                        <div class="calc__data calc__row calc__ac">
-                                            <p class="calc__input__label">Ширина</p>
-                                            <p>{{order.wirina}}</p>
-                                        </div>
-                                        <div class="calc__data calc__row calc__ac">
-                                            <p class="calc__input__label">Площадь</p>
-                                            <p>{{order.size}}</p>
-                                        </div>
 
-                                         <div class="calc__data calc__row calc__ac">
-                                            <p class="calc__input__label">Цена</p>
-                                            <input type="text" placeholder="Цена" v-model="order.price" @input="set_price(order.price,i,current_user_index,order.count,order.dlina,order.wirina,order.type_calculate)">
+                                        <div class="calc__row" v-for="(input,ss) in order.inputs" :key="ss">
+                                                <div class="calc__data calc__column calc__ac">
+                                                    <p class="calc__input__label">Количество</p>
+                                                    <p>{{ input.count }}</p>
+                                                </div>
+                                                <div class="calc__data calc__column calc__ac">
+                                                    <p class="calc__input__label">Длина</p>
+                                                    <p>{{input.dlina}}</p>
+                                                </div>
+                                                <div class="calc__data calc__column calc__ac">
+                                                    <p class="calc__input__label">Ширина</p>
+                                                    <p>{{input.wirina}}</p>
+                                                </div>
+                                              
+
+                                                <div class="calc__data calc__column calc__ac">
+                                                    <p class="calc__input__label">Цена</p>
+                                                    <input type="text" placeholder="Цена" v-model="input.price" @input="set_price(order.price,i,current_user_index,order.count,order.dlina,order.wirina,order.type_calculate)">
+                                                </div>
                                         </div>
+                       
                                         <div class="calc__data calc__row calc__ac">
                                             <p class="calc__input__label">Сумма</p>
                                             <input type="text" placeholder="Сумма"    v-model="order.amount_sum">

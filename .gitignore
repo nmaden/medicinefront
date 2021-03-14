@@ -19,3 +19,13 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+
+# Cordova
+/otau/platforms
+/otau/plugins
+/public/cordova.js
+
+# Cordova
+/notif-cordova/platforms
+/notif-cordova/plugins
+/public/cordova.js

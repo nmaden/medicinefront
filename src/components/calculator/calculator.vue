@@ -8,73 +8,21 @@
                     <div class="calc__column elements__row" v-for="(item,index) in elements" :key="index">
                         <div class="calc__row elements__row calc__mb elements__body calc__ac" @click="show_calcs(index)" >
                             <p>{{ item.type}}</p>
-                           
+       
                             <div class="calc__row ">         
                                 <i    @click="show_calcs(index)" v-if="show_hide[index]==1" class="fas fa-chevron-up"></i>
                                 <i    @click="show_calcs(index)" v-else class="fas fa-chevron-down"></i>
                             </div>
                         </div>
 
-
-                       
-                        
-                       
-
                         <div class="calc__column elements__row calc__mb" v-if="show_hide[index]==1">
 
                             <div class="calc__row elements__row calc__mb"   >
                                 
-                                <!-- <div v-if="item.type=='Фрезировка' || item.type=='Пленка'" class="calc__row" >
-                                    
-
-                                  
-                
-                                    <div class="calc__column ">
-                                    
-                                        <div>
-                                            
-                                         
-
-                                            <div class="calc__menu" >   
-                                                <div class=" "  v-for="(el,j) in item.type_calculate" :key="j" >
-                                                    <div class="calc__column calc__menu__item calc__mr" v-if="el.type=='easy'" @click="choose_item(index,el.id,el.calculation_id)">
-                                                    
-                                                        <img :src="'https://api.frezerovka04.kz'+el.image_path" alt="">
-                                                
-                                                        <p>{{el.name}}</p>
-                                                        <p>{{el.price}}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                           
-
-                                        </div>
-                                    </div>
-                                    <div class="calc__column">
-                                        
-                                        <div >
-                                       
-                                            <div class="calc__menu">
-                                                <div class=" " v-for="(el,j) in item.type_calculate" :key="j">
-                                                    <div class="calc__column calc__menu__item calc__mr" v-if="el.type=='hard'" @click="choose_item(index,el.id,el.calculation_id)">
-                                                        <img :src="'https://api.frezerovka04.kz/'+el.image_path" alt="">
-                                                
-                                                        <p>{{el.name}}</p>
-                                                        <p>{{el.price}}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                              
-                                        </div>
-                                    </div>
-                                   
-                                </div>  -->
                                 <div >
                                     <div class="calc__column">
                                     
-                                        <div >
-     
-
+                                        <div>
                                             <div class="calc__menu">
                                                 <div class=" "  v-for="(el,j) in item.type_calculate" :key="j">
                                                     <div class="calc__column calc__menu__item calc__mr" @click="choose_item(index,el.id,el.calculation_id)">
@@ -85,8 +33,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            
-
                                         </div>
                                     </div>
                                 </div>
@@ -105,14 +51,7 @@
                     
 
    
-                    <!-- <div class="calc__row calc__orders__row calc__mb">
-                        <p class="calc__mr calc__bold calc__l">Название</p>
-                        <p class="calc__mr calc__bold calc__l">Тип рассчета</p>
-                        <p class="calc__mr calc__bold calc__l">Цена</p>
-                        <p class="calc__mr calc__bold calc__l">Ввод размеров</p>
-                        <p class="calc__mr calc__bold calc__l">Количество</p>
-                        <p class="calc__mr calc__bold calc__l">Сумма</p>
-                    </div> -->
+                   
 
                     <div class="calc__column" v-for="(i,j) in orders" :key="j">
 
@@ -129,24 +68,92 @@
                                 <p class="calc__mr calc__mb__xs calc__order__title">{{i.name}}</p>
 
                                 <div class="calc__column calc__inputs">
-                                    <div class="calc__mr" v-if="i.type_calculate=='by_size'">
-                                 
-                                        <input class="calc__mr calc__mb__xs"  type="text" placeholder="Длина"  v-model="wirina[j]"  required>
-                                        <input class="calc__mr calc__mb__xs"  type="text" placeholder="Ширина"  v-model="dlina[j]"  required>
 
+
+                                    <div class="calc__mr calc__column" v-if="i.type_calculate=='by_size'">
+                                        
+
+                                        <div class="calc__row ">
+                                            <div class="calc__row calc__ac calc__mb calc__add__input calc__mr" @click="addIntput(j)">
+                                                <i class="fas fa-plus-circle"></i>
+                                                <p>добавить строку</p>
+                                            </div>
+                                            <div class="calc__row calc__ac calc__mb  calc__add__input__red" @click="removeIntput(j)">
+                                                <i class="fas fa-minus-circle"></i>
+                                                <p>Удалить строку</p>
+                                            </div>
+                                        </div>
+                                       
+                                        <div class="calc__row calc__to__order" v-for="(many,index) in i.inputs" v-bind:key="index">
+                                            <p class="calc__mr">{{index+1}}</p>
+
+                                            <div class="calc__column ">
+                                                <p class="calc__mb__xs">Длина</p>
+                                                <input class="calc__mr calc__mb__xs"  type="text" placeholder="Длина"   v-model="many.dlina"  required>
+                                            </div>
+                                            <div class="calc__column">
+                                                <p class="calc__mb__xs">Ширина</p>
+                                                <input class="calc__mr calc__mb__xs"  type="text" placeholder="Ширина"   v-model="many.wirina"  required>
+                                            </div>
+                                            <div class="calc__column">
+                                                <p class="calc__mb__xs">Количество</p>
+                                                <input class="calc__mr calc__mb__xs"  type="text" placeholder="Количество"   v-model="many.count" @input="calculation('by_size',j)"   required>
+                                            </div>
+
+                                            <div class="calc__column calc__mr" @click="openDecor('Декор')">
+                                                <p class="calc__mb__xs">Декор</p>
+                                                <i class="fas fa-plus-circle"></i>
+                                            </div>
+
+                                            <div class="calc__column calc__decor" v-if="show_one_element">
+
+                                                
+                                                <i class="far fa-window-close"  @click="show_one_element=false"></i>
+
+                                                <div class="calc__one">
+                                                    <div class="calc__column" v-for="(el,index) in one_element" :key="index" @click="chooseDecor(many,el)" v-bind:class="{calc__choosen: el.choosen==true}">
+                                                            <img src="" alt="">
+                                                            <p>{{el.name}}</p>
+                                                            <input type="number" value="1" v-if="el.choosen">
+                                                    </div>
+                                                </div>
+                                                
+
+                                            </div>
+                                             <div class="calc__column"   @click="openDecor('Обкат')">
+                                                <p class="calc__mb__xs">Обкат</p>
+                                                <i class="fas fa-plus-circle"></i>
+                                            </div>
+                                            
+                                        </div>
+      
                                     </div>
-                                    <div v-if="i.type_calculate=='by_size'">
-                                        <input  type="number"  placeholder="Количество"  v-model="count[j]"   @input="calculation('by_size',j)" required>
-                                    </div>
+                                    
                                     <!-- <div class="calc__mr"  v-if="i.type_calculate=='by_height'" >
                                         <input type="number"  placeholder="Толшина" v-model="height[j]" @input="calculation('by_height',j,i.price)" required>
                                     </div> -->
                                     <div  v-if="i.type_calculate=='by_count'">
-                                        <input  type="number"  placeholder="Количество"  v-model="count[j]"   @input="calculation('by_count',j)" required>
+                                         <div class="calc__row ">
+                                            <div class="calc__row calc__ac calc__mb calc__add__input calc__mr" @click="addIntput(j)">
+                                                <i class="fas fa-plus-circle"></i>
+                                                <p>добавить строку</p>
+                                            </div>
+                                            <div class="calc__row calc__ac calc__mb calc__add__input__red" @click="removeIntput(j)">
+                                                <i class="fas fa-minus-circle"></i>
+                                                <p>Удалить строку</p>
+                                            </div>
+                                        </div>
+                                        <div class="calc__row" v-for="(many,index) in i.inputs" :key="index">
+                                            <div class="calc__column">
+                                                <p class="calc__mb__xs">Количество</p>
+                                                <input class="calc__mr calc__mb__xs"  type="text" placeholder="Количество"   v-model="many.count" @input="calculation('by_size',j)"   required>
+                                            </div>
+                                        </div>
+                                    
                                     </div>
                                     
                                 
-                                    <p class="result" v-if="i.type_calculate=='by_size' && result[j]">{{wirina[j]}}м x {{dlina[j]}}м x {{count[j]}} = {{result[j]}} кв м</p>
+                                    <!-- <p class="result" v-if="i.type_calculate=='by_size' && result[j]">{{wirina[j]}}м x {{dlina[j]}}м x {{count[j]}} = {{result[j]}} кв м</p> -->
                                     
                                 </div>
                             </div>
@@ -179,6 +186,10 @@
     name: 'AccountPage' ,
         data() {
             return {
+                show_one_element: false,
+                 inputs: [
+                     
+                 ],
                  user_name: '',
                   user: {
                       role: null,
@@ -210,12 +221,77 @@
                     kaz: require('../../assets/images/kaz.png'),
                     en: require('../../assets/images/en.png'),
                   },
-                  link: require('../../assets/images/kaz.png')
+                  link: require('../../assets/images/kaz.png'),
+                  one_element: []
             }
         },
         components: {
         },
         methods: {
+            chooseDecor(many,el) {
+
+                many.
+                console.log(many);
+                this.choosenFalse();
+                el.choosen = true;
+                let per = this.one_element;
+                this.one_element=[];
+                this.one_element = per;                
+            },
+            choosenFalse() {
+                for (let index = 0; index < this.one_element.length; index++) {
+                   this.one_element[index].choosen = false;
+                }
+            },
+            openDecor(type) {
+                this.show_one_element = true;
+                this.$http.post('/calculator/get/by/type', 
+                {
+                    type: type
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${this.token}` 
+                    }
+                }
+                )
+                .then(res => { 
+                    
+                    this.one_element = res.data[0].type_calculate;
+
+                
+                });
+            },
+
+            addIntput(index) {
+             
+                let obj = {
+                    dlina: 3,
+                    wirina: 3,
+                    count: 2,
+                    amount: ""
+                }
+                
+                this.orders[index].inputs.push(obj);
+
+
+                let permanent = this.orders;
+
+                this.orders = [];
+
+                this.orders = permanent;
+      
+            },
+            removeIntput(index) {
+                if(this.orders[index].inputs.length>1) {
+                    this.orders[index].inputs.length = this.orders[index].inputs.length-1;
+                    let permanent = this.orders;
+
+                    this.orders = [];
+
+                    this.orders = permanent;
+                }
+               
+            },
             get_profile() {
                 this.$http.post('user/me', 
                 {
@@ -265,6 +341,19 @@
             },
             choose_item(pivot,id,calc_id) {
                 
+
+                let obj = {
+                    dlina: 3,
+                    wirina: 3,
+                    count: 2,
+                    amount: ""
+                }
+                
+                // if(!this.inputs[pivot]) {
+                //     this.inputs[pivot] = [];
+                // }
+                // this.inputs[pivot].push(obj);
+           
                 if(this.collect_id.length!=0) {
                     for (let index = 0; index < this.collect_id.length; index++) {
 
@@ -281,11 +370,14 @@
                                 this.height[index] = "";
                             }
                             this.result[index] = "";
+                            // this.inputs[pivot] = [];
+                            // this.inputs[pivot].push(obj);
                             this.orders = this.remove(this.orders,calc_id)
                         }
                         
                     }
                 }
+
 
                 let arr = this.elements[pivot].type_calculate;
 
@@ -293,8 +385,21 @@
                     if(arr[index].id == id) {
                         this.collect_id.push(arr[index].calculation_id);
                         this.orders.push(arr[index]);
+
                     }
                 }
+
+                if(this.orders.length==0) {
+                    this.orders[0].inputs = [];
+                    this.orders[0].inputs.push(obj);
+                }
+                else {
+                    this.orders[this.orders.length-1].inputs = [];
+                    this.orders[this.orders.length-1].inputs.push(obj);
+                }
+
+                console.log(this.orders);
+
             },
             logout() {
                 localStorage.removeItem("access_token");
@@ -384,6 +489,35 @@ select {
     .calc__main__body {
         width: 100%;
         align-items: flex-start;
+
+        .calc__add__input {
+            cursor: pointer;
+            
+            i {
+                font-size: 24px;
+                color:var(--main-kenes-blue);
+            }
+            p {
+                margin-left: 4px;
+                text-transform: uppercase;
+                color: var(--main-kenes-blue);
+            }
+           
+        }
+      
+        .calc__add__input__red {
+              cursor: pointer;
+            
+            i {
+                font-size: 24px;
+                 color:red;
+            }
+            p {
+                margin-left: 4px;
+                text-transform: uppercase;
+                color:red;
+            }
+        }
     }
     .calc__column {
     display: flex;
@@ -409,6 +543,7 @@ select {
     .calc__mb {
             margin-bottom: 20px;
     } 
+
     .calc__mb__xs {
         margin-bottom: 10px;
     } 
@@ -491,12 +626,57 @@ select {
         font-weight: bold;
     }
     .calc__orders__row {
-        width: 400px;
+      
         background-color: white;
         border-radius: 10px;
         padding: 20px 40px;
         border-bottom: 8px solid var(--main-kenes-blue);
         
+        .calc__to__order {
+            position: relative;
+
+            .calc__decor {
+                position: absolute;
+                bottom: -40px;
+                right: 0; 
+                background-color: white;
+                box-shadow: 0px 0 10px rgba(0, 0, 0, 0.8);
+                border-radius: 3px;
+                .calc__choosen {
+                    border: 2px solid red;
+                }
+                .fa-window-close {
+                    font-size: 24px;
+                    margin: 10px;
+                    align-self: flex-end;
+                    cursor: pointer;
+                }
+               
+                .calc__one {
+                    height: 200px;
+                    overflow-y: auto;
+                    z-index: 10px;
+                    display: flex;
+                    flex-wrap: wrap;
+
+                    input {
+                        width: 100px;
+                    }
+                   
+                    .calc__column { 
+                        padding: 10px;
+                        margin-right: 3px;
+                        cursor: pointer;
+                        img {
+                            width: 30px;
+                            height: 30px;
+                            border-radius: 5px;
+                        }
+                    }
+                }
+            }
+            
+        }
 
         .calc__inputs {
             align-self: flex-end;

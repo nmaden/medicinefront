@@ -7,7 +7,7 @@
 
 
     // burger
-
+    import NotifMain from '../components/notif/notif.vue'; 
     import calculator_header from '../components/calculator/calc_header.vue'; 
     import calc_admin  from '../components/calculator/calc_admin.vue'; 
     import calc_body  from '../components/calculator/calculator.vue';
@@ -58,6 +58,16 @@
         //         { path: 'check', component: Check }
         //     ]
         // },
+
+        {
+            path: '/notif',
+            component: NotifMain,
+            meta: { guest: true },
+            children: [
+                { path: '/', component: NotifMain },
+          
+            ]
+        },
         {
             path: '/kenes',
             component: KenesMain,
