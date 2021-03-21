@@ -14,10 +14,7 @@
         <div class="calc__column">
 
             <div class="calc__modal" v-if="show_modal">
-
-                
-                <form   class="calc__column calc__modal__form" v-if="modal_type==1" @submit.prevent="update_element(1)">
-                    
+                <form   class="calc__column calc__modal__form" v-if="modal_type==1" @submit.prevent="update_element(1)"> 
                     <i class="far fa-window-close calc__mb" @click="show_modal=false"></i>
                     <p class="calc__modal__title">Редактировать</p>
                     

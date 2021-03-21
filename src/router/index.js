@@ -6,7 +6,10 @@
     // Router components
 
 
-    // burger
+    import AdminMedicine from '../components/pharmacy/adminPhar.vue'; 
+
+    import LoginMed from '../components/pharmacy/login.vue'; 
+    import Pharmacy from '../components/pharmacy/pharmacy.vue'; 
     import NotifMain from '../components/notif/notif.vue'; 
     import calculator_header from '../components/calculator/calc_header.vue'; 
     import calc_admin  from '../components/calculator/calc_admin.vue'; 
@@ -60,6 +63,27 @@
         // },
 
         {
+            path: '/pharmacy',
+            component: Pharmacy,
+            meta: { guest: true },
+           
+        },
+        {
+            path: '/pharmacy/admin',
+            component: AdminMedicine,
+            meta: { guest: true },
+           
+        },
+        {
+            path: '/',
+            component: LoginMed,
+            meta: { guest: true },
+           
+        },
+
+
+        
+        {
             path: '/notif',
             component: NotifMain,
             meta: { guest: true },
@@ -77,14 +101,14 @@
                 { path: '', component: Main },
             ]
         },
-        {
-            path: '/',
-            component: calc_login,
-            meta: { guest: true },
-            children: [
-                { path: 'login', component: calc_login }
-            ]
-        },
+        // {
+        //     path: '/',
+        //     component: calc_login,
+        //     meta: { guest: true },
+        //     children: [
+        //         { path: 'login', component: calc_login }
+        //     ]
+        // },
         {
             path: '/calculator',
             component: calculator_header,
@@ -135,8 +159,8 @@
                 component: ErrorPage,
             }
     ],
-
-    mode: 'history'
+    // process.env.CORDOVA_PLATFORM ? 'hash' :
+    mode:  'history'
     });
 
     // router.beforeEach((to, from, next) => {

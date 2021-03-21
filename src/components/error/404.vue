@@ -1,5 +1,5 @@
 <template>
-    <div>страница не найдена</div>
+    <div>THERE NNNN</div>
 </template>
 
 <script>

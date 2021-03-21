@@ -9,6 +9,9 @@ import VueMask from 'v-mask'
 import JsonExcel from "vue-json-excel";
 Vue.component("downloadExcel", JsonExcel);
 
+import vSelect from 'vue-select'
+Vue.component('v-select', vSelect);
+import 'vue-select/dist/vue-select.css';
 Vue.use(VueMask);
 import VueI18n from 'vue-i18n';
 Vue.use(VueI18n);
@@ -22,7 +25,7 @@ Vue.use(VueSimpleAlert, { reverseButtons: true });
 Vue.use(VModal, { dialog: true });
 
 Vue.prototype.$http = axios.create({
-  baseURL: 'https://api.frezerovka04.kz/api/v1',
+  baseURL: 'http://127.0.0.1:8000/api/v1',
 });
 
 
