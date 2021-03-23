@@ -160,7 +160,7 @@
             }
     ],
     // process.env.CORDOVA_PLATFORM ? 'hash' :
-    mode:  'history'
+    mode:  process.env.CORDOVA_PLATFORM ? 'hash' :'history'
     });
 
     // router.beforeEach((to, from, next) => {

@@ -19,7 +19,7 @@
         </div>
 
         <div class="notif__sort notif__row notif__ac notif__mb__s" v-if="pharmacy.edit" >
-            <div class="notif__type notif__mr__l notif__type__active" @click="pharmacy.edit=false" >
+            <div class="notif__type notif__mr__l notif__type__active" @click="showEditPharmacy" >
                 <i class="fas fa-plus-circle" style="color: white"></i>
                 Дәріхана қосу
             </div>
@@ -35,11 +35,7 @@
                         <input type="text" v-model="medicine.name" required>
                     </div>
 
-                    <!-- <div class="notif__row notif__ac notif__add__pharmacy notif__mb__s">
-                        <i class="fas fa-plus-circle" style="color: white"></i>
-                        <p>Дәріхана қосу</p>
-                    </div> -->
-                    
+                  
                     <button type="submit">Сақтау</button>
                 </form>
                 
@@ -165,6 +161,7 @@
             
             <div class="notif__column notif__plan">
                 <div class="notif__row notif__pl notif__ac notif__mb__s" v-for="(item,index) in pharmacy.pharmacies" :key="index">
+                    
                     <div class="notif__column notif__day notif__ac notif__mr__l">
                         <i class="fas fa-capsules"></i>
                     </div>
@@ -198,9 +195,9 @@
                         </div>    
                     </div>
 
-                    <div class="notif__row notif__ac notif__ok" v-bind:class="{notif__green: done==2}">
+                    <!-- <div class="notif__row notif__ac notif__ok" v-bind:class="{notif__green: done==2}">
   
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -253,6 +250,24 @@
                     <button class="notif__mb__xs" type="submit">Сақтау</button>
                     <a  class="notif__mb__s" @click="closeModal">Жабу</a>
                 </form>
+
+                 <form class="notif__column notif__modal__form  notif__pl notif__fs " v-if="medicine.edit_tablet" @submit.prevent="editMedicine">
+                    
+                    <p class="notif__title">Дәрі атауын өзгерту</p>
+                   
+                   
+                    
+
+                    <div class="notif__column notif__phar__input notif__mb__s">
+                        <p>Дәрі атауы</p>
+                        <input type="text" v-model="medicine.name" required>
+                    </div>
+
+                    <button class="notif__mb__xs" type="submit">Сақтау</button>
+                    <a  class="notif__mb__s" @click="closeModal">Жабу</a>
+                </form>
+
+                
         </div>
 
         <div class="notif__actions notif__row notif__ac notif__100 notif__jb">
@@ -293,6 +308,7 @@
                       address: null
                   },
                   medicine: {
+                      edit_tablet: false,
                       show_modal: false,
                       price_id: null,
                       price_edit: false,
@@ -334,10 +350,20 @@
 
         },
         methods: {
+            showEditPharmacy() {
+                this.pharmacy.edit=false;
+                this.pharmacy.id = '';
+                this.pharmacy.name = '';
+                this.pharmacy.time_start = '';
+                this.pharmacy.time_end = '';
+                this.pharmacy.phone = '';
+                this.pharmacy.address = '';
+            },
             closeModal() {
                 this.medicine.price_edit = false;
                 this.medicine.show_modal = false;
                 this.medicine.addMedicine = false;
+                this.medicine.edit_tablet = false;
             },
             logout() {
                 localStorage.removeItem("access_token");
@@ -451,6 +477,13 @@
                         console.log(r.value);
                     });
 
+                    this.pharmacy.id = '';
+                    this.pharmacy.name = '';
+                    this.pharmacy.time_start = '';
+                    this.pharmacy.time_end = '';
+                    this.pharmacy.phone = '';
+                    this.pharmacy.address = '';
+
                     this.getPharmacies();
                  
                 });
@@ -480,6 +513,7 @@
             },    
             editMedicine() {
                 let data = {
+                    id: this.medicine.id,
                     name: this.medicine.name
                 };
 
@@ -498,12 +532,37 @@
                     }).then(r => {
                         console.log(r.value);
                     });
+                    this.medicine.id = '';
+                    this.medicine.name = '';
+
+                    this.medicine.show_modal = false;
+                    this.medicine.edit_tablet = false;
                     this.getMedicines();
                 });
             },         
      
-            deleteMedicine() {
+            deleteMedicine(id) {
+                let data = {
+                    id: id
+                };  
+                
+                const config = {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                };
 
+                this.$http.post('/pharmacy/delete/medicine', data, config)
+                .then(res => { 
+                    
+                    this.$fire({
+                        title: res.data.msg,
+                        text: "",
+                        type: "success",
+                        timer: 3000
+                    }).then(r => {
+                        console.log(r.value);
+                    });
+                    this.getMedicines();
+                });
             },
             getMedicines() {
                 const config = {
@@ -514,12 +573,17 @@
                     this.medicine.medicines = res.data
                 });
             },
-            getMedicine() {
+            getMedicine(id) {
+
                 const config = {
                     headers: { 'Authorization': `Bearer ${this.token}` }
                 };
-                this.$http.get('/pharmacy/get/medicine', config)
+                this.$http.get('/pharmacy/get/medicine?id='+id, config)
                 .then(res => {
+                    this.medicine.name = res.data.name;
+                    this.medicine.id = res.data.id;
+                    this.medicine.edit_tablet = true;
+                    this.medicine.show_modal = true;
                 });
             },
             addPharmacyForMedicine(id) {
