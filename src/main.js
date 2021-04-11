@@ -193,7 +193,32 @@ const messages = {
     }
   }
 }
+// document.addEventListener('deviceready', function () {
+//   // Enable to debug issues.
+//   // window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
+  
+//   var notificationOpenedCallback = function(jsonData) {
+//     console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+//   };
 
+//   window.plugins.OneSignal
+//           .startInit("f44a4f06-0984-4304-b641-1a7aeadb599e")
+//           .handleNotificationReceived(function(jsonData) {
+//             alert("Notification received: \n" + JSON.stringify(jsonData));
+//             console.log('Did I receive a notification: ' + JSON.stringify(jsonData));
+//           })
+//           .handleNotificationOpened(function(jsonData) {
+//             alert("Notification opened: \n" + JSON.stringify(jsonData));
+//             console.log('didOpenRemoteNotificationCallBack: ' + JSON.stringify(jsonData));
+//           })
+//           .inFocusDisplaying(window.plugins.OneSignal.OSInFocusDisplayOption.InAppAlert)
+//           .iOSSettings(iosSettings)
+//           .endInit();
+  
+//   // Call syncHashedEmail anywhere in your app if you have the user's email.
+//   // This improves the effectiveness of OneSignal's "best-time" notification scheduling feature.
+//   // window.plugins.OneSignal.syncHashedEmail(userEmail);
+// }, false);
 
 const i18n = new VueI18n({
   locale: 'kaz', // set locale

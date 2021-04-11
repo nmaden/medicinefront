@@ -10,6 +10,8 @@
                 <a  @click="signAsGuest">Қонақ ретінде кіру</a>
             </form>
 
+            <button id="add-btn" >SIGN PAGE </button>
+
         </div>                   
 </template>
 

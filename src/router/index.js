@@ -74,17 +74,15 @@
             meta: { guest: true },
            
         },
+        // {
+        //     path: '/',
+        //     component: LoginMed,
+        //     meta: { guest: true },
+           
+        // },   
+             
         {
             path: '/',
-            component: LoginMed,
-            meta: { guest: true },
-           
-        },
-
-
-        
-        {
-            path: '/notif',
             component: NotifMain,
             meta: { guest: true },
             children: [
@@ -143,21 +141,21 @@
             ]
 
         },
-            {
-                path: '/user',
-                component: UserPage,
-                // meta: { requiresAuth: true },
-                children: [
-                    { path: '/', component: User  },
-                    { path: 'profile', component: Profile },
-                    { path: 'settings', component: Settings },
-                    { path: 'faq', component: Faq },
-                ]
-            },
-            {
-                path: '*',
-                component: ErrorPage,
-            }
+        {
+            path: '/user',
+            component: UserPage,
+            // meta: { requiresAuth: true },
+            children: [
+                { path: '/', component: User  },
+                { path: 'profile', component: Profile },
+                { path: 'settings', component: Settings },
+                { path: 'faq', component: Faq },
+            ]
+        },
+        {
+            path: '*',
+            component: ErrorPage,
+        }
     ],
     // process.env.CORDOVA_PLATFORM ? 'hash' :
     mode:  process.env.CORDOVA_PLATFORM ? 'hash' :'history'

@@ -5,11 +5,16 @@
         <p class="calc__mb calc__toptext" style="font-size: 16px">Для создание элементов для рассчета и просмотра заказов</p>
 
         <div class="calc__menu calc__row calc__jb calc__mb">
-
+                <p class="calc__type" @click="show_page(4)" v-bind:class="{active_color:page==4}">Создать формулу</p>
                 <p class="calc__type" @click="show_page(1)" v-bind:class="{active_color:page==1}"> Создать элемент</p>
                 <p class="calc__type" @click="show_page(2)" v-bind:class="{active_color:page==2}">Элементы</p>
                 <p class="calc__type" @click="show_page(3)" v-bind:class="{active_color:page==3}">Заказы</p>
 
+
+                <p class="calc__type" @click="show_page(5)" v-bind:class="{active_color:page==5}">Создать толшину</p>
+                <p class="calc__type" @click="show_page(6)" v-bind:class="{active_color:page==6}">Создать категорию</p>
+
+                
         </div>
         <div class="calc__column">
 
@@ -43,7 +48,8 @@
                         <p>Примечание</p>
                         <input type="text"  v-model="edit_data.comment">
                     </div>
-                    <div class="calc__column calc__mb calc__ac">
+
+                    <!-- <div class="calc__column calc__mb calc__ac">
                         <p>Тип рассчета</p>
                       
                         <select  v-model="edit_data.type_calc">
@@ -51,11 +57,11 @@
                             <option value="by_size">По размерам</option>
                             <option value="by_height">По толшине</option>
                         </select>
-                    </div>
-                    <!-- <div class="calc__column calc__mb" >
+                    </div> -->
+                    <div class="calc__column calc__mb" v-if="edit_data.price" >
                         <p>Цена</p>
                         <input type="text"  v-model="edit_data.price">
-                    </div> -->
+                    </div>
 
                     <button type="submit">Редактировать</button>
                 </form>
@@ -66,7 +72,7 @@
 
               
                 <form class="calc__element calc__column" @submit.prevent="create_element()" v-if="page==1"> 
-
+                    <p>Создание элемента</p>
                     <div class="calc__column calc__mb">
                         <p>Выберите тип</p>
                         <select name="" id="" placeholder="Выберите тип" v-model="calculator.type_el" required>
@@ -74,7 +80,6 @@
                             <option value="3">Пленка</option>
                             <option value="4">Декор</option>
                             <option value="5">Обкат</option>
-                            <option value="other">Добавить дополнительный элемент</option>
                         </select>
                     </div>
 
@@ -86,33 +91,40 @@
                         <p>Название элемента</p>
                         <input type="text" required  v-model="calculator.el_name">
                     </div>
-                    <div class="calc__column calc__mb" >
+                    <!-- <div class="calc__column calc__mb" >
                         <p>Тип рассчета</p>
                         <select name="" id="" placeholder="Выберите тип" v-model="calculator.type_calc" required>
                             <option value="by_count">По количеству</option>
                             <option value="by_size">По размерам</option>
                             <option value="by_height">По толшине</option>
                         </select>
-                    </div>
+                    </div> -->
 
 
                     <div class="calc__column calc__mb">
                         <p>Рисунок</p>
-                        <input type="file" @change="uploadImage" class="custom-file-input"  name="image"   accept="image/*" >
+                        <input type="file" @change="uploadImage" class="custom-file-input"  name="image"   accept="image/*" required >
                     </div>
                     
                     <div class="calc__column calc__mb" v-if="calculator.type_el==2">
                         <p>Тип фрезировки</p>
+ 
                         <select name="" id="" placeholder="Выберите тип" v-model="calculator.type_frez" required>
-                            <option value="easy">Простой</option>
-                            <option value="hard">Сложный</option>
+                             <option v-for="(item , index) in calculator.type_frezs" v-bind:key="index"  :value="item.id" >
+                                    {{item.name}}
+                            </option>
                         </select>
+                    </div>
+                    <div class="calc__column calc__mb calc__border" v-if="calculator.type_el==2 || calculator.type_el==4 || calculator.type_el==5">
+                        <p>Цена</p>
+                        <input type="number" required v-model="calculator.price"> 
                     </div>
                     <div class="calc__column calc__mb" v-if="calculator.type_el==3">
                         <p>Тип  пленки</p>
                         <select name="" id="" placeholder="Выберите тип" v-model="calculator.type_plenka" required>
-                            <option value="easy">Простой</option>
-                            <option value="hard">Сложный</option>
+                             <option v-for="(item , index) in calculator.type_plenkas" v-bind:key="index" :value="item.id"  >
+                                    {{item.name}}
+                            </option>
                         </select>
                     </div>
 
@@ -122,6 +134,7 @@
                         <p>Примечание</p>
                         <input type="text" required v-model="calculator.comment"> 
                     </div>
+                    
 
                     <button type="submit">Создать</button>
                 </form>
@@ -132,11 +145,9 @@
                     <div class="calc__column elements__row" v-for="(item,index) in elements" :key="index">
 
                         <div class="calc__row  calc__mb elements__body calc__ac"  >
-                            <p>{{ item.type}}</p>
-                            <p>{{ item.name}}</p>
-
+                            <p>{{item.type}}</p>
                             <div class="calc__row ">
-                             
+                                
                                 <i @click="edit_element(1,item.id)" class="fas fa-pencil-alt" style="margin-left: 10px"></i>
                                 <i @click="delete_element(1,item.id)" class="fas fa-trash-alt"></i>
                                
@@ -177,7 +188,7 @@
 
                 </div>
 
-                <div class="calc__column" ref="testHtml" v-else> 
+                <div class="calc__column" ref="testHtml" v-if="page==3"> 
 
                     
                     <p class="calc__order__title">Последние заказы</p>
@@ -222,25 +233,15 @@
                                     </div>
                                     
                             </div>
-                       
-
-
-                          
-                           
                     </div>
                     </div>
 
                     <div class="calc__column calc__order__bottom" v-if="show_ordered" style="margin-top: 50px">
                         <p class="calc__order__level">{{current_user_index+1}} - Заказ</p>
                         <div class="calc__column" v-for="(order,i) in ordered_elements[current_user_index]" :key="i">
-
                                 <div class="calc__column calc__orders">
-                                    
-                                   
                                     <div class="calc__column calc__order" v-if="order.type_calculate=='by_count'">
-                                        <p class="calc__order__title">{{order.type_name}}</p>
-                                        
-                                        
+                                        <p class="calc__order__title">{{order.type_name}}</p> 
                                         <div class="calc__data calc__row calc__ac">
                                             <p class="calc__input__label">Количество</p>
                                             <p>{{order.count}}</p>
@@ -275,8 +276,6 @@
                                                     <p class="calc__input__label">Ширина</p>
                                                     <p>{{input.wirina}}</p>
                                                 </div>
-                                              
-
                                                 <div class="calc__data calc__column calc__ac">
                                                     <p class="calc__input__label">Цена</p>
                                                     <input type="text" placeholder="Цена" v-model="input.price" @input="set_price(order.price,i,current_user_index,order.count,order.dlina,order.wirina,order.type_calculate)">
@@ -288,24 +287,225 @@
                                             <input type="text" placeholder="Сумма"    v-model="order.amount_sum">
                                         </div>
                                     </div>
-                           
-                                    
                                 </div>
                         </div>
-
-    
-
                     <button class="calc__save__order" v-if="show_save_btn" @click="saveOrder()">Сохранить</button>
-
-                    <!-- <download-excel class="calc__save__order" :data="json_data" v-if="show_save_btn">
-                        Скачать excel
- 
-                    </download-excel> -->
                     <button class="calc__save__order" v-if="show_save_btn" @click="getPdf(current_user_index)">Скачать PDF</button>
                     </div>
 
                 </div>
-             
+
+                <div class="calc__column calc__ac" v-if="page==4">
+                    
+                    <div class="calc__row">
+                        <div class="calc__type" @click="choosenFormula(true)" v-bind:class="{active_color:three_dimension==true}">3 х переменный формула</div>
+                        <div class="calc__type" @click="choosenFormula(false)" v-bind:class="{active_color:three_dimension==false}">2 х переменный формула</div>
+                    </div>
+
+
+                    <div class="calc__column" v-if="three_dimension">
+                            <div class="calc__column"  v-bind:class="{calc__hide: x_array.length!=0 && y_array.length!=0 && calc_height}">
+                        <p class="calc__mb">Сначало нужно выбрать фрезирову!</p>
+
+                        <div v-for="(item,index) in elements" :key="index">
+
+
+                            <p v-if="item.type=='Пленка'" >{{item.type}}</p>
+                            <p v-if="item.type=='Фрезировка'">{{item.type}}</p>
+
+
+                            <div v-if="item.type=='Фрезировка'"  class="calc__mb" style="border-bottom: 2px solid blue">
+                                <p class="calc__mb calc__choose__level">1</p>
+                                <div class="calc__column calc__ac">
+                                    
+                                    <div class="calc__mr calc__mb" v-for="(j,i) in remove_same(item.type_calculate)" :key="i"> 
+                                        <p class="calc__mb__s">{{j}}</p>
+                                        <div class="calc__row calc__ac" >
+                                            <v-select :options="sort_category(j,item.type_calculate)" v-on:input="selectedEl($event,1)" class="calc__mr calc__select"  style="width: 250px" placeholder="Выберите элемент" label="name" >    
+                                                <template slot="option" slot-scope="option"  >
+                                                    <div class="calc__row calc__ac"  v-if="option.type==j" >
+                                                        <img  class="calc__mr"   :src="'http://127.0.0.1:8000'+option.image_path" alt="">
+                                                        <p    >{{ option.name }}</p>
+                                                    </div>
+                                                </template>
+                                   
+                                            </v-select>
+                                            <input type="checkbox" @input="selectedAll(item.type_calculate,j,1)">
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-if="item.type=='Пленка'">
+                                <p class="calc__mb calc__choose__level">2</p>
+                                <div class="calc__column calc__ac">
+                                    <div class="calc__mr calc__mb" v-for="(j,i) in remove_same(item.type_calculate)" :key="i"> 
+                                        <p class="calc__mb__s">{{j}}</p>
+
+                                        <div class="calc__row calc__ac" >
+                                            <v-select :options="sort_category(j,item.type_calculate)" class="calc__mr calc__select"  v-on:input="selectedEl($event,2)" style="width: 250px" placeholder="Выберите элемент" label="name" >    
+                                                <template slot="option" slot-scope="option">
+                                                    <div class="calc__row calc__ac">
+                                                        <img v-if="option.type==j" class="calc__mr"   :src="'http://127.0.0.1:8000'+option.image_path" alt="">
+                                                        <p   v-if="option.type==j"  >{{ option.name }}</p>
+                                                    </div>
+                                                </template>
+                                            </v-select>
+                                            <input type="checkbox"  @input="selectedAll(item.type_calculate,j,2)">
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                        <div class="calc__ac calc__mb" >
+                            <p class="calc__mb calc__choose__level">3</p>
+                            <p class="calc__mb calc__mb__xs">Выберите толшину</p>
+                            <v-select :options="heights"  v-on:input="selectedHeight($event)" class="calc__mr calc__select"  style="width: 250px" placeholder="Выберите толшину" label="height" >    
+                                    <template slot="option" slot-scope="option">
+                                        <div class="calc__row calc__ac">
+                                            <p   >{{ option.height }}</p>
+                                        </div>
+                                    </template>
+                            </v-select>
+                        </div>
+                    </div>
+                        <div v-if="x_array.length!=0 && y_array.length!=0 && calc_height" class="calc__mb">
+                            <div v-for="(item,index) in y_array" :key="index">
+                                <div v-for="(j,i) in x_array" :key="i">
+                                    <div class="calc__column calc__ac calc__mb calc__border__bottom">    
+                                        <p class="calc__formula__f calc__mb__xs">{{j.name+' + '+item.name+' + '+item.height }}</p>
+                                        <div class="calc__formula__input calc__column calc__mb__s">
+                                            <p class="calc__mb__xs">Цена:</p>
+                                            <input type="number"    class="setted_prices calc__formula__price"/> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div  v-if="x_array.length!=0 && y_array.length!=0 && calc_height" class="calc__row calc__ac">
+                                <button class="calc__save__order calc__mr"  @click="createFormula">Создать формулу</button>
+                                <button class="calc__save__order"   @click="clearFormula">Очистить формулу</button>
+                        </div>
+                    </div>
+
+                    <div v-else>
+                        <div v-for="(item,index) in elements" :key="index">
+                            <p v-if="item.type=='Фрезировка'">{{item.type}}</p>
+                            <div v-if="item.type=='Фрезировка'"  class="calc__mb" style="border-bottom: 2px solid blue">
+                                <p class="calc__mb calc__choose__level">1</p>
+                                <div class="calc__column calc__ac">
+                                    
+                                    <div class="calc__mr calc__mb" v-for="(j,i) in remove_same(item.type_calculate)" :key="i"> 
+                                        <p class="calc__mb__s">{{j}}</p>
+                                        <div class="calc__row calc__ac" >
+                                            <v-select :options="sort_category(j,item.type_calculate)" v-on:input="selectedElTwo($event,1)" class="calc__mr calc__select"  style="width: 250px" placeholder="Выберите элемент" label="name" >    
+                                                <template slot="option" slot-scope="option"  >
+                                                    <div class="calc__row calc__ac"  v-if="option.type==j" >
+                                                        <img  class="calc__mr"   :src="'http://127.0.0.1:8000'+option.image_path" alt="">
+                                                        <p    >{{ option.name }}</p>
+                                                    </div>
+                                                </template>
+                                   
+                                            </v-select>
+                                            <input type="checkbox" @input="selectedAll(item.type_calculate,j,1)">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="calc__ac calc__mb" >
+                            <p class="calc__mb calc__choose__level">2</p>
+                            <p class="calc__mb calc__mb__xs">Выберите толшину</p>
+                            <v-select :options="heights"  v-on:input="selectedHeightTwo($event)" class="calc__mr calc__select"  style="width: 250px" placeholder="Выберите толшину" label="height" >    
+                                    <template slot="option" slot-scope="option">
+                                        <div class="calc__row calc__ac">
+                                            <p   >{{ option.height }}</p>
+                                        </div>
+                                    </template>
+                            </v-select>
+                        </div>
+
+                        <div v-if="x_array.length!=0 && calc_height" class="calc__mb">
+                            
+                            <div v-for="(j,i) in x_array" :key="i">
+                                <div class="calc__column calc__ac calc__mb calc__border__bottom">    
+                                    <p class="calc__formula__f calc__mb__xs">{{j.name+' + '+calc_height}}</p>
+                                    <div class="calc__formula__input calc__column calc__mb__s">
+                                        <p class="calc__mb__xs">Цена:</p>
+                                        <input type="number"    class="setted_prices_two calc__formula__price"/> 
+                                    </div>
+                                </div>
+                            </div>
+                        
+
+                        </div>
+                        <div  v-if="x_array.length!=0 && calc_height" class="calc__row calc__ac">
+                                <button class="calc__save__order calc__mr"  @click="createFormulaTwo">Создать формулу</button>
+                                <button class="calc__save__order"   @click="clearFormulaTwo">Очистить формулу</button>
+                        </div>
+                    </div>
+
+
+                    
+                
+
+                </div>
+
+
+                <div class="calc__column calc__ac" v-if="page==6">
+
+                    <form  @submit.prevent="createCategory" class=" calc__mb calc__element calc__column">
+                        
+                        <div class="calc__column calc__mb">
+                            <p>Выберите элемент</p>
+                            <select name="" v-model="categories.type" id="">
+                                <option value="" selected>Выберите элемент</option>
+                                <option value="1">Фрезировка</option>
+                                <option value="2">Пленка</option>
+                            </select>
+                        </div>
+                        <div class="calc__column calc__mb">
+                            <p>Название</p>
+                            <input type="text" v-model="categories.name" required>
+                        </div>
+
+                        <button type="submit">Создать</button>
+                    </form>
+
+                    <div class="calc__column calc__orders" >
+                     
+                        <div class="calc__row  calc__order calc__mb calc__ac " v-for="(item,index) in categories_all" :key="index">
+                                <p class="calc__mr">{{item.name}}</p>
+                                <i @click="deleteCategories(item.id)" class="fas fa-trash-alt"></i>
+                        </div>
+                    </div>
+                 
+
+
+                </div>
+
+
+                <div class="calc__column calc__ac" v-if="page==5">
+
+                     <form @submit.prevent="createHeight" class="calc__mb calc__column calc__element">
+                        
+                        <div class="calc__column calc__mb">
+                            <p>Высота</p>
+                            <input type="number" v-model="heights.height" required>
+                        </div>
+                        <button type="submit">Создать</button>
+                     </form>
+      
+                    <div class="calc__column calc__orders" >
+
+                        <div class="calc__row calc__order calc__mb calc__ac calc__100" v-for="(item,index) in heights" :key="index">
+                                <p class="calc__mr">{{item.height}}</p>
+                                <i @click="deleteHeights(item.id)" class=" calc__pointer fas fa-trash-alt"></i>
+                        </div>
+                    </div>
+                </div>
 
                 
                 
@@ -325,6 +525,33 @@
     name: 'CalcAdmin' ,
         data() {
             return { 
+                    two_dimension: false,
+                    three_dimension: true,
+                    heights: {
+                        heights: null
+                    },
+                    categories: {
+                        name: null,
+                        type: null
+                    },
+                    setted_prices: [],
+                    calc_height: null,
+                    x_array: [],
+                    y_array: [],
+                    heights: [
+                        {
+                            height: 8,
+                            price: 2000
+                        },
+                        {
+                            height: 16,
+                            price: 3000
+                        },
+                        {
+                            height: 18,
+                            price: 5000
+                        }
+                    ],
                     json_fields: {
                         "Complete name": "name",
                         City: "city",
@@ -381,7 +608,7 @@
                   show_modal: false,
                   show_hide: [],
                   elements: '',
-                  page: 1,
+                  page: 4,
                   token: "",
                   types: ["Дверь","Фрезировка","Пленка","Декор","Обкат"],
                   calculator: {
@@ -392,7 +619,9 @@
                       el_name: '',
                       image: '',
                       type_frez: '',
-                      type_plenka: ''
+                      type_plenka: '',
+                      type_frezs: [],
+                      type_plenkas: []
                   },
                   edit_data: {
                       type: "",
@@ -414,7 +643,10 @@
                     kaz: require('../../assets/images/kaz.png'),
                     en: require('../../assets/images/en.png'),
                   },
-                  link: require('../../assets/images/kaz.png')
+                  link: require('../../assets/images/kaz.png'),
+                  for_frez: [],
+                  heights:[],
+                  categories_all: []
             }
         },
         components: {
@@ -428,9 +660,367 @@
                 this.token = localStorage.getItem("access_token");
                 this.get_profile();
             }
+
+            this.getCategories();
+            this.getHeights();
           
         },
         methods: {
+            choosenFormula(bool) {
+                this.three_dimension = bool;
+                this.clearFormulaTwo();
+            },
+            sort_category(type,data) {
+              
+                let arr = [];
+               
+                    for (let index2 = 0; index2 < data.length; index2++) {
+                        if(type==data[index2].type) {
+                            arr.push(data[index2]);
+                        }
+                    }
+                
+                return arr;
+            },
+            createCategory() {
+                let data = {
+                    type: this.categories.type,
+                    name: this.categories.name
+                };
+
+                const config = {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                };
+
+                this.$http.post('/calculator/create/categories', data, config)
+                .then(res => { 
+
+                    this.$fire({
+                        title: res.data.msg,
+                        text: "",
+                        type: "success",
+                        timer: 3000
+                    }).then(r => {
+                        console.log(r.value);
+                    });
+                    this.getCategories();
+                });
+            },
+            createHeight() {
+                let data = {
+                    height: this.heights.height
+                };
+
+                const config = {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                };
+
+                this.$http.post('/calculator/create/heights', data, config)
+                .then(res => { 
+                    this.$fire({
+                        title: res.data.msg,
+                        text: "",
+                        type: "success",
+                        timer: 3000
+                    }).then(r => {
+                        console.log(r.value);
+                    });
+                    this.getHeights();
+                });
+            },
+            getHeights() {
+                const config = {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                };
+                this.$http.get('/calculator/get/heights', config)
+                .then(res => {
+                    this.heights = res.data
+                });
+            },
+            getCategories() {
+                console.log("thrfsdfsd");
+                const config = {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                };
+                this.$http.get('/calculator/get/categories', config)
+                .then(res => {
+               
+                    this.categories_all = res.data;
+
+                    for (let index = 0; index < this.categories_all.length; index++) {
+                       if(this.categories_all[index].calc_id==1) {
+                           this.calculator.type_frezs.push(this.categories_all[index]);
+                       }
+                       else {
+                          this.calculator.type_plenkas.push(this.categories_all[index]); 
+                       }
+                    }
+                });
+            },
+            deleteHeights(id) {
+                       
+                let data = {
+                    id: id
+                };
+
+                const config = {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                };
+
+                this.$http.post('/calculator/delete/heights', data, config)
+                .then(res => { 
+
+                    this.$fire({
+                        title: res.data.message,
+                        text: "",
+                        type: "success",
+                        timer: 3000
+                    }).then(r => {
+                        console.log(r.value);
+                    });
+
+                    this.getHeights();
+                 
+                });
+            },
+            deleteCategories(id) {
+                       
+                let data = {
+                    id: id
+                };
+
+                const config = {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                };
+
+                this.$http.post('/calculator/delete/categories', data, config)
+                .then(res => { 
+
+                    this.$fire({
+                        title: res.data.message,
+                        text: "",
+                        type: "success",
+                        timer: 3000
+                    }).then(r => {
+                        console.log(r.value);
+                    });
+
+                    this.getCategories();
+                 
+                });
+            },
+
+         
+            createFormula() {
+                let length = document.querySelectorAll('.setted_prices').length;
+
+
+                let createdFormula = [];
+                let createdNameFormula = [];
+                for (let index = 0; index < this.y_array.length; index++) {
+                    for (let j = 0; j < this.x_array.length; j++) {
+                        createdFormula.push(this.y_array[index].id+' '+this.x_array[j].id+' '+this.calc_height); 
+                        createdNameFormula.push(this.y_array[index].name+' '+this.x_array[j].name+' '+this.calc_height);
+                    }
+                }
+                let obj = {
+                    formula: '',
+                    price: ''
+                }
+                let send_formula = [];
+                for (let index = 0; index < length; index++) {
+                    if(document.getElementsByClassName("setted_prices")[index].value=='') {
+                        this.$fire({
+                            title: "Заполните цену",
+                            text: "",
+                            type: "warning",
+                            timer: 3000
+                        });
+                        return false;
+                    }
+                    obj = {
+                        formula_name: createdNameFormula[index],
+                        formula_id: createdFormula[index],
+                        price: document.getElementsByClassName("setted_prices")[index].value
+                    };
+                     document.getElementsByClassName("setted_prices")[index].value = "";
+                    send_formula.push(obj);
+                }
+
+                const config = {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                };
+
+
+                let data =  {
+                    data: send_formula
+                }
+                this.$http.post('/calculator/create/formula', data, config)
+                .then(res => { 
+                     this.$fire({
+                            title: "Формула сохранен",
+                            text: "",
+                            type: "success",
+                            timer: 3000
+                    });
+                });
+
+            },
+            clearFormulaTwo() {
+                this.x_array = [];
+                this.y_array = [];
+                this.calc_height = '';
+            },
+            clearFormula() {
+                this.x_array = [];
+                this.y_array = [];
+                this.calc_height = '';
+
+                this.$router.go(0);
+                this.show_page(4);
+
+            },
+            createFormulaTwo() {
+
+                let length = document.querySelectorAll('.setted_prices_two').length;
+
+                let createdFormula = [];
+                let createdNameFormula = [];
+                for (let index = 0; index < this.x_array.length; index++) {
+                    createdNameFormula.push(this.x_array[index].name+' '+this.calc_height);
+                    createdFormula.push(this.x_array[index].id+' '+this.calc_height);
+                }
+
+               
+                
+                let obj = {
+                    formula: '',
+                    price: '',
+                    formula_id: ''
+                }
+                let send_formula = [];
+
+                let create = true;
+                for (let index = 0; index < length; index++) {
+                    if(!document.getElementsByClassName("setted_prices_two")[index].value) {
+                        this.$fire({
+                            title: "Заполните цену",
+                            text: "",
+                            type: "success",
+                            timer: 3000
+                        });
+                        create = false;
+                        return false;
+                    }
+                    obj = {
+                        formula_name: createdNameFormula[index],
+                        formula_id: createdFormula[index],
+                        price: document.getElementsByClassName("setted_prices_two")[index].value
+                    };
+                    document.getElementsByClassName("setted_prices_two")[index].value = "";
+                    send_formula.push(obj);
+                }
+          
+                const config = {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                };
+                let data =  {
+                    data: send_formula
+                }
+                
+
+                let checker = [];
+                for (let index = 0; index < send_formula.length; index++) {
+                    if(!send_formula[index].price) {
+                        checker.push("false");
+                    }
+                }
+
+            
+                if(checker.length==0) {
+                    this.$http.post('/calculator/create/formula', data, config)
+                    .then(res => { 
+                        this.$fire({
+                                title: "Формула сохранен 22",
+                                text: "",
+                                type: "warning",
+                                timer: 3000
+                        });
+                    });
+
+                }
+    
+            },
+            selectedHeight(el) {
+                this.calc_height = el.height;
+                if(this.y_array.length!=0) {
+                    for (let index = 0; index < this.y_array.length; index++) {
+                        this.y_array[index].height = el.height;
+                        this.y_array[index].height_price = el.price; 
+                    }
+                }
+            },
+            selectedHeightTwo(el) {
+                this.calc_height = el.height;
+                
+            },
+            selectedAll(el,type,y) {
+                if(y==1) {
+                 
+                    for (let index = 0; index < el.length; index++) {
+                    
+                        if(el[index].type==type) {
+                            
+                            this.x_array.push(el[index]);
+                        }
+                    }
+                }
+                if(y==2) {
+                    for (let index = 0; index < el.length; index++) {
+                        if(el[index].type==type) {
+                            
+                            this.y_array.push(el[index]);
+                        }
+                    }
+                }
+                if(this.y_array.length!=0 && this.x_array.length!=0) {
+                        if(this.x_array.length>this.y_array) {
+                            let first = this.x_array;
+                            let second =   this.y_array;
+                            this.x_array = [];
+                            this.y_array = [];
+
+                            this.y_array = second;
+                            this.x_array = first;
+                        }
+                }
+               
+            },
+            selectedElTwo(el) {
+                this.x_array.push(el);
+
+                
+            },
+            selectedEl(el,type) {
+                if(type==1) {
+                    this.x_array.push(el);
+                }
+                else {
+                    this.y_array.push(el);
+                }
+            },
+            remove_same(arr) {
+                
+                let arr2 = [];
+                let str = '';
+                arr.forEach(element => {
+                    str = str+element.type+',';
+                });
+                arr2 = str.split(',');
+                arr2 =arr2.splice(0,arr2.length-1);
+                arr2 =  arr2.filter((item,index)=>arr2.indexOf(item)===index);  
+                return arr2;
+            },
             delete_order(index) {
               
                 let data = {
@@ -587,6 +1177,7 @@
 
                     this.show_modal = false;
                     this.get_el();
+                    this.get_elements();
 
                 });
 
@@ -637,7 +1228,7 @@
 
                 this.$http.get('/calculator/delete/'+route+'?id='+id,  config)
                 .then(res => {
-
+                    this.get_elements();
                 })
                 .catch(error => {
                 });
@@ -679,8 +1270,32 @@
                     this.elements = res.data;
 
                     for (let index = 0; index < this.elements.length; index++) {
+
+                        if(this.elements[index].type =='Фрезировка') {
+                            
+                            // console.log(this.elements[index]['type_calculate']);
+                            for (let j = 0; j < this.elements[index]['type_calculate'].length; j++) {
+                                // console.log(this.elements[index]['type_calculate'][j]["type"]);
+
+                                this.for_frez.push(this.for_frez,this.elements[index]['type_calculate'][j]["type"]);
+                            }
+                        }
                         this.show_hide.push(false) 
                     }
+
+                
+
+                    
+
+                    // var result = [];
+                    // this.for_frez.forEach(function(item) {
+                    //     if(result.indexOf(item) < 0) {
+                    //         result.push(item);
+                    //     }
+                    // });
+                    // console.log(result);
+
+
 
                 })
                 .catch(error => {
@@ -701,17 +1316,18 @@
             },
             create_element() {
                
-
-                if(this.calculator.type_el=='other') {
-                    this.calculator.type_el = this.calculator.type;
-                }  
-                else {
-                    this.calculator.type_el = this.types[this.calculator.type_el-1];
-                } 
-                let fm = new FormData()
                 
+                // if(this.calculator.type_el=='other') {
+                //     this.calculator.type_el = this.calculator.type;
+                // }  
+                // else {
+                //     this.calculator.type_el = this.types[this.calculator.type_el-1];
+                // } 
 
-                fm.append('type', this.calculator.type_el)
+                console.log(this.calculator);
+                return false;
+                let fm = new FormData();
+                fm.append('type',this.types[this.calculator.type_el-1]);
                 fm.append('name', this.calculator.el_name)
                 
                 fm.append('image', this.calculator.image)
@@ -719,16 +1335,21 @@
 
                 fm.append('price', this.calculator.price)
                 fm.append('comment', this.calculator.comment)
-
-
-                
-                if(this.calculator.type_el=="Фрезировка") {
-                    fm.append('type_of_el', this.calculator.type_frez)    
+                if(this.calculator.type_el==2) {
+                    fm.append('type_el', this.calculator.type_el) 
+                    fm.append('type_frez', this.calculator.type_frez)    
                 }
-                else if(this.calculator.type_el=="Пленка") {
-                    fm.append('type_of_el', this.calculator.type_plenka)   
+                else if(this.calculator.type_el==3) {
+                    fm.append('type_el', this.calculator.type_el)
+                    fm.append('type_plenka', this.calculator.type_plenka)   
                 }
-
+                else if(this.calculator.type_el==4) {
+                    fm.append('type_el', this.calculator.type_el)  
+                }
+                else if(this.calculator.type_el==5) {
+                    fm.append('type_el', this.calculator.type_el)  
+                }
+              
                 const config = {
                         headers: { 'Authorization': `Bearer ${this.token}` }
                 };
@@ -736,6 +1357,8 @@
                 this.$http.post('/calculator/create/element', fm, config)
                 .then(res => {
                     this.show_page(2);
+                    this.calculator.price = null;
+                    this.calculator.type_el= null;
                 })
                 .catch(error => {
                     
@@ -752,11 +1375,28 @@
 
 
 <style scoped lang="scss"> 
-select {
-       -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-}
+
+
+        .calc__hide {
+            display: none !important;
+        }
+        .calc__formula__f {
+
+        }
+        .calc__formula__input {
+            input {
+                padding: 10px;
+            }
+            
+        }
+        .calc__mr {
+            margin-right: 10px;
+        }
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
         .active_color {
             background-color: rgb(200, 60, 60) !important;
         }
@@ -780,10 +1420,33 @@ select {
         .calc__mb {
             margin-bottom: 20px;
         } 
+        .calc__mb__xs {
+            margin-bottom: 10px;
+        } 
+        .calc__mb__s {
+            margin-bottom: 15px;
+        } 
+        
         .calc__ml {
             margin-left: 20px;
         }
+        .calc__border__bottom {
+            border-bottom: 2px solid var(--main-kenes-blue);
+        }
+        .calc__choose__level {
+            font-size: 24px;
+            font-size: bold;
+            color: gray;
+        }
 
+        .calc {
+            .calc__select {
+                img {
+                    width: 30px;
+                    height: 30px; 
+                }
+            }
+        }
         .calc__header {
 
             background-color: var(--main-kenes-blue);
@@ -810,7 +1473,11 @@ select {
         .calc__menu {
             margin-right: 20px;
            
-            .calc__type {
+      
+
+         
+        }
+              .calc__type {
                 text-transform: uppercase;
                 text-align: center;
                 width: 200px;
@@ -822,9 +1489,6 @@ select {
 
                 cursor: pointer;
             }
-
-         
-        }
 
         .calc__element {
             width: 600px;
@@ -1109,6 +1773,7 @@ select {
     @media (max-width: 900px) {
         .calc {
             width: 100%;
+  
             .calc__header {
                 padding: 0;
             }

@@ -9,10 +9,7 @@
                             <i class="fas fa-plus-circle"></i>
                             <p>добавить строку</p>
                         </div>
-                        <div class="calc__row calc__ac calc__mb  calc__add__input__red" @click="removeInput(index)">
-                            <i class="fas fa-minus-circle"></i>
-                            <p>Удалить строку</p>
-                        </div>
+                       
                 </div>
                 <div class="calc__column" style="align-items:flex-start" v-for="(i,index) in new_orders" :key="index">
                     
@@ -20,51 +17,128 @@
 
                         <div class="calc__column">
                             <div class="calc__dropdown  calc__mr" >
+                                
                                 <div class="calc__column calc__count calc__mb">
                                     <p>Выберите элемент</p>
-                                    <select @change="onChange($event,index)" >
+                                    <select @change="onChange($event,index)" v-model="permanent.elem" >
                                         <option value="">Выберите элемент</option>
                                         <option v-for="(item , index) in i.elements" v-bind:key="index"   >
                                                 {{item.type}}
                                         </option>
                                     </select>
                                 </div>
+
+                                <div class="calc__column calc__count calc__mb">
+                                    <p>Выберите декор или обкат</p>
+                                    <select @change="onChangeOtherElement($event,index)" v-model="permanent.elem_obkat" >
+                                        <option value="">Выберите декор или обкат</option>
+                                        <option v-for="(item , index) in i.other_elements" v-bind:key="index"   >
+                                                {{item.type}}
+                                        </option>
+                                    </select>
+                                </div>
+
+
                             </div>
                             <div  class="calc__row calc__ac calc__mb" v-if="i.choosen_element && i.choosen_element.length!=0">
-                                <img class="calc__choosen__img calc__mr" :src="'http://127.0.0.1:8000'+i.choosen_element.image_path" alt="">
-                                <p>{{i.choosen_element.name}}</p>
+                                <div class="calc__column">
+                                    <p>Элемент</p>
+                                    <div class="calc__row calc__ac calc__mb">
+                                        <img class="calc__choosen__img calc__mr" :src="'http://127.0.0.1:8000'+i.choosen_element.image_path" alt="">
+                                        <p class="calc__mr">{{i.choosen_element.name}}</p>
+                                        <i @click="deleteRow(index,'element')" class="calc__pointer fas fa-trash-alt"></i>
+                                    </div>
+                                </div>
                             </div>
                             <div class="calc__row calc__ac" v-if="i.choosen_plenka && i.choosen_plenka.length!=0">
-                                <img  class="calc__choosen__img calc__mr" :src="'http://127.0.0.1:8000'+i.choosen_plenka.image_path" alt="">
-                                <p>{{i.choosen_plenka.name}}</p>
+                                <div class="calc__column">
+                                    <p class="calc__mb">Пленка</p>
+                                    <div class="calc__row calc__ac calc__mb">
+                                        <img  class="calc__choosen__img calc__mr" :src="'http://127.0.0.1:8000'+i.choosen_plenka.image_path" alt="">
+                                        <p class="calc__mr">{{i.choosen_plenka.name}}</p>
+                                        <i @click="deleteRow(index,'plenka')" class="calc__pointer fas fa-trash-alt"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="calc__row calc__ac" v-if="i.choosen_obkat && i.choosen_obkat.length!=0">
+                                <div class="calc__column">
+                                    <p class="calc__mb">Обкат</p>
+
+                                    
+                                    <div class="calc__row calc__ac calc__mb">
+                                        <img  class="calc__choosen__img calc__mr" :src="'http://127.0.0.1:8000'+i.choosen_obkat.image_path" alt="">
+                                        <p class="calc__mr">{{i.choosen_plenka.name}}</p>
+                                        <input class="calc__mr" v-on:input="changedObkat(index)" type="text" v-model="i.count_obkat">
+                                        <i @click="deleteRow(index,'obkat')" class="calc__pointer fas fa-trash-alt calc__mr"></i>
+                                    </div>
+      
+                                </div>
+                            </div>
+                            <div class="calc__row calc__ac" v-if="i.choosen_decor && i.choosen_decor.length!=0">
+                                <div class="calc__column">
+                                    <p class="calc__mb">Декор</p>
+                                    <div class="calc__row calc__ac calc__mb">
+                                        <img  class="calc__choosen__img calc__mr" :src="'http://127.0.0.1:8000'+i.choosen_decor.image_path" alt="">
+                                        <p class="calc__mr">{{i.choosen_decor.name}}</p>
+                                        <input class="calc__mr" v-on:input="changedDecor(index)" type="text" v-model="i.count_decor">
+                                        <i @click="deleteRow(index,'decor')" class="calc__pointer fas fa-trash-alt calc__mr"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="calc__row calc__ac calc__mb  calc__add__input__red" @click="removeInput(index)">
+                                <i class="fas fa-minus-circle"></i>
+                                <p>Удалить строку</p>
                             </div>
      
                         </div>
 
                         <div class="column" v-if="i.element && i.element.length!=0">
-                            <div class="calc__column calc__count calc__mr">
+                            <div class="calc__column calc__count calc__mr calc__mb">
                                 <p>Толшина</p>
-                                <input type="text" v-model="i.tolwina" @input="calculateInput(index)" >
+                                <select name="" id="" v-model="i.tolwina" @change ="calculateTolwina(index)" >
+                                    <option value="16">16</option>
+                                    <option value="8">8</option>
+                                </select>
                             </div>
-                            <div class="calc__column calc__count calc__mr">
-                                <p>Длина</p>
-                                <input type="text" v-model="i.dlina" @input="calculateInput(index)">
+                            <div class="calc__column calc__count calc__mr calc__mb">
+                                <p>Длина,мм</p>
+                                <input type="text" placeholder="ширина в мм" v-model="i.dlina" @input="calculateInput(index)">
                             </div>
-                            <div class="calc__column calc__count calc__mr">
-                                <p>Ширина</p>
-                                <input type="text" v-model="i.wirina" @input="calculateInput(index)">
+                            <div class="calc__column calc__count calc__mr calc__mb">
+                                <p>Ширина,мм</p>
+                                <input type="text" placeholder="ширина в мм" v-model="i.wirina" @input="calculateInput(index)">
                             </div>
                             <div class="calc__column calc__count calc__mr calc__mb">
                                 <p>Количество</p>
                                 <input type="text" v-model="i.count" @input="calculateInput(index)">
                             </div>
-
-                            <p>Плошадь:  {{i.dlina+'*'+i.wirina+'*'+i.count+'='+i.dlina*i.wirina*i.count}}</p>
-                            <p>Сумма: </p>
+                            <p class="calc__result calc__mb" v-if="Math.round(i.dlina*i.wirina*i.count*0.001)!=0">Общая плошадь:  {{i.dlina+'*'+i.wirina+'*'+i.count+' = '}}<span class="calc__value">{{Math.round(i.dlina*i.wirina*i.count*0.001)}} кв м</span></p>
+                            <p class="calc__result calc__mb" v-if="i.price!=1">Сумма: <span class="calc__value">{{i.price_order+' тг' }}</span></p>
                         </div>
+
+
                     
                     </div>
                 </div>
+
+
+                <div class="calc__column">
+                    <p class="calc__amount_sum">Общая сумма: <span>{{amount_sum}} тг</span> </p>
+                </div>
+
+                <div class="calc__column calc__phone">
+                    <p>Телефон</p>
+                    <input type="text" value="988888"  v-model="order.phone">
+                </div>
+                <div class="calc__column calc__phone">
+                    <p>Имя</p>
+                    <input type="text" value="Nurbol" v-model="order.name">
+                </div>
+
+                <div class="calc__order__submit"  @click="createOrder" v-if="new_orders[0] && new_orders[0].price!=1">Оформить заказ</div>
 
             </div>
 
@@ -73,24 +147,26 @@
                 <div class="calc__modal__form">
                     <i class="calc__modal__close fas fa-times-circle calc__mb" @click="show_modal=false"></i>
                
-                    <div class="calc__dropdown calc__row calc__ac" v-if=" current_chosen=='Фрезировка'">
+                    <div class="calc__dropdown calc__row calc__ac calc__mr" v-if="current_chosen=='Фрезировка'">
                         <div v-for="(item,index) in types_frez" :key="index">
-                            <p v-if="item=='easy'">простой</p>
-                            <p v-if="item=='hard'">сложный</p>
-
-                            <v-select :options="new_orders[choosen_index].element" @input="selectedEl" class="calc__mr"  style="width: 250px" placeholder="Выберите элемент" label="name" >
+                            <p>{{ item }}</p>
+                     
+                            <v-select :options="sort_category(item,new_orders[choosen_index].element)" @input="selectedEl" class="calc__mr"  style="width: 250px" placeholder="Выберите элемент" label="name" >
                                 <template slot="option" slot-scope="option">
                                     <div class="calc__row calc__ac">
-                                        <img v-if="item ==option.type"  :src="'http://127.0.0.1:8000'+option.image_path" alt="">
-                                        <p   v-if="item == option.type" >{{ option.name }}</p>
+                                        <img  :src="'http://127.0.0.1:8000'+option.image_path" alt="">
+                                        <p    >{{ option.name }}</p>
                                     </div>
                                 </template>
                             </v-select>
                          
                         </div>
                     </div>
-                    <div class="calc__dropdown calc__row calc__ac" v-else-if="current_chosen=='Пленка'">
-                            <v-select :options="new_orders[choosen_index].plenka"  @input="selectedEl"  class="calc__mr"  style="width: 250px" placeholder="Выберите элемент" label="name" >
+                    <div class="calc__dropdown calc__row calc__ac calc__mr" v-else-if="current_chosen=='Пленка'">
+
+                        <div v-for="(item,index) in types_plenka" :key="index">
+                            <p>{{item}}</p>
+                            <v-select  :options="sort_category(item,new_orders[choosen_index].plenka)"  @input="selectedEl"  class="calc__mr"  style="width: 250px" placeholder="Выберите элемент" label="name" >
                                 <template slot="option" slot-scope="option">
                                     <div class="calc__row calc__ac">
                                         <img   :src="'http://127.0.0.1:8000'+option.image_path" alt="">
@@ -98,9 +174,12 @@
                                     </div>
                                 </template>
                             </v-select>
+                        </div>
                     </div>
-                    <div class="calc__dropdown calc__row calc__ac" v-else>
-                            <v-select :options="new_orders[choosen_index].element"  @input="selectedEl"  class="calc__mr"  style="width: 250px" placeholder="Выберите элемент" label="name" >
+                    <div class="calc__dropdown calc__row calc__ac calc__mr" v-else-if="current_chosen=='Декор'">
+                        <div class="calc__column">
+                            <p class="calc__mb">Декор</p>
+                            <v-select :options="new_orders[choosen_index].decors"  @input="selectedOther"  class="calc__mr"  style="width: 250px" placeholder="Выберите элемент" label="name" >
                                 <template slot="option" slot-scope="option">
                                     <div class="calc__row calc__ac">
                                         <img   :src="'http://127.0.0.1:8000'+option.image_path" alt="">
@@ -108,6 +187,21 @@
                                     </div>
                                 </template>
                             </v-select>
+                        </div>
+                           
+                    </div>
+                    <div class="calc__dropdown calc__row calc__ac calc__mr" v-else-if="current_chosen=='Обкат'">
+                            <div class="calc__column">
+                                <p class="calc__mb">Обкат</p>
+                                <v-select :options="new_orders[choosen_index].obkats"  @input="selectedOther"  class="calc__mr"  style="width: 250px" placeholder="Выберите элемент" label="name" >
+                                    <template slot="option" slot-scope="option">
+                                        <div class="calc__row calc__ac">
+                                            <img   :src="'http://127.0.0.1:8000'+option.image_path" alt="">
+                                            <p    >{{ option.name }}</p>
+                                        </div>
+                                    </template>
+                                </v-select>
+                            </div>
                     </div>
                 </div>
                 
@@ -120,7 +214,15 @@
     export default {
     name: 'AccountPage' ,
         data() {
-            return {
+            return {    
+                other_elements: [],
+                permanent: {
+                    choosen_element: ''
+                },
+                order: {
+                    phone: '',
+                    name: ""
+                },
                 choosen_index: 0,
                 show_modal: false,
                 current_chosen: '',
@@ -172,7 +274,7 @@
                   orders: [],
                   show_hide: [],
                   token: "",
-                  elements: '',
+                  elements: [],
                   current_image: 1,
                   current_slide: 1,
                   object: {
@@ -187,8 +289,8 @@
                   },
                   link: require('../../assets/images/kaz.png'),
                   one_element: [],
-
-                  new_orders: []
+                  new_orders: [],
+                  amount_sum: 0
             }
         },
         components: {
@@ -199,14 +301,201 @@
             }
         },
         methods: {
-            calculateInput() {
+            changedDecor(index) {
 
+                if(this.new_orders[index].decor_sum!=0) {
+                    this.new_orders[index].price_order = this.new_orders[index].price_order-this.new_orders[index].decor_sum;
+                    this.amount_sum = this.amount_sum-this.new_orders[index].decor_sum;
+                }
+                
+                let order_decor = this.new_orders[index];
+            
+                order_decor.decor_sum = order_decor.count_decor*order_decor.choosen_decor.price;
+
+                order_decor.price_order = order_decor.price_order+order_decor.decor_sum;
+                        
+                let p = this.new_orders;
+                this.new_orders = [];
+                this.new_orders = p;
+
+                this.amount_sum = this.amount_sum+this.new_orders[index].decor_sum;
+            }, 
+            changedObkat(index) {
+
+                if(this.new_orders[index].obkat_sum!=0) {
+                    this.new_orders[index].price_order = this.new_orders[index].price_order-this.new_orders[index].obkat_sum;
+                }
+                
+                let order_decor = this.new_orders[index];
+            
+                order_decor.obkat_sum = order_decor.count_obkat*order_decor.choosen_obkat.price;
+                order_decor.price_order = order_decor.price_order+order_decor.obkat_sum;
+                        
+                let p = this.new_orders;
+                this.new_orders = [];
+                this.new_orders = p;
+
+                this.amount_sum = order_decor.price_order;
+            },  
+            deleteRow(index,type) {
+                if(type=='plenka') {
+                    this.new_orders[index].choosen_plenka = [];
+
+                    if(this.new_orders[index].price_order!=0 ) {
+                        this.new_orders[index].price_order = this.new_orders[index].price_order-Math.round(0.001*this.new_orders[index].dlina*this.new_orders[index].wirina*this.new_orders[index].count*this.new_orders[index].price);
+                        this.amount_sum = this.amount_sum - Math.round(0.001*this.new_orders[index].dlina*this.new_orders[index].wirina*this.new_orders[index].count*this.new_orders[index].price);
+                        this.new_orders[index].price_order=this.new_orders[index].decor_sum +this.new_orders[index].obkat_sum;
+                        
+                    }
+                    let length_element = this.new_orders[index].choosen_element;
+            
+                    if(length_element.length!=0  && this.new_orders[index].tolwina!=0) {
+                            let formula = '';
+                            formula = length_element.id+' '+this.new_orders[index].tolwina;
+                            this.checkFormula(index,formula);
+                            
+                            
+                    }
+
+                    
+                }
+                else if(type=='obkat') {
+                    this.new_orders[index].price_order = this.new_orders[index].price_order - this.new_orders[index].obkat_sum;
+                    this.amount_sum = this.amount_sum - this.new_orders[index].obkat_sum;
+                    this.new_orders[index].choosen_obkat = [];
+                    this.new_orders[index].obkat_sum = 0;
+                }
+                else if(type=='decor') {
+                    this.new_orders[index].price_order = this.new_orders[index].price_order - this.new_orders[index].decor_sum;
+                    this.amount_sum = this.amount_sum - this.new_orders[index].decor_sum;
+                    this.new_orders[index].choosen_decor = [];
+                    this.new_orders[index].decor_sum = 0;
+                } 
+                else if(type=='element') {
+                    this.new_orders[index].choosen_element = [];
+
+                    if(this.new_orders[index].price_order!=0) {
+                        this.new_orders[index].price_order = this.new_orders[index].price_order-Math.round(0.001*this.new_orders[index].dlina*this.new_orders[index].wirina*this.new_orders[index].count*this.new_orders[index].price);
+                        this.amount_sum = this.amount_sum - Math.round(0.001*this.new_orders[index].dlina*this.new_orders[index].wirina*this.new_orders[index].count*this.new_orders[index].price);
+                        this.new_orders[index].price_order=this.new_orders[index].decor_sum +this.new_orders[index].obkat_sum;
+                    }
+
+                }
+                let p = this.new_orders;
+                this.new_orders = [];
+                this.new_orders = p;
+            },
+            calculateInput(index) {
+                
+                
+                this.new_orders[index].price_order = this.new_orders[index].decor_sum+this.new_orders[index].obkat_sum;
+                this.amount_sum = this.new_orders[index].decor_sum+this.new_orders[index].obkat_sum;
+                if(this.new_orders[index].price!=1) {
+                    this.new_orders[index].price_order =this.new_orders[index].price_order+ Math.round(0.001*this.new_orders[index].dlina*this.new_orders[index].wirina*this.new_orders[index].count*this.new_orders[index].price);
+                    let sum = 0;
+                    for (let index = 0; index < this.new_orders.length; index++) {
+                        sum=sum+this.new_orders[index].price_order;
+                    }
+                    this.amount_sum = sum;
+                }
+                else {
+                    this.amount_sum = this.amount_sum-this.new_orders[index].price_order;
+                }
+            },
+            sort_category(type,data) {
+                let arr = [];
+                for (let index2 = 0; index2 < data.length; index2++) {
+                    if(type==data[index2].type) {
+                        arr.push(data[index2]);
+                    }
+                }
+                return arr;
+            },
+            createOrder() {
+
+
+                console.log(this.new_orders);
+                return false;
+                this.$http.post('/calculator/create/order', 
+                {
+                    orders: this.new_orders,
+                    name: this.order.name,
+                    phone: this.order.phone,
+                    amount_sum: amount_sum
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${this.token}` 
+                    }
+                }
+                )
+                .then(res => { 
+                    if(res.data.msg=='has_price') {
+                        this.new_orders[this.choosen_index].price = res.data.price;
+                    }
+                    else {
+                        this.new_orders[this.choosen_index].price = 1;
+                      
+                    }
+                    let p = this.new_orders;
+                    this.new_orders = [];
+                    this.new_orders = p;
+                });
+            },
+            checkFormula(index,formula) {
+                this.$http.post('/calculator/check/formula', 
+                {
+                    formula: formula
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${this.token}` 
+                    }
+                }
+                )
+                .then(res => { 
+                    if(res.data.msg=='has_price') {
+                        this.new_orders[this.choosen_index].price = res.data.price;
+                    }
+                    else {
+                        this.new_orders[this.choosen_index].price = 1;
+                      
+                    }
+                    let p = this.new_orders;
+                    this.new_orders = [];
+                    this.new_orders = p;
+
+                    if(this.new_orders[index].price!=1) {
+                        this.new_orders[index].price_order = this.new_orders[index].price_order +Math.round(0.001*this.new_orders[index].dlina*this.new_orders[index].wirina*this.new_orders[index].count*this.new_orders[index].price);
+                        let sum = 0;
+                        for (let index = 0; index < this.new_orders.length; index++) {
+                            sum=sum+this.new_orders[index].price_order;
+                        }
+                        this.amount_sum = sum;
+                    }
+                });
+            },
+            calculateTolwina(index) {
+                this.new_orders[index].price_order = this.new_orders[index].decor_sum+this.new_orders[index].obkat_sum;
+
+                this.amount_sum = this.new_orders[index].decor_sum+this.new_orders[index].obkat_sum;
+
+                this.choosen_index = index;
+                let length_element = this.new_orders[this.choosen_index].choosen_element;
+                let length_plenka = this.new_orders[this.choosen_index].choosen_plenka;
+
+                let formula = '';  
+                if (length_element.length!=0  && this.new_orders[index].tolwina!=0) {
+                    formula = length_element.id+' '+this.new_orders[index].tolwina;
+                    this.checkFormula(index,formula);
+                    if(length_element.length!=0 && length_plenka.length!=0 && this.new_orders[index].tolwina!=0) {
+                        formula = length_plenka.id+' '+length_element.id+' '+this.new_orders[index].tolwina;
+                        this.checkFormula(index,formula);
+                    }
+                }     
             },
             removeElement(index,type) {
               
                 if(type==1) {
                     this.new_orders[index].plenka.length = 0; 
-                    console.log( this.new_orders[index].plenka);
                 }
                 else {
                     this.new_orders[index].element.length = 0;
@@ -215,6 +504,20 @@
                 this.new_orders = [];
                 this.new_orders = p;
                 
+            },
+            selectedOther(val) {
+                if(this.current_chosen!='Обкат') {
+                    this.new_orders[this.choosen_index].choosen_decor = [];
+                    this.new_orders[this.choosen_index].choosen_decor = val;
+                }
+                else {
+                    this.new_orders[this.choosen_index].choosen_obkat = [];
+                    this.new_orders[this.choosen_index].choosen_obkat = val;
+                } 
+                let p = this.new_orders;
+                this.new_orders = [];
+                this.new_orders = p;
+                this.show_modal = false;
             },
             selectedEl(val) {
 
@@ -230,6 +533,47 @@
                 this.new_orders = [];
                 this.new_orders = p;
                 this.show_modal = false;
+
+             
+                let length_element = this.new_orders[this.choosen_index].choosen_element;
+                let length_plenka = this.new_orders[this.choosen_index].choosen_plenka;
+                let formula = '';
+                if (length_element.length!=0  && this.new_orders[this.choosen_index].tolwina!=0) {
+
+                    formula = length_element.id+' '+this.new_orders[this.choosen_index].tolwina;
+                    this.checkFormula(this.choosen_index,formula);
+                    if(length_element.length!=0 && length_plenka.length!=0 && this.new_orders[this.choosen_index].tolwina!=0) {
+                            formula = length_plenka.id+' '+length_element.id+' '+this.new_orders[this.choosen_index].tolwina;
+                            this.checkFormula(this.choosen_index,formula);
+                    }
+                }
+
+                if(this.new_orders[this.choosen_index].price!=1) {
+                    this.new_orders[this.choosen_index].price_order = this.new_orders[this.choosen_index].price_order +Math.round(0.001*this.new_orders[this.choosen_index].dlina*this.new_orders[this.choosen_index].wirina*this.new_orders[this.choosen_index].count*this.new_orders[this.choosen_index].price);
+                    let sum = 0;
+                    for (let index = 0; index < this.new_orders.length; index++) {
+                        sum=sum+this.new_orders[index].price_order;
+                    }
+                    this.amount_sum = sum;
+                }
+                
+            },
+            onChangeOtherElement(val,s) {
+                this.show_modal = true;
+
+                for (let index = 0; index < this.other_elements.length; index++) {
+                    if(this.other_elements[index].type=='Декор') {
+                        this.new_orders[s].decors = this.other_elements[index].type_calculate;
+                    }
+                    if(this.other_elements[index].type=='Обкат') {
+                        this.new_orders[s].obkats = this.other_elements[index].type_calculate;
+                    }
+                }
+                this.choosen_index = s;
+                this.current_chosen = val.target.value;
+                this.show_modal = true;
+
+                this.permanent.elem_obkat = '';
             },
             onChange(val,s) {
                 if(!this.new_orders[s].plenka) {
@@ -268,7 +612,6 @@
                         }
                         this.types_frez =  this.types_frez.filter((item,index)=>this.types_frez.indexOf(item)===index);  
                     }
-   
                 }
                 else {
                     if(this.types_plenka.length==0) {
@@ -278,9 +621,12 @@
                         this.types_plenka = this.types_plenka.filter((item,index)=>this.types_plenka.indexOf(item)===index);
                     }
                 }
+            
                 this.choosen_index = s;
                 this.current_chosen = val.target.value;
                 this.show_modal = true;
+
+                this.permanent.elem = '';
             },
             chooseDecor(many,el) {
                 this.choosenFalse();
@@ -312,27 +658,43 @@
 
             addInput() {
                 let obj = {
+                        decor_sum: 0,
+                        obkat_sum: 0,
+                        count_obkat: 0,
+                        count_decor: 0,
+                        other_elements: [],
+                        decors: [],
+                        obkats: [],
                         elements: [],
-
-                        dlina: 1,
-                        wirina: 1,
-                        tolwina: 1,
-                        count: 1,
+                        dlina: 0,
+                        wirina: 0,
+                        tolwina: 0,
+                        count: 0,
                         decor: [],
                         obkat: [],
                         choosen_plenka: [],
                         choosen_element: [],
-                        select: ''
+                        select: '',
+                        price: 1,
+                        price_order: 0
                 }
                 this.new_orders.push(obj);
-                
                 this.new_orders[this.new_orders.length-1].elements = this.elements;
+                this.new_orders[this.new_orders.length-1].other_elements = this.other_elements;
+                
                 if(this.new_orders.length==2) {
                     this.new_orders[this.new_orders.length-1].element = this.new_orders[0].element;
                     this.new_orders[this.new_orders.length-1].plenka = this.new_orders[0].plenka;
                     
                     this.new_orders[this.new_orders.length-1].choosen_plenka = this.new_orders[0].choosen_plenka;
                     this.new_orders[this.new_orders.length-1].choosen_element = this.new_orders[0].choosen_element;
+
+
+                    this.new_orders[this.new_orders.length-1].choosen_decor = this.new_orders[0].choosen_decor;
+                    this.new_orders[this.new_orders.length-1].choosen_obkat = this.new_orders[0].choosen_obkat;
+                    this.new_orders[this.new_orders.length-1].price = this.new_orders[0].price;
+
+                    this.new_orders[this.new_orders.length-1].tolwina = this.new_orders[0].tolwina;
                 }
                 else {
                     this.new_orders[this.new_orders.length-1].element = this.new_orders[this.new_orders.length-2].element;
@@ -340,6 +702,11 @@
                     
                     this.new_orders[this.new_orders.length-1].choosen_plenka = this.new_orders[this.new_orders.length-2].choosen_plenka;
                     this.new_orders[this.new_orders.length-1].choosen_element = this.new_orders[this.new_orders.length-2].choosen_element;
+                    this.new_orders[this.new_orders.length-1].choosen_decor = this.new_orders[this.new_orders.length-2].choosen_decor;
+                    
+                    this.new_orders[this.new_orders.length-1].choosen_obkat = this.new_orders[this.new_orders.length-2].choosen_obkat;
+                    this.new_orders[this.new_orders.length-1].price = this.new_orders[this.new_orders.length-2].price;
+                    this.new_orders[this.new_orders.length-1].tolwina = this.new_orders[this.new_orders.length-2].tolwina;
                 }
                 
                 let p = this.new_orders;
@@ -446,7 +813,6 @@
 
                     }
                 }
-
                 if(this.orders.length==0) {
                     this.orders[0].inputs = [];
                     this.orders[0].inputs.push(obj);
@@ -454,9 +820,7 @@
                 else {
                     this.orders[this.orders.length-1].inputs = [];
                     this.orders[this.orders.length-1].inputs.push(obj);
-                }
-
-               
+                }  
             },
             logout() {
                 localStorage.removeItem("access_token");
@@ -469,24 +833,41 @@
 
                 this.$http.get('/calculator/get/elements',  config)
                 .then(res => {
-                    this.elements = res.data;
-                    
                     let obj = {
+                        decor_sum: 0,
+                        obkat_sum: 0,
+                        count_obkat: 0,
+                        count_decor: 0,
+                        other_elements: [],
                         elements: [],
                         element: [],
                         plenka: [],
-                        dlina: 1,
-                        wirina: 1,
-                        tolwina: 1,
-                        count: 1,
-                        decor: [],
-                        obkat: [],
+                        dlina: 0,
+                        wirina: 0,
+                        tolwina: 0,
+                        count: 0,
+                        decors: [],
+                        obkats: [],
+                        choosen_decor: [],
+                        choosen_obkat: [],
                         choosen_plenka: [],
                         choosen_element: [],
-                        select: ''
+                        select: '',
+                        price: 1,
+                        price_order: 0
                     }
                     this.new_orders.push(obj);
-                    this.new_orders[0].elements = this.elements;
+                   
+                    for (let index = 0; index < res.data.length; index++) {
+                        if(res.data[index].type=='Пленка' || res.data[index].type=='Фрезировка' ) { 
+                            this.elements.push(res.data[index]);
+                        }  
+                        else {
+                            this.other_elements.push(res.data[index]);
+                            this.new_orders[0].other_elements.push(res.data[index]);
+                        }
+                    }
+                    this.new_orders[0].elements = this.elements
                 })
                
             },
@@ -547,7 +928,53 @@
 
 
 
-    <style scoped lang="scss"> 
+<style scoped lang="scss"> 
+    .calc__pointer {
+        cursor: pointer;
+    }
+    .calc__pointer:hover {
+        color: var(--main-kenes-blue);
+    }
+    .calc__phone {
+        width: 240px;
+        margin-bottom: 20px;
+        p {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            padding: 12px;
+        }
+    }
+    .calc__amount_sum {
+        font-size: 25px;
+        align-self: flex-end;
+        font-weight: bold;
+        span {
+            color: var(--main-kenes-blue);
+            font-size: 28px;
+        }
+    }
+    .calc__order__submit {
+        cursor: pointer;
+        padding: 20px;
+        color: white;
+        text-align: center;
+        text-transform: uppercase;
+        background: var(--main-kenes-blue);
+        width: 200px;
+    }
+    .calc__order__submit:hover {
+        opacity: 0.7;
+    }
+    .calc__result {
+        font-size: 18px;
+    }
+    .calc__value {
+        font-size: 22px;
+        font-weight: bold;
+        color: var(--main-kenes-blue);
+    }
     select {
         -webkit-appearance: none;
         -moz-appearance: none;
@@ -869,12 +1296,18 @@
                 }
             }
             .calc__count {
+                width: 180px;
+             
                 p {
                     margin-bottom: 3px;
+                    font-weight: bold;
                     
                 }
                 input {
                     padding: 10px;
+                }
+                select {
+                    padding: 12px;
                 }
             }
             .calc__height {
