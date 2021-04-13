@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- <base href="/" /> -->
+    <base href="/" />
     <script src="https://kit.fontawesome.com/8a90ddbeb3.js" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
@@ -23,4 +23,31 @@
   // .startInit("f44a4f06-0984-4304-b641-1a7aeadb599e")
   // .handleNotificationOpened(notificationOpenedCallback)
   // .endInit();
+
+  // Add to index.js or the first page that loads with your app.
+
+
+  window.plugins.OneSignal.setLogLevel({logLevel: 6, visualLevel: 0});
+  
+  var notificationOpenedCallback = function(jsonData) {
+    console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+  };
+  // Set your iOS Settings
+  var iosSettings = {};
+  iosSettings["kOSSettingsKeyAutoPrompt"] = false;
+  iosSettings["kOSSettingsKeyInAppLaunchURL"] = false;
+  
+  window.plugins.OneSignal
+    .startInit("d7473bbb-3fca-4713-9749-7fa3b4d63cbe")
+    .handleNotificationOpened(notificationOpenedCallback)
+    .iOSSettings(iosSettings)
+    .inFocusDisplaying(window.plugins.OneSignal.OSInFocusDisplayOption.Notification)
+    .endInit();
+  
+  // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 6)
+  window.plugins.OneSignal.promptForPushNotificationsWithUserResponse(function(accepted) {
+    console.log("User accepted notifications: " + accepted);
+  });
+  //END ONESIGNAL CODE
+
 </script>

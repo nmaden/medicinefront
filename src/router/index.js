@@ -13,6 +13,8 @@
     import NotifMain from '../components/notif/notif.vue'; 
     import calculator_header from '../components/calculator/calc_header.vue'; 
     import calc_admin  from '../components/calculator/calc_admin.vue'; 
+
+    import calc_register  from '../components/calculator/calc_register.vue'; 
     import calc_body  from '../components/calculator/calculator.vue';
     import calc_login  from '../components/calculator/login.vue'; 
 
@@ -81,15 +83,15 @@
            
         // },   
              
-        {
-            path: '/',
-            component: NotifMain,
-            meta: { guest: true },
-            children: [
-                { path: '/', component: NotifMain },
+        // {
+        //     path: '/',
+        //     component: NotifMain,
+        //     meta: { guest: true },
+        //     children: [
+        //         { path: '/', component: NotifMain },
           
-            ]
-        },
+        //     ]
+        // },
         {
             path: '/kenes',
             component: KenesMain,
@@ -99,14 +101,23 @@
                 { path: '', component: Main },
             ]
         },
-        // {
-        //     path: '/',
-        //     component: calc_login,
-        //     meta: { guest: true },
-        //     children: [
-        //         { path: 'login', component: calc_login }
-        //     ]
-        // },
+        {
+            path: '/',
+            component: calc_login,
+            meta: { guest: true },
+            children: [
+                { path: 'login', component: calc_login },
+             
+            ]
+        },
+        {
+            path: '/register',
+            component: calc_register,
+            meta: { guest: true },
+            children: [
+                { path: 'register', component: calc_register }
+            ]
+        },
         {
             path: '/calculator',
             component: calculator_header,
@@ -114,6 +125,7 @@
             children: [
                 { path: 'main', component: calc_body },
                 { path: 'admin', component: calc_admin },
+                
             ]
         },
         {

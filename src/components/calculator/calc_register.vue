@@ -3,9 +3,16 @@
         <div class="sign__page">
 
             <p class="sign__page__title">KENES CALCULATOR</p>
-            <form class="sign__page__block" @submit.prevent="login_sign">
-                <input type="text" placeholder="Логин" v-model="login" >
-                <input type="text" placeholder="Пароль" v-model="password" >
+            <form class="sign__page__block" @submit.prevent="register_user">
+
+                <input type="text" placeholder="Телефон" v-model="phone" required >
+                
+                <input type="text" placeholder="Имя" v-model="name" required>
+                <input type="text" placeholder="Фамилия" v-model="surname" required>
+
+                <input type="text" placeholder="Email" v-model="email" required>
+                <input type="text" placeholder="Пароль" v-model="password" required>
+
                 <button type="submit"><p>Войти</p></button>
             </form>
 
@@ -17,8 +24,11 @@
     export default {
       data() {
           return {
-            login: '',
+            email: '',
             password: '',
+            phone: '',
+            name: '',
+            surname: '',
             user: {
                 role: ''
             }
@@ -28,20 +38,32 @@
         
       },
       methods: {
-        login_sign() {
+        register_user() {
               let obj = {
-                    email: this.login,
-                    password: this.password
+                    email: this.email,
+                    password: this.password,
+                    name: this.name,
+                    surname: this.surname,
+                    phone: this.phone,
+                    role: {
+                        name: 'Пользователь МР'
+                    }
               }
-              this.$http.post('auth/login',
+              this.$http.post('auth/register',
                obj 
               )
               .then(res => {
+                  this.$fire({
+                        title: res.data.msg,
+                        text: "Успешно зарегистрирован",
+                        type: "success",
+                        timer: 3000
+                    }).then(r => {
+                        console.log(r.value);
+                    });
                   localStorage.setItem("access_token",res.data.token);
 
                   this.token = localStorage.getItem("access_token");
-
-                
                   this.get_profile();
               })
               .catch(errors => {

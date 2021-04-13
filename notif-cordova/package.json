@@ -18,10 +18,14 @@
   },
   "cordova": {
     "plugins": {
-      "cordova-plugin-whitelist": {}
+      "cordova-plugin-whitelist": {},
+      "onesignal-cordova-plugin": {}
     },
     "platforms": [
       "android"
     ]
+  },
+  "dependencies": {
+    "onesignal-cordova-plugin": "2.11.3"
   }
 }

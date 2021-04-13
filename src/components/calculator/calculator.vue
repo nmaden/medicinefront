@@ -44,7 +44,7 @@
                                 <div class="calc__column">
                                     <p>Элемент</p>
                                     <div class="calc__row calc__ac calc__mb">
-                                        <img class="calc__choosen__img calc__mr" :src="'http://127.0.0.1:8000'+i.choosen_element.image_path" alt="">
+                                        <img class="calc__choosen__img calc__mr" :src="'https://api.frezerovka04.kz'+i.choosen_element.image_path" alt="">
                                         <p class="calc__mr">{{i.choosen_element.name}}</p>
                                         <i @click="deleteRow(index,'element')" class="calc__pointer fas fa-trash-alt"></i>
                                     </div>
@@ -54,7 +54,7 @@
                                 <div class="calc__column">
                                     <p class="calc__mb">Пленка</p>
                                     <div class="calc__row calc__ac calc__mb">
-                                        <img  class="calc__choosen__img calc__mr" :src="'http://127.0.0.1:8000'+i.choosen_plenka.image_path" alt="">
+                                        <img  class="calc__choosen__img calc__mr" :src="'https://api.frezerovka04.kz'+i.choosen_plenka.image_path" alt="">
                                         <p class="calc__mr">{{i.choosen_plenka.name}}</p>
                                         <i @click="deleteRow(index,'plenka')" class="calc__pointer fas fa-trash-alt"></i>
                                     </div>
@@ -68,7 +68,7 @@
 
                                     
                                     <div class="calc__row calc__ac calc__mb">
-                                        <img  class="calc__choosen__img calc__mr" :src="'http://127.0.0.1:8000'+i.choosen_obkat.image_path" alt="">
+                                        <img  class="calc__choosen__img calc__mr" :src="'https://api.frezerovka04.kz'+i.choosen_obkat.image_path" alt="">
                                         <p class="calc__mr">{{i.choosen_plenka.name}}</p>
                                         <input class="calc__mr" v-on:input="changedObkat(index)" type="text" v-model="i.count_obkat">
                                         <i @click="deleteRow(index,'obkat')" class="calc__pointer fas fa-trash-alt calc__mr"></i>
@@ -80,7 +80,7 @@
                                 <div class="calc__column">
                                     <p class="calc__mb">Декор</p>
                                     <div class="calc__row calc__ac calc__mb">
-                                        <img  class="calc__choosen__img calc__mr" :src="'http://127.0.0.1:8000'+i.choosen_decor.image_path" alt="">
+                                        <img  class="calc__choosen__img calc__mr" :src="'https://api.frezerovka04.kz'+i.choosen_decor.image_path" alt="">
                                         <p class="calc__mr">{{i.choosen_decor.name}}</p>
                                         <input class="calc__mr" v-on:input="changedDecor(index)" type="text" v-model="i.count_decor">
                                         <i @click="deleteRow(index,'decor')" class="calc__pointer fas fa-trash-alt calc__mr"></i>
@@ -129,14 +129,14 @@
                     <p class="calc__amount_sum">Общая сумма: <span>{{amount_sum}} тг</span> </p>
                 </div>
 
-                <div class="calc__column calc__phone">
+                <!-- <div class="calc__column calc__phone">
                     <p>Телефон</p>
                     <input type="text" value="988888"  v-model="order.phone">
                 </div>
                 <div class="calc__column calc__phone">
                     <p>Имя</p>
                     <input type="text" value="Nurbol" v-model="order.name">
-                </div>
+                </div> -->
 
                 <div class="calc__order__submit"  @click="createOrder" v-if="new_orders[0] && new_orders[0].price!=1">Оформить заказ</div>
 
@@ -154,7 +154,7 @@
                             <v-select :options="sort_category(item,new_orders[choosen_index].element)" @input="selectedEl" class="calc__mr"  style="width: 250px" placeholder="Выберите элемент" label="name" >
                                 <template slot="option" slot-scope="option">
                                     <div class="calc__row calc__ac">
-                                        <img  :src="'http://127.0.0.1:8000'+option.image_path" alt="">
+                                        <img  :src="'https://api.frezerovka04.kz'+option.image_path" alt="">
                                         <p    >{{ option.name }}</p>
                                     </div>
                                 </template>
@@ -169,7 +169,7 @@
                             <v-select  :options="sort_category(item,new_orders[choosen_index].plenka)"  @input="selectedEl"  class="calc__mr"  style="width: 250px" placeholder="Выберите элемент" label="name" >
                                 <template slot="option" slot-scope="option">
                                     <div class="calc__row calc__ac">
-                                        <img   :src="'http://127.0.0.1:8000'+option.image_path" alt="">
+                                        <img   :src="'https://api.frezerovka04.kz'+option.image_path" alt="">
                                         <p    >{{ option.name }}</p>
                                     </div>
                                 </template>
@@ -182,7 +182,7 @@
                             <v-select :options="new_orders[choosen_index].decors"  @input="selectedOther"  class="calc__mr"  style="width: 250px" placeholder="Выберите элемент" label="name" >
                                 <template slot="option" slot-scope="option">
                                     <div class="calc__row calc__ac">
-                                        <img   :src="'http://127.0.0.1:8000'+option.image_path" alt="">
+                                        <img   :src="'https://api.frezerovka04.kz'+option.image_path" alt="">
                                         <p    >{{ option.name }}</p>
                                     </div>
                                 </template>
@@ -196,7 +196,7 @@
                                 <v-select :options="new_orders[choosen_index].obkats"  @input="selectedOther"  class="calc__mr"  style="width: 250px" placeholder="Выберите элемент" label="name" >
                                     <template slot="option" slot-scope="option">
                                         <div class="calc__row calc__ac">
-                                            <img   :src="'http://127.0.0.1:8000'+option.image_path" alt="">
+                                            <img   :src="'https://api.frezerovka04.kz'+option.image_path" alt="">
                                             <p    >{{ option.name }}</p>
                                         </div>
                                     </template>
@@ -328,7 +328,7 @@
                 
                 let order_decor = this.new_orders[index];
             
-                order_decor.obkat_sum = order_decor.count_obkat*order_decor.choosen_obkat.price;
+                order_decor.obkat_sum = (order_decor.dlina+order_decor.wirina)*order_decor.count_obkat*order_decor.choosen_obkat.price*0.001;
                 order_decor.price_order = order_decor.price_order+order_decor.obkat_sum;
                         
                 let p = this.new_orders;
@@ -353,8 +353,7 @@
                             let formula = '';
                             formula = length_element.id+' '+this.new_orders[index].tolwina;
                             this.checkFormula(index,formula);
-                            
-                            
+                
                     }
 
                     
@@ -412,16 +411,13 @@
                 return arr;
             },
             createOrder() {
-
-
-                console.log(this.new_orders);
-                return false;
                 this.$http.post('/calculator/create/order', 
                 {
                     orders: this.new_orders,
-                    name: this.order.name,
-                    phone: this.order.phone,
-                    amount_sum: amount_sum
+                    name: this.user.name,
+                    phone: this.user.phone,
+                    amount_sum: this.amount_sum,
+                    user_id: this.user.user_id
                 }, {
                     headers: {
                         'Authorization': `Bearer ${this.token}` 
@@ -453,6 +449,7 @@
                 )
                 .then(res => { 
                     if(res.data.msg=='has_price') {
+                        this.new_orders[this.choosen_index].current_formula = formula;
                         this.new_orders[this.choosen_index].price = res.data.price;
                     }
                     else {
@@ -658,6 +655,7 @@
 
             addInput() {
                 let obj = {
+                        current_formula: '',
                         decor_sum: 0,
                         obkat_sum: 0,
                         count_obkat: 0,
@@ -730,11 +728,17 @@
                     }
                 }
                 )
-                .then(res => { 
+                .then(res => {
+                    
+                    
                     this.user.role = res.data.roles[0].id;
                     this.user.name = res.data.name;
                     this.user.surname = res.data.surname;
-                    if(this.user.role != 4) {
+                    this.user.user_id = res.data.id;
+                    this.user.phone = res.data.phone;
+
+
+                    if(this.user.role != 4 && this.user.role != 5) {
                         this.$router.push("/login");
                     }
                     else {
@@ -834,6 +838,7 @@
                 this.$http.get('/calculator/get/elements',  config)
                 .then(res => {
                     let obj = {
+                        current_formula: '',
                         decor_sum: 0,
                         obkat_sum: 0,
                         count_obkat: 0,
@@ -914,6 +919,7 @@
         },
         mounted() {
             if(!localStorage.getItem("access_token")) {
+         
                 this.$router.push("/login");
             }
             else {

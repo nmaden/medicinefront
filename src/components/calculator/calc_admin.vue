@@ -5,16 +5,25 @@
         <p class="calc__mb calc__toptext" style="font-size: 16px">Для создание элементов для рассчета и просмотра заказов</p>
 
         <div class="calc__menu calc__row calc__jb calc__mb">
-                <p class="calc__type" @click="show_page(4)" v-bind:class="{active_color:page==4}">Создать формулу</p>
-                <p class="calc__type" @click="show_page(1)" v-bind:class="{active_color:page==1}"> Создать элемент</p>
-                <p class="calc__type" @click="show_page(2)" v-bind:class="{active_color:page==2}">Элементы</p>
-                <p class="calc__type" @click="show_page(3)" v-bind:class="{active_color:page==3}">Заказы</p>
-
-
-                <p class="calc__type" @click="show_page(5)" v-bind:class="{active_color:page==5}">Создать толшину</p>
-                <p class="calc__type" @click="show_page(6)" v-bind:class="{active_color:page==6}">Создать категорию</p>
-
                 
+                <div class="calc__column">
+                    <p class="calc__type calc__mb" @click="show_page(4)" v-bind:class="{active_color:page==4}">Создать формулу</p>
+                    <p class="calc__type" @click="show_page(1)" v-bind:class="{active_color:page==1}"> Создать элемент</p>
+                </div>
+                <div class="calc__column">
+                    <p class="calc__type calc__mb" @click="show_page(2)" v-bind:class="{active_color:page==2}">Элементы</p>
+                    <p class="calc__type" @click="show_page(3)" v-bind:class="{active_color:page==3}">Заказы</p>
+                </div>
+
+                <div class="calc__column">
+                    <p class="calc__type calc__mb" @click="show_page(5)" v-bind:class="{active_color:page==5}">Создать толшину</p>
+                    <p class="calc__type" @click="show_page(6)" v-bind:class="{active_color:page==6}">Создать категорию</p>
+
+                </div>
+                <div class="calc__column">
+                    <p class="calc__type calc__mb" @click="show_page(7)" v-bind:class="{active_color:page==7}">Формулы</p>
+                    <p class="calc__type" @click="show_page(8)" v-bind:class="{active_color:page==8}">Клиенты</p>
+                </div>
         </div>
         <div class="calc__column">
 
@@ -63,6 +72,17 @@
                         <input type="text"  v-model="edit_data.price">
                     </div>
 
+                    <button type="submit">Редактировать</button>
+                </form>
+
+                 <form   class="calc__column calc__modal__form" v-if="modal_type==3" @submit.prevent="editFormula()"> 
+                    <i class="far fa-window-close calc__mb" @click="show_modal=false"></i>
+                    <p class="calc__modal__title">Редактировать</p>
+                    
+                    <div class="calc__column calc__mb calc__ac">
+                        <p>Цена</p>
+                        <input type="text" v-model="formula_edit.price">
+                    </div>
                     <button type="submit">Редактировать</button>
                 </form>
             </div>
@@ -195,21 +215,22 @@
                     <div class="calc__order__top">
                     <div class="calc__column" v-for="(el,index) in orders" :key="index">
 
+                                
 
-                           
-                                <div class="calc__column calc__user__order" @click="show_ordered_elements(index)">
+                                <div class="calc__column calc__user__order" >
                                     
                                     
                                     <div class="calc__row calc__ac calc__border__line">
+                                        
                                         <p class="calc__user__label">{{index+1}} - заказ</p>
                                         <i class="fas fa-trash-alt"  @click="delete_order(index)"></i>
 
                                         <i class="fas fa-eye" @click="show_ordered_elements(index)"></i>
                                     </div>
 
-
+                                
                                     <div class="calc__row calc__ac">
-                                        <p class="calc__user__label">Сотрудник:</p>
+                                        <p class="calc__user__label">Заказщик:</p>
                                         <p>{{el.who}}</p>
                                     </div>
                                     <div class="calc__row calc__ac">
@@ -222,15 +243,18 @@
                                         <p>{{el.height}}</p>
                                     </div>
                                     <div class="calc__row calc__ac">
-                                        <p class="calc__user__label">Сумма:</p>
+                                        <p class="calc__user__label">Сумма заказа:</p>
                                         <p v-if="el.amount">{{el.amount}} тг</p>
                                         <p v-else>0 тг</p>
                                     </div>
 
                                     <div class="calc__row calc__ac">
                                         <p class="calc__user__label">Дата заказа:</p>
-                                        <p v-if="el.comment">{{convert_date(el.created_at)}}</p>
+                                        <p v-if="el.created_at">{{convert_date(el.created_at)}}</p>
                                     </div>
+                                    
+                                    <!-- <div class="calc__type" style="background: #c83c3c " @click="deleteOrder(el.id)">Сделка завершено Удалить заказ</div> -->
+
                                     
                             </div>
                     </div>
@@ -240,53 +264,36 @@
                         <p class="calc__order__level">{{current_user_index+1}} - Заказ</p>
                         <div class="calc__column" v-for="(order,i) in ordered_elements[current_user_index]" :key="i">
                                 <div class="calc__column calc__orders">
-                                    <div class="calc__column calc__order" v-if="order.type_calculate=='by_count'">
+
+
+                                    <div class="calc__column calc__order">
                                         <p class="calc__order__title">{{order.type_name}}</p> 
+                                      
+                                        <div class="calc__data calc__row calc__ac" v-if="order.price">
+                                            <p class="calc__input__label" >Цена заказа <span >:{{order.order_price}}</span></p>
+                                        </div>
+
+                                        <div class="calc__data calc__row calc__ac" v-if="order.dlina">
+                                            <p class="calc__input__label" >Длина <span >:{{order.dlina}}</span></p>
+                                        </div>
+                                        <div class="calc__data calc__row calc__ac" v-if="order.wirina">
+                                            <p class="calc__input__label" >Ширина <span >:{{order.wirina}}</span></p>
+                                        </div>
+                                        <div class="calc__data calc__row calc__ac" v-if="order.tolwina">
+                                            <p class="calc__input__label" >Толшина <span >:{{ ' '+order.tolwina}}</span></p>
+                                        </div>
+                                      
                                         <div class="calc__data calc__row calc__ac">
-                                            <p class="calc__input__label">Количество</p>
-                                            <p>{{order.count}}</p>
-                                        </div>
-                                       <div class="calc__data calc__row calc__ac">
-                                            <p class="calc__input__label">Цена</p>
-                                             <input type="text" placeholder="Цена" v-model="order.price" @input="set_price(order.price,i,current_user_index,order.count,order.dlina,order.wirina,order.type_calculate)">
-                                        </div>
-
-
-                                        <div class=" calc__data calc__row calc__ac">
-                                            <p class="calc__input__label">Сумма</p>
-                                            <input type="text" placeholder="Сумма"    v-model="order.amount_sum">
+                                            <p class="calc__input__label" >Количество <span >:{{ ' '+order.count}}</span></p>
                                         </div>
                                        
-                                    </div>
 
-                                    <div class="calc__column calc__order" v-else>
-                                        <p class="calc__order__title">{{order.type_name}}</p>
-                                       
-
-                                        <div class="calc__row" v-for="(input,ss) in order.inputs" :key="ss">
-                                                <div class="calc__data calc__column calc__ac">
-                                                    <p class="calc__input__label">Количество</p>
-                                                    <p>{{ input.count }}</p>
-                                                </div>
-                                                <div class="calc__data calc__column calc__ac">
-                                                    <p class="calc__input__label">Длина</p>
-                                                    <p>{{input.dlina}}</p>
-                                                </div>
-                                                <div class="calc__data calc__column calc__ac">
-                                                    <p class="calc__input__label">Ширина</p>
-                                                    <p>{{input.wirina}}</p>
-                                                </div>
-                                                <div class="calc__data calc__column calc__ac">
-                                                    <p class="calc__input__label">Цена</p>
-                                                    <input type="text" placeholder="Цена" v-model="input.price" @input="set_price(order.price,i,current_user_index,order.count,order.dlina,order.wirina,order.type_calculate)">
-                                                </div>
-                                        </div>
-                       
-                                        <div class="calc__data calc__row calc__ac">
-                                            <p class="calc__input__label">Сумма</p>
-                                            <input type="text" placeholder="Сумма"    v-model="order.amount_sum">
+                                        <div class="calc__data calc__row calc__ac" v-if="order.choosen_formula">
+                                            <p class="calc__input__label" >Формула <span >:{{' '+order.choosen_formula}}</span></p>
+                                            <p class="calc__input__label" >Цена формулы<span >:{{' '+order.choosen_formula_price}}</span></p>
                                         </div>
                                     </div>
+
                                 </div>
                         </div>
                     <button class="calc__save__order" v-if="show_save_btn" @click="saveOrder()">Сохранить</button>
@@ -324,7 +331,7 @@
                                             <v-select :options="sort_category(j,item.type_calculate)" v-on:input="selectedEl($event,1)" class="calc__mr calc__select"  style="width: 250px" placeholder="Выберите элемент" label="name" >    
                                                 <template slot="option" slot-scope="option"  >
                                                     <div class="calc__row calc__ac"  v-if="option.type==j" >
-                                                        <img  class="calc__mr"   :src="'http://127.0.0.1:8000'+option.image_path" alt="">
+                                                        <img  class="calc__mr"   :src="'https://api.frezerovka04.kz'+option.image_path" alt="">
                                                         <p    >{{ option.name }}</p>
                                                     </div>
                                                 </template>
@@ -346,7 +353,7 @@
                                             <v-select :options="sort_category(j,item.type_calculate)" class="calc__mr calc__select"  v-on:input="selectedEl($event,2)" style="width: 250px" placeholder="Выберите элемент" label="name" >    
                                                 <template slot="option" slot-scope="option">
                                                     <div class="calc__row calc__ac">
-                                                        <img v-if="option.type==j" class="calc__mr"   :src="'http://127.0.0.1:8000'+option.image_path" alt="">
+                                                        <img v-if="option.type==j" class="calc__mr"   :src="'https://api.frezerovka04.kz'+option.image_path" alt="">
                                                         <p   v-if="option.type==j"  >{{ option.name }}</p>
                                                     </div>
                                                 </template>
@@ -403,7 +410,7 @@
                                             <v-select :options="sort_category(j,item.type_calculate)" v-on:input="selectedElTwo($event,1)" class="calc__mr calc__select"  style="width: 250px" placeholder="Выберите элемент" label="name" >    
                                                 <template slot="option" slot-scope="option"  >
                                                     <div class="calc__row calc__ac"  v-if="option.type==j" >
-                                                        <img  class="calc__mr"   :src="'http://127.0.0.1:8000'+option.image_path" alt="">
+                                                        <img  class="calc__mr"   :src="'https://api.frezerovka04.kz'+option.image_path" alt="">
                                                         <p    >{{ option.name }}</p>
                                                     </div>
                                                 </template>
@@ -450,6 +457,29 @@
 
                     
                 
+
+                </div>
+
+                <div class="calc__column calc__ac calc__orders" v-if="page==7">
+                  
+                    <div v-for="(formula,f) in all_formula" :key="f" class="calc__order calc__column calc__ac calc__mb">
+                            <p>Формула: {{formula.formula_name}}</p>
+                            <p>Цена: {{formula.height}} тг</p>
+
+                            
+                            <div class="calc__row calc__ac calc__edit calc__pointer" @click="getFormula(formula.id)">
+                                <i  class=" fas fa-pencil-alt" style="margin-left: 10px"></i>
+                                <p>Редактировать</p>
+                            </div>
+
+                            <div class="calc__row calc__ac calc__edit calc__pointer" @click="deleteFormula(formula.id)" >
+                                <i class=" fas fa-trash-alt"></i>
+                                <p>Удалить</p>
+                            </div>
+                    </div>
+                </div>
+
+                <div class="calc__column calc__ac calc__orders" v-if="page==8">
 
                 </div>
 
@@ -525,6 +555,7 @@
     name: 'CalcAdmin' ,
         data() {
             return { 
+                    all_formula: [],
                     two_dimension: false,
                     three_dimension: true,
                     heights: {
@@ -646,7 +677,11 @@
                   link: require('../../assets/images/kaz.png'),
                   for_frez: [],
                   heights:[],
-                  categories_all: []
+                  categories_all: [],
+                  formula_edit: {
+                      price: '',
+                      id: ''
+                  }
             }
         },
         components: {
@@ -663,9 +698,76 @@
 
             this.getCategories();
             this.getHeights();
+            this.getAllFormula();
           
         },
         methods: {
+            deleteFormula(id) {
+                confirm("Удалить формулу?");
+                const config = {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                };
+                this.$http.get('/calculator/delete/formula?id='+id, config)
+                .then(res => {
+                    this.$fire({
+                        title: res.data.msg,
+                        text: "",
+                        type: "success",
+                        timer: 3000
+                    }).then(r => {
+                        console.log(r.value);
+                    });
+                    this.getAllFormula();
+                });
+            },
+            getFormula(id) {
+                this.modal_type = 3;
+                this.show_modal = true;
+                let data = {
+                    id: id
+                };
+                const config = {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                };
+                this.$http.post('/calculator/get/formula', data, config)
+                .then(res => { 
+                    
+                    this.formula_edit.price = res.data.height;
+                    this.formula_edit.id = res.data.id;
+                });
+            },
+            editFormula() {
+               let data = {
+                    id: this.formula_edit.id,
+                    price: this.formula_edit.price
+                };
+                const config = {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                };
+                this.$http.post('/calculator/edit/formula', data, config)
+                .then(res => { 
+
+                    this.$fire({
+                        title: res.data.msg,
+                        text: "",
+                        type: "success",
+                        timer: 3000
+                    }).then(r => {
+                        console.log(r.value);
+                    });
+                    this.show_modal = false;
+                    this.getAllFormula();
+                });
+            },
+            getAllFormula() {
+                const config = {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                };
+                this.$http.get('/calculator/get/all/formula', config)
+                .then(res => {
+                    this.all_formula = res.data
+                });
+            },
             choosenFormula(bool) {
                 this.three_dimension = bool;
                 this.clearFormulaTwo();
@@ -1175,7 +1277,7 @@
                 .then(res => {
                     
 
-                    this.show_modal = false;
+                    this.g = false;
                     this.get_el();
                     this.get_elements();
 
@@ -1376,7 +1478,9 @@
 
 <style scoped lang="scss"> 
 
-
+        .calc__pointer {
+            cursor: pointer;
+        }
         .calc__hide {
             display: none !important;
         }
@@ -1736,7 +1840,12 @@
         }
 
         .calc__orders {
-
+            .calc__edit:hover p {
+                color: var(--main-kenes-blue);
+            }
+            .calc__edit:hover i {
+                color: var(--main-kenes-blue);
+            }
             input {
                 
                 margin: 20px;
