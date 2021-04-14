@@ -221,11 +221,10 @@
                                     
                                     
                                     <div class="calc__row calc__ac calc__border__line">
-                                        
                                         <p class="calc__user__label">{{index+1}} - заказ</p>
                                         <i class="fas fa-trash-alt"  @click="delete_order(index)"></i>
-
-                                        <i class="fas fa-eye" @click="show_ordered_elements(index)"></i>
+                                        <i class="fas fa-eye calc__mr" @click="show_ordered_elements(index)"></i>
+                                        <p class="active_color" style="color: white" v-if="el.deleted==1">Заказ отменен</p>
                                     </div>
 
                                 
@@ -260,7 +259,7 @@
                     </div>
                     </div>
 
-                    <div class="calc__column calc__order__bottom" v-if="show_ordered" style="margin-top: 50px">
+                    <div class="calc__column calc__order__bottom" v-if="show_ordered">
                         <p class="calc__order__level">{{current_user_index+1}} - Заказ</p>
                         <div class="calc__column" v-for="(order,i) in ordered_elements[current_user_index]" :key="i">
                                 <div class="calc__column calc__orders">
@@ -290,7 +289,7 @@
 
                                         <div class="calc__data calc__row calc__ac" v-if="order.choosen_formula">
                                             <p class="calc__input__label" >Формула <span >:{{' '+order.choosen_formula}}</span></p>
-                                            <p class="calc__input__label" >Цена формулы<span >:{{' '+order.choosen_formula_price}}</span></p>
+                                            <p class="calc__input__label" >Цена формулы<span >:{{' '+order.choosen_formula_price}} тг</span></p>
                                         </div>
                                     </div>
 

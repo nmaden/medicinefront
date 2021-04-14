@@ -1,8 +1,11 @@
 <template>
     <div class="calc calc__column calc__ac" style="margin-top: 20px">
 
-
-            <div class="calc__column elements" >
+            <div class="calc__row calc__ac calc__types calc__mb">
+                <div class="calc__type" @click="page=1" v-bind:class="{active__bg:page==1}">Заказать</div>
+                <div class="calc__type" @click="page=2" v-bind:class="{active__bg:page==2}">Мои заказы</div>
+            </div>  
+            <div class="calc__column elements" v-if="page==1" >
                 
                 <div class="calc__row calc__ac">
                         <div class="calc__row calc__ac calc__mb calc__add__input calc__mr" @click="addInput()">
@@ -142,6 +145,35 @@
 
             </div>
 
+            <div class="calc__column calc__own__orders" v-if="page==2">
+               
+                <div class="calc__column calc__own__order" v-for="(order,w) in own_orders" :key="w" >
+                        <div class="calc__row ">
+                            <div class="calc__column">
+                                <p class="calc__own__label">№: {{order.id}}</p>
+                                <p class="calc__own__label">Дата заказа : {{order.created_at}}</p>
+                                <p class="calc__own__label">Общая сумма заказа : {{order.amount}} тг</p>
+                            </div>
+                            <p class="calc__own__action" v-if="order.deleted==0" @click="otmenaOrder(order.id)">Отменить заказ</p>
+                            <p class="calc__own__action" v-else>Заказ отменен</p>
+                        </div>
+                    <p class="calc__own__label calc__own__title"><b>Заказанные элементы:</b> </p>
+                    <div v-for="(el,e) in order.ordered_elements" :key="e" class="calc__own__order calc__own__order__inner">
+                        
+                        <div class="calc__row calc__ac">
+                            <img class="calc__mr" :src="'https://frezerovka04.kz/'+el.image_path" alt="">
+                            <div class="calc__column">
+                                <p class="calc__own__label">Название: {{el.type_name}}</p>
+                                <p class="calc__own__label"  v-if="el.dlina">Длина: {{el.dlina}}</p>
+                                <p class="calc__own__label"  v-if="el.wirina">Ширина: {{el.wirina}}</p>
+                                <p class="calc__own__label" v-if="el.count">Количество: {{el.count}}</p>
+                                <p class="calc__own__label" v-if="el.order_price">Цена: {{el.order_price}} тг</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="calc__modal" v-if="show_modal">
                 
                 <div class="calc__modal__form">
@@ -215,6 +247,7 @@
     name: 'AccountPage' ,
         data() {
             return {    
+                page: 1,
                 other_elements: [],
                 permanent: {
                     choosen_element: ''
@@ -290,7 +323,11 @@
                   link: require('../../assets/images/kaz.png'),
                   one_element: [],
                   new_orders: [],
-                  amount_sum: 0
+                  amount_sum: 0,
+                  own_order: {
+
+                  },
+                  own_orders: []
             }
         },
         components: {
@@ -301,6 +338,17 @@
             }
         },
         methods: {
+            otmenaOrder(id) {
+                const config = {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                };
+
+                this.$http.get('/calculator/delete/own/order?id='+id,  config)
+                .then(res => {
+                    this.own_orders = res.data;
+                    this.getOwnOrders();
+                })
+            },
             changedDecor(index) {
 
                 if(this.new_orders[index].decor_sum!=0) {
@@ -830,6 +878,52 @@
                 localStorage.removeItem("access_token");
                 this.$router.push("calculator");
             },
+            getOwnOrders() {
+                const config = {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                };
+
+                this.$http.get('/calculator/get/own/orders',  config)
+                .then(res => {
+                    this.own_orders = res.data;
+                })
+            },
+            getOwnOrder(id) {
+                const config = {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                };
+
+                this.$http.get('/calculator/get/own/order?id='+id,  config)
+                .then(res => {
+                    this.own_order = res.data;
+                })
+            },
+          
+            editOwnOrders() {
+                let data = {
+                    data: this.orders,
+                    comment: this.order_comment,
+                    user_name: this.user_name,
+                    height: this.calc_height
+                };
+
+                const config = {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                };
+
+                this.$http.post('/calculator/edit/own/order', data, config)
+                .then(res => { 
+                    
+                  
+                    this.$fire({
+                    title: res.data.msg,
+                    text: "",
+                    type: "success",
+                    timer: 3000
+                    })
+               
+                });
+            },
             get_el() {
                 const config = {
                     headers: { 'Authorization': `Bearer ${this.token}` }
@@ -927,6 +1021,8 @@
                 this.get_profile();
             }
 
+            this.getOwnOrders();
+
             
         }
     }
@@ -934,7 +1030,58 @@
 
 
 
-<style scoped lang="scss"> 
+<style scoped lang="scss">
+    .active__bg {
+        background: rgb(212, 90, 90) !important;
+    }
+    .calc__own__orders {
+        .calc__own__order {
+             .calc__own__title {
+                font-size: 22px;
+                color: var(--main-kenes-blue);
+            }
+            .calc__own__order__inner {
+                margin-bottom: 10px;
+                border-bottom: 5px solid rgb(212, 90, 90);
+            }
+            .calc__own__action {
+                color: white;
+                font-weight: bold;
+                background:  var(--main-kenes-blue);
+                padding: 10px;
+                height: 20px;
+            }
+            .calc__own__action:hover {
+                color: rgb(212, 90, 90);
+            }
+            .calc__own__label {
+                margin-bottom: 10px;
+                font-size: 16px;
+                padding: 10px;
+            }
+           
+            img {
+                width: 70px;
+                height: 70px;
+            }
+            background: white;
+            
+            border-bottom: 5px solid var(--main-kenes-blue);
+
+        }
+    }
+       .calc__type {
+                text-transform: uppercase;
+                text-align: center;
+                width: 200px;
+                margin-right: 10px;
+                margin-bottom: 5px;
+                padding: 10px;
+                background-color: var(--main-kenes-blue);
+                color: white;
+
+                cursor: pointer;
+            }
     .calc__pointer {
         cursor: pointer;
     }
@@ -1396,7 +1543,9 @@
         }
 
         @media only screen and (max-width: 600px) {
-          
+            .calc__types {
+                flex-direction: column;
+            }
             .new__element {
                 flex-direction: column;
                 width: 100%;
