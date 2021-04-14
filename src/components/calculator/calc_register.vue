@@ -13,7 +13,7 @@
                 <input type="text" placeholder="Email" v-model="email" required>
                 <input type="text" placeholder="Пароль" v-model="password" required>
 
-                <button type="submit"><p>Войти</p></button>
+                <button type="submit"><p>Создать</p></button>
             </form>
 
         </div>                   
@@ -61,9 +61,7 @@
                     }).then(r => {
                         console.log(r.value);
                     });
-                  localStorage.setItem("access_token",res.data.token);
-
-                  this.token = localStorage.getItem("access_token");
+                  this.$router.push("/login");
                   this.get_profile();
               })
               .catch(errors => {

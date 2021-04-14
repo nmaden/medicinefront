@@ -1335,6 +1335,7 @@
 
         .calc__modal {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             position: fixed;
@@ -1395,7 +1396,27 @@
         }
 
         @media only screen and (max-width: 600px) {
-           
+          
+            .new__element {
+                flex-direction: column;
+                width: 100%;
+                padding: 0 !important;
+                .calc__column {
+                    align-items: center;
+                }
+                .column {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+                .calc__dropdown {}
+            }
+           .calc__amount_sum {
+               align-self: center;
+           }
+            .calc__dropdown {
+                flex-direction: column;
+            }
             .calc__row {
                 .calc__inputs {
                     margin-left: 0;
@@ -1454,6 +1475,11 @@
                 a,p {
                     width: unset !important;
                 }
+            }
+
+             .calc__modal__form {
+                width: 50% !important;
+           
             }
         }
 

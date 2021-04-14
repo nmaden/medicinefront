@@ -7,7 +7,10 @@
                 <input type="text" placeholder="Логин" v-model="login" >
                 <input type="text" placeholder="Пароль" v-model="password" >
                 <button type="submit"><p>Войти</p></button>
+
+                
             </form>
+            <button type="submit" @click='$router.push("/register")'><p>Регистрация</p></button>
 
         </div>                   
 </template>
@@ -103,7 +106,9 @@
         ::placeholder {
           color: #333;
         }
-        button {
+       
+      }
+       button {
           cursor: pointer;
           text-transform: uppercase;
           width: 350px;
@@ -111,6 +116,7 @@
           border: none;
           background-color: cornflowerblue;
           padding: 20px;
+          margin-bottom: 20px;
           @media only screen and (max-width: 764px) {
              width: 250px;
           }
@@ -122,7 +128,6 @@
         button:hover {
           background-color: #285bb6;
         }
-      }
       
     }
 </style>

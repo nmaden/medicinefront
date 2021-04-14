@@ -304,13 +304,13 @@
 
                 <div class="calc__column calc__ac" v-if="page==4">
                     
-                    <div class="calc__row">
+                    <div class="calc__row calc__formulatype">
                         <div class="calc__type" @click="choosenFormula(true)" v-bind:class="{active_color:three_dimension==true}">3 х переменный формула</div>
                         <div class="calc__type" @click="choosenFormula(false)" v-bind:class="{active_color:three_dimension==false}">2 х переменный формула</div>
                     </div>
 
 
-                    <div class="calc__column" v-if="three_dimension">
+                    <div class="calc__column calc__ac" v-if="three_dimension">
                             <div class="calc__column"  v-bind:class="{calc__hide: x_array.length!=0 && y_array.length!=0 && calc_height}">
                         <p class="calc__mb">Сначало нужно выбрать фрезирову!</p>
 
@@ -397,7 +397,7 @@
                         </div>
                     </div>
 
-                    <div v-else>
+                    <div class="calc__column calc__ac" v-else>
                         <div v-for="(item,index) in elements" :key="index">
                             <p v-if="item.type=='Фрезировка'">{{item.type}}</p>
                             <div v-if="item.type=='Фрезировка'"  class="calc__mb" style="border-bottom: 2px solid blue">
@@ -1477,7 +1477,9 @@
 
 
 <style scoped lang="scss"> 
-
+        .calc__formulatype {
+            
+        }
         .calc__pointer {
             cursor: pointer;
         }
@@ -1880,6 +1882,9 @@
 
 
     @media (max-width: 900px) {
+        .calc__formulatype {
+            flex-direction: column;
+        }
         .calc {
             width: 100%;
   
