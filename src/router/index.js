@@ -7,10 +7,17 @@
 
 
     import AdminMedicine from '../components/pharmacy/adminPhar.vue'; 
-
     import LoginMed from '../components/pharmacy/login.vue'; 
-    import Pharmacy from '../components/pharmacy/pharmacy.vue'; 
+
+
+    import Pharmacy from '../components/pharmacy/pharmacy.vue';
+    
+    
     import NotifMain from '../components/notif/notif.vue'; 
+    import NotifLogin from '../components/notif/login.vue'; 
+    import NotifRegister from '../components/notif/register.vue'; 
+
+
     import calculator_header from '../components/calculator/calc_header.vue'; 
     import calc_admin  from '../components/calculator/calc_admin.vue'; 
 
@@ -81,17 +88,34 @@
         //     component: LoginMed,
         //     meta: { guest: true },
            
-        // },   
-             
+        // },        
+        {
+            path: '/notif',
+            component: NotifMain,
+            meta: { guest: true },
+            children: [
+                { path: '/', component: NotifMain },
+          
+            ]
+        },
         // {
         //     path: '/',
-        //     component: NotifMain,
+        //     component: NotifLogin,
         //     meta: { guest: true },
         //     children: [
-        //         { path: '/', component: NotifMain },
+        //         { path: '/', component: NotifLogin },
           
         //     ]
         // },
+        {
+            path: '/register',
+            component: NotifRegister,
+            meta: { guest: true },
+            children: [
+                { path: '/', component: NotifRegister },
+          
+            ]
+        },
         {
             path: '/kenes',
             component: KenesMain,
@@ -197,5 +221,4 @@
     // })
 
     export default router;
-
 

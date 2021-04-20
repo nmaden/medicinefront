@@ -39,3 +39,18 @@ yarn-error.log*
 /notif-cordova/platforms
 /notif-cordova/plugins
 /public/cordova.js
+
+# Cordova
+/src-cordova/platforms
+/src-cordova/plugins
+/public/cordova.js
+
+# Cordova
+/notif-cordova/platforms
+/notif-cordova/plugins
+/public/cordova.js
+
+# Cordova
+/notif-cordova/platforms
+/notif-cordova/plugins
+/public/cordova.js

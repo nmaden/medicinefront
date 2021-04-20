@@ -5,7 +5,9 @@ import VueCookies from 'vue-cookies'
 import axios from 'axios';
 import VModal from 'vue-js-modal';
 import VueMask from 'v-mask'
+import VueCordova from 'vue-cordova';
 
+Vue.use(VueCordova);
 import JsonExcel from "vue-json-excel";
 Vue.component("downloadExcel", JsonExcel);
 
@@ -15,6 +17,12 @@ import 'vue-select/dist/vue-select.css';
 Vue.use(VueMask);
 import VueI18n from 'vue-i18n';
 Vue.use(VueI18n);
+
+
+import VueApexCharts from 'vue-apexcharts'
+Vue.use(VueApexCharts)
+
+Vue.component('apexchart', VueApexCharts)
 
 Vue.config.productionTip = false;
 Vue.use(VueCookies);
@@ -195,32 +203,45 @@ const messages = {
     }
   }
 }
-// document.addEventListener('deviceready', function () {
-//   // Enable to debug issues.
-//   // window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
-  
-//   var notificationOpenedCallback = function(jsonData) {
-//     console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
-//   };
 
-//   window.plugins.OneSignal
-//           .startInit("f44a4f06-0984-4304-b641-1a7aeadb599e")
-//           .handleNotificationReceived(function(jsonData) {
-//             alert("Notification received: \n" + JSON.stringify(jsonData));
-//             console.log('Did I receive a notification: ' + JSON.stringify(jsonData));
-//           })
-//           .handleNotificationOpened(function(jsonData) {
-//             alert("Notification opened: \n" + JSON.stringify(jsonData));
-//             console.log('didOpenRemoteNotificationCallBack: ' + JSON.stringify(jsonData));
-//           })
-//           .inFocusDisplaying(window.plugins.OneSignal.OSInFocusDisplayOption.InAppAlert)
-//           .iOSSettings(iosSettings)
-//           .endInit();
+
+
+// document.addEventListener('deviceready', function () {
+//   // Schedule notification for tomorrow to remember about the meeting
+//   cordova.plugins.notification.local.schedule(
+
+//       {
+//           id: 10,
+//           title: "BEKBOL MOLODEC",
+//           text: "GOOOOOD JOOOB",
+//           trigger: { every: 'minute', count: 5 }
+//       }
   
-//   // Call syncHashedEmail anywhere in your app if you have the user's email.
-//   // This improves the effectiveness of OneSignal's "best-time" notification scheduling feature.
-//   // window.plugins.OneSignal.syncHashedEmail(userEmail);
+//   );
+
+//   // Join BBM Meeting when user has clicked on the notification 
+//   cordova.plugins.notification.local.on("click", function (notification) {
+//       if (notification.id == 10) {
+//           joinMeeting(notification.data.meetingId);
+//       }
+//   });
+
+//   // Notification has reached its trigger time (Tomorrow at 8:45 AM)
+//   cordova.plugins.notification.local.on("trigger", function (notification) {
+//       if (notification.id != 10)
+//           return;
+
+//       // After 10 minutes update notification's title 
+//       setTimeout(function () {
+//           cordova.plugins.notification.local.update({
+//               id: 10,
+//               title: "Meeting in 5 minutes!"
+//           });
+//       }, 600000);
+//   });
 // }, false);
+
+
 
 const i18n = new VueI18n({
   locale: 'kaz', // set locale

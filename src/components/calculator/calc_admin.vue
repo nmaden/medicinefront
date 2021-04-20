@@ -1417,16 +1417,7 @@
             },
             create_element() {
                
-                
-                // if(this.calculator.type_el=='other') {
-                //     this.calculator.type_el = this.calculator.type;
-                // }  
-                // else {
-                //     this.calculator.type_el = this.types[this.calculator.type_el-1];
-                // } 
-
-                console.log(this.calculator);
-                return false;
+                   
                 let fm = new FormData();
                 fm.append('type',this.types[this.calculator.type_el-1]);
                 fm.append('name', this.calculator.el_name)

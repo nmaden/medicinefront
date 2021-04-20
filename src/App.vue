@@ -6,6 +6,8 @@
   </div>
 </template>
 
+
+
 <script>
 // Import styles project
 import './assets/style/color.css';
@@ -38,7 +40,81 @@ export default {
   margin: 0;
   padding: 0;
 }
-
+ .sign__page {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      .sign__top_image {
+          font-size: 40px;
+          margin-bottom: 20px;
+          color: var(--main-kenes-blue);
+      }
+      @media only screen and (max-width: 764px) {
+        width: 100%;
+      }
+      .sign__page__title {
+        font-weight: bold;
+        font-size: 26px;
+        margin-bottom: 20px;
+        color: #333;
+      }
+      .sign__page__block {
+        display: flex;
+        flex-direction: column;
+        input {
+            border-radius: 30px;
+            border:1px solid  var(--main-kenes-blue);
+            outline: none;
+            width: 100%;
+            padding: 20px;
+            margin-bottom: 20px;
+            @media only screen and (max-width: 764px) {
+                width: 90%;
+            }
+        }
+        ::placeholder {
+          color: #333;
+        }
+        a {
+            text-align: center;
+            text-decoration: underline;
+            cursor: pointer;
+            text-transform: uppercase;
+            width: 100%;
+            outline: none;
+            border: none;
+            color: var(--main-kenes-blue);
+            padding: 20px;
+            @media only screen and (max-width: 764px) {
+                width: 90%;
+            }
+        }
+        button {
+          cursor: pointer;
+          text-transform: uppercase;
+          width: 100%;
+          border-radius: 30px;
+          outline: none;
+          border: none;
+          background-color:var(--main-kenes-blue);
+          padding: 20px;
+          margin-bottom: 10px;
+          @media only screen and (max-width: 764px) {
+             width: 90%;
+          }
+          p {
+            color: white;
+            font-weight: bold;
+          }
+        }
+        button:hover {
+          background-color: #285bb6;
+        }
+      }
+      
+    }
 body {
   background: var(--main-user-page-color);
 }
