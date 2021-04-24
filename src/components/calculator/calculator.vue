@@ -7,21 +7,15 @@
             </div>  
             <div class="calc__column elements" v-if="page==1" >
                 
-                <div class="calc__row calc__ac">
-                        <div class="calc__row calc__ac calc__mb calc__add__input calc__mr" @click="addInput()">
-                            <i class="fas fa-plus-circle"></i>
-                            <p>добавить строку</p>
-                        </div>
-                       
-                </div>
+                
                 <div class="calc__column" style="align-items:flex-start" v-for="(i,index) in new_orders" :key="index">
                     
-                    <div class="new__element calc__row calc__mb">
+                    <div class="new__element calc__column calc__mb">
 
                         <div class="calc__column">
-                            <div class="calc__dropdown  calc__mr" >
+                            <div class="calc__dropdown calc__row  calc__mr calc__mb" >
                                 
-                                <div class="calc__column calc__count calc__mb">
+                                <div class="calc__column calc__count calc__mr">
                                     <p>Выберите элемент</p>
                                     <select @change="onChange($event,index)" v-model="permanent.elem" >
                                         <option value="">Выберите элемент</option>
@@ -31,7 +25,7 @@
                                     </select>
                                 </div>
 
-                                <div class="calc__column calc__count calc__mb">
+                                <div class="calc__column calc__count">
                                     <p>Выберите декор или обкат</p>
                                     <select @change="onChangeOtherElement($event,index)" v-model="permanent.elem_obkat" >
                                         <option value="">Выберите декор или обкат</option>
@@ -43,10 +37,36 @@
 
 
                             </div>
+
+
+                            <div class="calc__row calc__inputs__i" v-if="i.element && i.element.length!=0">
+                                <div class="calc__column calc__count calc__mr calc__mb">
+                                    <p>Толшина</p>
+                                    <select name="" id="" v-model="i.tolwina" @change ="calculateTolwina(index)" >
+                                        <option value="16">16</option>
+                                        <option value="8">8</option>
+                                    </select>
+                                </div>
+                                <div class="calc__column calc__count calc__mr calc__mb">
+                                    <p>Длина,мм</p>
+                                    <input type="text" placeholder="ширина в мм" v-model="i.dlina" @input="calculateInput(index)">
+                                </div>
+                                <div class="calc__column calc__count calc__mr calc__mb">
+                                    <p>Ширина,мм</p>
+                                    <input type="text" placeholder="ширина в мм" v-model="i.wirina" @input="calculateInput(index)">
+                                </div>
+                                <div class="calc__column calc__count calc__mr calc__mb">
+                                    <p>Количество</p>
+                                    <input type="text" v-model="i.count" @input="calculateInput(index)">
+                                </div>
+
+                            </div>
+                                                            <p class="calc__result calc__mb" style="display: none" v-if="Math.round(i.dlina*i.wirina*i.count*0.001)!=0">Общая плошадь:  {{i.dlina+'*'+i.wirina+'*'+i.count+' = '}}<span class="calc__value">{{Math.round(i.dlina*i.wirina*i.count*0.001)}} кв м</span></p>
+                                <p class="calc__result calc__mb" v-if="i.price!=1">Сумма: <span class="calc__value">{{i.price_order+' тг' }}</span></p>
                             <div  class="calc__row calc__ac calc__mb" v-if="i.choosen_element && i.choosen_element.length!=0">
                                 <div class="calc__column">
                                     <p>Элемент</p>
-                                    <div class="calc__row calc__ac calc__mb">
+                                    <div class="calc__row calc__ac calc__mb calc__element__added">
                                         <img class="calc__choosen__img calc__mr" :src="'https://api.frezerovka04.kz'+i.choosen_element.image_path" alt="">
                                         <p class="calc__mr">{{i.choosen_element.name}}</p>
                                         <i @click="deleteRow(index,'element')" class="calc__pointer fas fa-trash-alt"></i>
@@ -73,7 +93,7 @@
                                     <div class="calc__row calc__ac calc__mb">
                                         <img  class="calc__choosen__img calc__mr" :src="'https://api.frezerovka04.kz'+i.choosen_obkat.image_path" alt="">
                                         <p class="calc__mr">{{i.choosen_plenka.name}}</p>
-                                        <input class="calc__mr" v-on:input="changedObkat(index)" type="text" v-model="i.count_obkat">
+                                        <!-- <input class="calc__mr" v-on:input="changedObkat(index)" type="text" v-model="i.count_obkat"> -->
                                         <i @click="deleteRow(index,'obkat')" class="calc__pointer fas fa-trash-alt calc__mr"></i>
                                     </div>
       
@@ -98,29 +118,6 @@
      
                         </div>
 
-                        <div class="column" v-if="i.element && i.element.length!=0">
-                            <div class="calc__column calc__count calc__mr calc__mb">
-                                <p>Толшина</p>
-                                <select name="" id="" v-model="i.tolwina" @change ="calculateTolwina(index)" >
-                                    <option value="16">16</option>
-                                    <option value="8">8</option>
-                                </select>
-                            </div>
-                            <div class="calc__column calc__count calc__mr calc__mb">
-                                <p>Длина,мм</p>
-                                <input type="text" placeholder="ширина в мм" v-model="i.dlina" @input="calculateInput(index)">
-                            </div>
-                            <div class="calc__column calc__count calc__mr calc__mb">
-                                <p>Ширина,мм</p>
-                                <input type="text" placeholder="ширина в мм" v-model="i.wirina" @input="calculateInput(index)">
-                            </div>
-                            <div class="calc__column calc__count calc__mr calc__mb">
-                                <p>Количество</p>
-                                <input type="text" v-model="i.count" @input="calculateInput(index)">
-                            </div>
-                            <p class="calc__result calc__mb" v-if="Math.round(i.dlina*i.wirina*i.count*0.001)!=0">Общая плошадь:  {{i.dlina+'*'+i.wirina+'*'+i.count+' = '}}<span class="calc__value">{{Math.round(i.dlina*i.wirina*i.count*0.001)}} кв м</span></p>
-                            <p class="calc__result calc__mb" v-if="i.price!=1">Сумма: <span class="calc__value">{{i.price_order+' тг' }}</span></p>
-                        </div>
 
 
                     
@@ -128,9 +125,16 @@
                 </div>
 
 
-                <div class="calc__column">
-                    <p class="calc__amount_sum">Общая сумма: <span>{{amount_sum}} тг</span> </p>
+                <div class="calc__row calc__ac calc__bottom__side calc__mb calc__100 calc__jb">
+                    <div class="calc__row calc__ac  calc__add__input calc__mr" @click="addInput()">
+                        <i class="fas fa-plus-circle"></i>
+                        <p>добавить строку</p>
+                    </div>
+                    <div class="calc__column">
+                        <p class="calc__amount_sum">Общая сумма: <span>{{amount_sum}} тг</span> </p>
+                    </div>
                 </div>
+                
 
                 <!-- <div class="calc__column calc__phone">
                     <p>Телефон</p>
@@ -369,16 +373,21 @@
                 this.amount_sum = this.amount_sum+this.new_orders[index].decor_sum;
             }, 
             changedObkat(index) {
-
+                console.log(this.new_orders[index].obkat_sum);
                 if(this.new_orders[index].obkat_sum!=0) {
                     this.new_orders[index].price_order = this.new_orders[index].price_order-this.new_orders[index].obkat_sum;
                 }
                 
                 let order_decor = this.new_orders[index];
-            
-                order_decor.obkat_sum = (order_decor.dlina+order_decor.wirina)*order_decor.count_obkat*order_decor.choosen_obkat.price*0.001;
+                
+                let b = (parseInt(order_decor.dlina)+parseInt(order_decor.wirina));
+         
+                console.log("bb  -- "+b);
+                order_decor.obkat_sum = b*order_decor.choosen_obkat.price*0.001;
+                
+                console.log(order_decor.obkat_sum);
                 order_decor.price_order = order_decor.price_order+order_decor.obkat_sum;
-                        
+                
                 let p = this.new_orders;
                 this.new_orders = [];
                 this.new_orders = p;
@@ -434,7 +443,9 @@
             },
             calculateInput(index) {
                 
-                
+                if(this.new_orders[index].choosen_obkat.price && this.new_orders[index].choosen_obkat.price!='') {
+                    this.changedObkat(index);
+                }
                 this.new_orders[index].price_order = this.new_orders[index].decor_sum+this.new_orders[index].obkat_sum;
                 this.amount_sum = this.new_orders[index].decor_sum+this.new_orders[index].obkat_sum;
                 if(this.new_orders[index].price!=1) {
@@ -528,14 +539,21 @@
                 let length_plenka = this.new_orders[this.choosen_index].choosen_plenka;
 
                 let formula = '';  
-                if (length_element.length!=0  && this.new_orders[index].tolwina!=0) {
-                    formula = length_element.id+' '+this.new_orders[index].tolwina;
+  
+                
+                if(length_element.calculation_id  && length_plenka.calculation_id && this.new_orders[index].tolwina!=0) {
+                    formula = length_plenka.id+' '+length_element.id+' '+this.new_orders[index].tolwina;
                     this.checkFormula(index,formula);
-                    if(length_element.length!=0 && length_plenka.length!=0 && this.new_orders[index].tolwina!=0) {
-                        formula = length_plenka.id+' '+length_element.id+' '+this.new_orders[index].tolwina;
-                        this.checkFormula(index,formula);
-                    }
-                }     
+                }
+                else if(length_element.calculation_id  && this.new_orders[index].tolwina!=0) {
+
+                    formula = length_element.id+' '+this.new_orders[index].tolwina;
+                    
+                    this.checkFormula(index,formula);
+                  
+                }
+           
+                
             },
             removeElement(index,type) {
               
@@ -558,6 +576,8 @@
                 else {
                     this.new_orders[this.choosen_index].choosen_obkat = [];
                     this.new_orders[this.choosen_index].choosen_obkat = val;
+
+                    this.changedObkat(this.choosen_index);
                 } 
                 let p = this.new_orders;
                 this.new_orders = [];
@@ -1439,6 +1459,7 @@
                 }
             }
             .new__element {
+                width: 100%;
                 background: white;
                 border-bottom: 5px solid var(--main-kenes-blue);
                 padding: 20px;
@@ -1449,7 +1470,7 @@
                 }
             }
             .calc__count {
-                width: 180px;
+                width: 300px;
              
                 p {
                     margin-bottom: 3px;
@@ -1543,6 +1564,41 @@
         }
 
         @media only screen and (max-width: 600px) {
+             .calc__element__added {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .calc__bottom__side {
+                flex-direction: column;
+                padding: 20px;
+                
+                .calc__add__input {
+                    margin-bottom: 10px;
+                }
+                p {
+                    font-size: 16px;
+                    white-space: nowrap;
+                }
+                span {
+                    font-size: 16px;
+                }
+            }
+            input {
+                width: 100%;
+                margin: 10px;
+            }
+            select{
+                 width: 80%;
+                 margin: 10px;
+            }
+            .calc__inputs__i {
+                flex-direction: column;
+            }
+            .calc__dropdown {
+                .calc__count {
+                    width: 100%;
+                }
+            }
             .calc__types {
                 flex-direction: column;
             }
@@ -1627,15 +1683,16 @@
             }
 
              .calc__modal__form {
-                width: 50% !important;
+                width: 100% !important;
            
             }
         }
 
         .calc__dropdown {
-            width: 250px !important;
+            width: 100%;
             cursor: pointer;
         }
+       
         .calc__dropdown .dropdown li {
         border-bottom: 1px solid rgba(112, 128, 144, 0.1)
         }
