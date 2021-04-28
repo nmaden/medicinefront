@@ -40,6 +40,10 @@ export default {
   margin: 0;
   padding: 0;
 }
+.notif__wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
  .sign__page {
       display: flex;
       flex-direction: column;

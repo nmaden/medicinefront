@@ -83,12 +83,12 @@
             meta: { guest: true },
            
         },
-        // {
-        //     path: '/',
-        //     component: LoginMed,
-        //     meta: { guest: true },
+        {
+            path: '/',
+            component: LoginMed,
+            meta: { guest: true },
            
-        // },        
+        },        
         {
             path: '/notif',
             component: NotifMain,

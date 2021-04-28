@@ -4,24 +4,60 @@
 
         <div class="notif__column notif__100 notif__home notif__ac" >
 
-            <div class="notif__row notif__ac notif__jb notif__header notif__mb__s">
-                <div class="notif__column">
-                    <p class="notif__salem">Қош келдіңіз</p>
-                    <p class="notif__name">Дәрілер базасы</p>
+            <div class="notif__jb notif__header notif__mb__s">
+
+                <p class="notif__header__title">Поиск лекарств</p>
+                <div class="notif__search notif__row notif__ac notif__mb__s">
+                    
+                    <div class="notif__icon__search">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <input type="text" v-model="medicine.name"  placeholder="Лекарства" @input="search">
+                    
                 </div>
-
-                <i class="fas fa-clinic-medical" @click="logout"></i>
             </div>
 
-            <div class="notif__search notif__row notif__ac notif__mb__s">
-                <input type="text" v-model="medicine.name" placeholder="Іздеу" @input="search">
-                <i class="fas fa-search"></i>
-            </div>
+           
+            <div class="notif__column notif__plans  notif__ac" >
 
+                <div class="notif__menus" v-if="search_page">
+                    <div class="notif__menu" @click="show_fixed_third=true">
+                        <i class="fas fa-bookmark"></i>
+                        <p>Избранное</p>
+                        <p>Мои избранные места</p>
+                    </div>
+                    <div class="notif__menu">
+                        <i class="fas fa-clinic-medical"></i>
+                        <p>Аптеки</p>
+                        <p>Круглосуточные производственные</p>
+                    </div>
+                    <div class="notif__menu"  @click="show_fixed=true">
+                        <i class="fas fa-pills"></i>
+                        <p>Группы лекарств</p>
+                        <p>Антибиотики,</p>
+                        <p>витамины...</p>
+                    </div>
+                </div>
+                
+                <div class="notif__column  notif__categories" v-bind:class="{show__categories: show_fixed==true}"  >
+            
+                        <div class="notif__category__title notif__row">
+                            <i class="fas fa-arrow-left" @click="show_fixed=false"></i>
+                            <p>Группы лекарств</p>
+                        </div>
 
-            <div class="notif__column notif__plans  notif__ac">
-                <div class="notif__column notif__plan">
-                        <div class="notif__row notif__pl notif__ac notif__mb__s" v-for="(item,index) in medicine.medicines" :key="index">
+                        <div class="notif__category__item" v-for="(cat,i) in categories" :key="i">
+                                <p @click="getByCategory(cat.id)">{{cat.category_name}}</p>
+                        </div>
+                </div>
+                
+
+                <div class="notif__column notif__plan notif__categories" v-bind:class="{show__categories: show_fixed_second==true}" >
+                        <div class="notif__category__title notif__row">
+                            <i class="fas fa-arrow-left" @click="closeCategory()"></i>
+                            <p>Группы лекарств</p>
+                        </div>
+                        <div class="notif__row notif__pl notif__ac notif__mb__s" v-for="(item,index) in medicine.medicines_c" :key="index">
                         <div class="notif__column notif__day notif__ac notif__mr__l">
                             <i class="fas fa-tags"></i>
                         </div>
@@ -33,6 +69,7 @@
                                  <i class="fas fa-capsules notif__mr__s"></i>
                                 <p>{{item.name}}</p>
                             </div>
+  
                             
                             <div class="notif__apteka notif__mb__s" v-for="(apteka,i) in item.info" :key="i">
                                 <div class="notif__column notif__mb__xs"> 
@@ -60,6 +97,114 @@
                                         <i class="fas fa-tenge notif__mr__s"></i>
                                         <p>{{apteka.price}} тг</p>
                                     </div>
+                                    
+                                    <div class="notif__row notif__ac">
+                                        <i class="fas fa-minus-circle" @click="deleteSaved(item)"></i>
+                                        <i class="fas fa-bookmark" @click="saveData(item)"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="notif__column notif__plan" v-if="!search_page">
+                
+                        <div class="notif__row notif__pl notif__ac notif__mb__s" v-for="(item,index) in medicine.medicines" :key="index">
+                        <div class="notif__column notif__day notif__ac notif__mr__l">
+                            <i class="fas fa-tags"></i>
+                        </div>
+
+                        <div class="notif__column notif__text">
+                                
+                            <div class="notif__row notif__ac notif__mb__xs notif__phar">
+                              
+                                 <i class="fas fa-capsules notif__mr__s"></i>
+                                <p>{{item.name}}</p>
+                            </div>
+  
+                            
+                            <div class="notif__apteka notif__mb__s" v-for="(apteka,i) in item.info" :key="i">
+                                <div class="notif__column notif__mb__xs"> 
+             
+                  
+                                   
+                                    <div class="notif__row notif__ac notif__mb__xs">
+                                          <i class="fas fa-clinic-medical notif__mr__s"></i>
+                                          <p> {{apteka.apteka.name}}</p>
+                                    </div>
+                                    <div class="notif__row notif__ac notif__mb__xs">
+                                        <i class="fas fa-phone-alt notif__mr__s"></i>
+                                        <a :href="'tel:'+apteka.apteka.phone"> {{apteka.apteka.phone}}</a>
+                                    </div>
+                                    <div class="notif__row notif__ac notif__mb__xs">
+                                          
+                                        <i class="fas fa-location-arrow notif__mr__s"></i>
+                                          <p> {{apteka.apteka.address}}</p>
+                                    </div>
+                                    <div class="notif__row notif__ac notif__mb__xs">
+                                        <i class="far fa-clock notif__mr__s"></i>
+                                        <p>{{apteka.apteka.time_start+' - '+apteka.apteka.time_end}}</p>
+                                    </div>
+                                    <div class="notif__row">
+                                        <i class="fas fa-tenge notif__mr__s"></i>
+                                        <p>{{apteka.price}} тг</p>
+                                    </div>
+                                    
+                                    <div class="notif__row notif__ac">
+                                        <i class="fas fa-minus-circle" @click="deleteSaved(item)"></i>
+                                        <i class="fas fa-bookmark" @click="saveData(item)"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notif__column  notif__plan notif__categories notif__cat" v-bind:class="{show__categories: show_fixed_third==true}" >
+                    <div class="notif__category__title notif__row">
+                        <i class="fas fa-arrow-left" @click="show_fixed_third=false"></i>
+                        <p>Избранное</p>
+                    </div>
+                    <div class="notif__row notif__pl notif__ac notif__mb__s" v-for="(item,j) in all_saved" :key="j">
+                        <div class="notif__column notif__day notif__ac notif__mr__l">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                     
+                        <div class="notif__column notif__text">
+                                
+                            <div class="notif__row notif__ac notif__mb__xs notif__phar">
+                              
+                                 <i class="fas fa-capsules notif__mr__s"></i>
+                                <p>{{item.name}}</p>
+                            </div>
+                        
+                            <div class="notif__apteka notif__mb__s" v-for="(apteka,i) in item.info" :key="i">
+                                <div class="notif__column notif__mb__xs"> 
+             
+                  
+                                   
+                                    <div class="notif__row notif__ac notif__mb__xs">
+                                          <i class="fas fa-clinic-medical notif__mr__s"></i>
+                                          <p> {{apteka.apteka.name}}</p>
+                                    </div>
+                                    <div class="notif__row notif__ac notif__mb__xs">
+                                        <i class="fas fa-phone-alt notif__mr__s"></i>
+                                        <a :href="'tel:'+apteka.apteka.phone"> {{apteka.apteka.phone}}</a>
+                                    </div>
+                                    <div class="notif__row notif__ac notif__mb__xs">
+                                          
+                                        <i class="fas fa-location-arrow notif__mr__s"></i>
+                                          <p> {{apteka.apteka.address}}</p>
+                                    </div>
+                                    <div class="notif__row notif__ac notif__mb__xs">
+                                        <i class="far fa-clock notif__mr__s"></i>
+                                        <p>{{apteka.apteka.time_start+' - '+apteka.apteka.time_end}}</p>
+                                    </div>
+                                    <div class="notif__row">
+                                        <i class="fas fa-tenge notif__mr__s"></i>
+                                        <p>{{apteka.price}} тг</p>
+                                    </div>
+                                    <i class="fas fa-bookmark" @click="saveData(item)"></i>
                                 </div>
                             </div>
                         </div>
@@ -78,6 +223,11 @@
          name: 'CalcOrder' ,
         data() {
             return {
+                  search_page: true,
+                  show_fixed_third: false,
+                  show_fixed_second: false,
+                  show_fixed: false,
+                  categories: [],
                   done: 1,
                   page: 1,
                   current_image: 1,
@@ -94,17 +244,99 @@
                   },
                   link: require('../../assets/images/kaz.png'),
                   medicine: {
+                      medicines_c: [],
                       medicines: [],
                       name: null
-                  }
+                  },
+                  all_saved: []
             }
         },
         components: {
         },
         mounted() {
             this.getMedicines();
+            this.getCategories();
+            if(localStorage.getItem("saved")) {
+                this.all_saved = JSON.parse(localStorage.getItem("saved"));
+            }
         },
         methods: {
+            closeCategory() {
+                this.show_fixed_second=false;
+                this.medicine.medicines_c = [];
+            },
+              getByCategory(id) {
+                this.show_fixed = false;
+                this.show_fixed_second = true;
+                this.$http.get('/guest/get/by/category/medicines?id='+id)
+                .then(res => {
+                    this.medicine.medicines_c = res.data
+                });
+              },
+              getCategories() {
+                const config = {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                };
+
+                this.$http.get('/pharmacy/get/categories')
+                .then(res => {
+                    this.categories = res.data
+                });
+            },
+            saveData(data){
+               
+                if(!localStorage.getItem("saved")) {
+                    let b = [];
+                    b.push(data);
+                    localStorage.setItem("saved",JSON.stringify(b));
+                    this.all_saved = JSON.parse(localStorage.getItem("saved"));
+                }
+                else {
+                    let all = JSON.parse(localStorage.getItem("saved"));
+
+                    let truefalse = [];
+
+                    for (let index = 0; index < all.length; index++) {
+                        if(all[index].id==data.id) {
+                            truefalse.push(true);
+                        }
+                       
+                    }
+
+                    if(truefalse.length==0) {
+                        all.push(data);
+                        localStorage.setItem("saved",JSON.stringify(all));          
+
+                    }
+                  
+        
+                   
+                    
+                    this.all_saved = JSON.parse(localStorage.getItem("saved"));
+
+
+
+                   
+                   
+                }
+
+            },
+            deleteSaved(data) {
+                let all = JSON.parse(localStorage.getItem("saved"));
+
+                 let filtered = this.arrayRemove(all,data.id);
+                 localStorage.setItem("saved",JSON.stringify(filtered)); 
+                this.all_saved = JSON.parse(localStorage.getItem("saved"));
+
+
+            },
+            arrayRemove(arr, value) { 
+    
+                return arr.filter(function(ele){ 
+                    return ele.id != value; 
+                });
+            },
+
             logout() {
               
                 this.$router.push("/");
@@ -117,6 +349,12 @@
                 });
             },
             search() {
+                if(this.medicine.name!='') {
+                    this.search_page = false;
+                }
+                else {
+                    this.search_page = true;
+                }
                 let data =  {
                     name: this.medicine.name
                 };
@@ -172,6 +410,44 @@
         margin-right: 20px;
     }
 
+    .show__categories {
+        display: flex !important;
+    }
+    .notif__categories {
+        display: none;
+        position:fixed !important;
+        width: 100% !important;
+        top: 0;
+        z-index: 10;
+        background: white;
+        min-height: 100vh;
+        height: 100%;
+        overflow-y: scroll;
+        margin-top: 0 !important;
+        .notif__category__title {
+            padding: 25px;
+            justify-content: center;
+            position: relative;
+            i {
+                position: absolute;
+                left: 10px;
+                top: 25px;
+                font-size: 24px;
+            }
+            p {
+                font-size: 20px;
+                font-weight: bold;
+            }
+        }
+        .notif__category__item {
+          
+            padding: 15px;
+            border-bottom: 1px solid #ccc;
+            display: flex;
+            justify-content: center;
+        }
+    }
+
     .notif__analyze__body {
             width: 90%;
             .analyze__title {
@@ -195,26 +471,55 @@
         .notif__search {
             width: 90%;
             align-self: center;
+            position: relative;
             input {
-                width: 80%;
+                width: 100%;
                 outline: none;
                 border: none;
-                border-radius: 20px;
-                padding: 15px;
+                border-radius: 25px;
+                padding: 20px;
                 background: #fafafa;
                 margin-right: 10px;
+                padding-left: 70px;
+                
+            }
+            .notif__icon__search {
+                width: 30px;
+                height: 30px;
+                border-radius: 15px;
+                background: #f96080;
+                  position: absolute;
+                left: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
             i {
-                color: var(--main-kenes-blue);
-                font-size: 24px;
+                font-size: 14px !important;
+                position: absolute;
+                left: 8px;
+                color: white !important;
+
             }
             ::placeholder {
                 color: #Ccc;
             }
         }
         .notif__header {
-            width: 90%;
-            margin-top: 20px;
+            width: 100%;
+            background: #29d0e5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 30px;
+            padding-bottom: 30px;
+            .notif__header__title {
+             
+                color: white;
+                font-size: 36px;
+                margin-bottom: 20px;
+        
+            }
             .notif__salem {
                 font-size: 30px;
                 color: gray;
@@ -251,12 +556,61 @@
      
         .notif__plans {
             width: 100%;
-          
+
+            .notif__menus {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                width: 90%;
+            }
+            .notif__menu {
+                width: 110px;
+                padding: 15px;
+                border-radius: 20px;
+                margin-bottom: 15px;
+                box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+                i {
+                    font-size: 18px;
+                    margin-bottom: 20px;
+                }
+                p:nth-child(2){
+                    font-size: 18px;
+                    margin-bottom: 10px;
+                    width: 70px;
+                }
+                p:nth-child(3) {
+                    font-size: 12px;
+                }
+                p:nth-child(4) {
+                    font-size: 12px;
+                }
+            }
             .notif__plan {
                 width: 90%;
                 margin-bottom: 10px;
                 margin-top: 10px;
-                
+                position: relative;
+                .fa-minus-circle {
+                    color: #f27474;
+                    position: absolute;
+                    right: 50px;
+                    bottom: 20px;
+                    font-size: 24px; 
+                }
+                .fa-bookmark {
+                    color: #f27474;
+                    position: absolute;
+                    right: 20px;
+                    bottom: 20px;
+                    font-size: 24px;
+                }
+                .fa-trash {
+                    color: #f27474;
+                    position: absolute;
+                    right: 50px;
+                    bottom: 20px;
+                    font-size: 24px;
+                }
                 .notif__month {
                     font-size: 18px;
                     font-weight: bold;

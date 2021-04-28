@@ -5,17 +5,17 @@
         <div class="notif__column notif__100 notif__home notif__ac" v-if="page==1">
 
         <div class="notif__row notif__ac notif__jb notif__header notif__mb__s">
+            <i class="fas fa-clinic-medical"></i>
             <div class="notif__column">
                 <p class="notif__salem"></p>
-                <p class="notif__name" @click="logout">Шығу</p>
-            </div>
-
-            <i class="fas fa-clinic-medical"></i>
+                <p class="notif__logout" @click="logout">Выйти</p>
+            </div>            
         </div>
 
-        <div class="notif__sort notif__row notif__ac notif__mb__s">
-            <div class="notif__type notif__mr__l" @click="done=1" v-bind:class="{notif__type__active: done==1}">Дәріханалар</div>
-            <div class="notif__type" @click="done=2" v-bind:class="{notif__type__active: done==2}">Дәрілер</div>
+        <div class="notif__sort notif__wrap notif__ac notif__mb__s">
+            <div class="notif__type notif__mr__l notif__mb__xs" @click="done=1" v-bind:class="{notif__type__active: done==1}">Дәріханалар</div>
+            <div class="notif__type notif__mb__xs" @click="done=2" v-bind:class="{notif__type__active: done==2}">Дәрілер</div>
+            <div class="notif__type notif__mb__xs" @click="done=3" v-bind:class="{notif__type__active: done==3}">Категориялар</div>
         </div>
 
         <div class="notif__sort notif__row notif__ac notif__mb__s" v-if="pharmacy.edit" >
@@ -25,14 +25,46 @@
             </div>
         </div>
 
+        <div class="notif__column notif__plans notif__ac" v-if="done==3">
+
+            <div @click="addСategoryForMedicine()">Добавить категорий</div>
+            <div class="notif__column notif__plan">
+                <div class="notif__row notif__pl notif__ac notif__mb__s" v-for="(item,index) in medicine.categories" :key="index">
+                    <div class="notif__column notif__day notif__ac notif__mr__l">
+                        <i class="fas fa-capsules"></i>
+                    </div>
+
+                    <div class="notif__column notif__text">
+                            
+                        <div class="notif__row notif__ac notif__mb__xs notif__phar">
+                            <i class="fas fa-clinic-medical notif__mr__s"></i>
+                            <p>{{item.category_name}}</p>
+                        </div>
+                        <div class="notif__row notif__ac notif__address notif__mb__xs" @click="deleteСategory(item.id)">
+                            <i class="fas fa-trash-alt notif__mr__s"></i>
+                            <p>Удалить</p>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="notif__column notif__plans notif__ac" v-if="done==2">
             <div class="notif__column notif__plan ">
                 <form class="notif__column notif__pl notif__fs"  v-if="!medicine.edit"  @submit.prevent="createMedicine">
-                    <p class="notif__title">Жаңа дәрі</p>
+                    <p class="notif__title">Добавить препарат</p>
 
                     <div class="notif__column notif__phar__input">
-                        <p>Дәрі атауы</p>
+                        <p>Название препарата</p>
                         <input type="text" v-model="medicine.name" required>
+                    </div>
+
+                    <div class="notif__column notif__phar__input">
+                        <p>Выберите категорию</p>
+                        <select name="" id="" v-model="medicine.category_id" required>
+                            <option value="">Выберите категорию</option>
+
+                            <option value="" v-for="cat in medicine.categories" :value="cat.id">{{cat.category_name}}</option>
+                        </select>
                     </div>
 
                   
@@ -73,15 +105,15 @@
 
                         <div class="notif__row notif__ac notif__address notif__mb__xs" @click="getMedicine(item.id)">
                             <i class="fas fa-pencil-alt notif__mr__s"></i>
-                            <p>Өзгерту</p>
+                            <p>Редактировать</p>
                         </div>
                         <div class="notif__row notif__ac notif__address notif__mb__xs" @click="deleteMedicine(item.id)">
                             <i class="fas fa-trash-alt notif__mr__s"></i>
-                            <p>Өшіру</p>
+                            <p>Удалить</p>
                         </div>  
                         <div class="notif__row notif__ac notif__address notif__mb__xs" @click="addPharmacyForMedicine(item.id)">
                             <i class="fas fa-plus-circle notif__mr__s" ></i>
-                            <p>Дәріхана тіркеу</p>
+                            <p>Добавить аптеку</p>
                         </div> 
 
                         <div class="notif__apteka notif__mb__s" v-for="(apteka,i) in item.info" :key="i">
@@ -247,25 +279,39 @@
                         <input type="text" v-model="medicine.price" required>
                     </div>
 
-                    <button class="notif__mb__xs" type="submit">Сақтау</button>
-                    <a  class="notif__mb__s" @click="closeModal">Жабу</a>
+                    <button class="notif__mb__xs" type="submit">Сохранить</button>
+                    <a  class="notif__mb__s" @click="closeModal">Закрыть</a>
                 </form>
 
                  <form class="notif__column notif__modal__form  notif__pl notif__fs " v-if="medicine.edit_tablet" @submit.prevent="editMedicine">
                     
                     <p class="notif__title">Дәрі атауын өзгерту</p>
                    
-                   
-                    
-
                     <div class="notif__column notif__phar__input notif__mb__s">
                         <p>Дәрі атауы</p>
                         <input type="text" v-model="medicine.name" required>
                     </div>
 
-                    <button class="notif__mb__xs" type="submit">Сақтау</button>
-                    <a  class="notif__mb__s" @click="closeModal">Жабу</a>
+                    <button class="notif__mb__xs" type="submit">Сохранить</button>
+                    <a  class="notif__mb__s" @click="closeModal">Закрыть</a>
                 </form>
+
+                <form class="notif__column notif__modal__form  notif__pl notif__fs " v-if="medicine.addCategory" @submit.prevent="createCategory">
+                    
+                    <p class="notif__title">Добавить категорию</p>
+                   
+                   
+                    
+
+                    <div class="notif__column notif__phar__input notif__mb__s">
+                        <p>Название категорий</p>
+                        <input type="text" v-model="category_name" required>
+                    </div>
+
+                    <button class="notif__mb__xs" type="submit">Сохранить</button>
+                    <a  class="notif__mb__s" @click="closeModal">Закрыть</a>
+                </form>
+
 
                 
         </div>
@@ -295,7 +341,7 @@
          name: 'AdminPharmacy' ,
         data() {
             return {
-                
+                  category_name: '',
                   pharmacy: {
                       edit: false,
                       pharmacy: null,
@@ -308,6 +354,8 @@
                       address: null
                   },
                   medicine: {
+                      category_id: '',
+                      addCategory: false,
                       edit_tablet: false,
                       show_modal: false,
                       price_id: null,
@@ -348,8 +396,54 @@
             this.getPharmacies();
             this.getMedicines();
 
+            this.getCategories();
+
         },
         methods: {
+            getCategories() {
+                const config = {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                };
+
+                this.$http.get('/pharmacy/get/categories', config)
+                .then(res => {
+                    this.medicine.categories = res.data
+                });
+            },
+            deleteСategory(id) {
+                const config = {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                };
+                this.$http.get('/pharmacy/delete/category?id='+id, config)
+                .then(res => {
+                    this.getCategories();
+                });
+            },
+            createCategory() {
+                let data = {
+                    category_name: this.category_name,
+                };
+                const config = {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                };
+                this.$http.post('/pharmacy/create/category', data, config)
+                .then(res => { 
+
+                    this.$fire({
+                        title: res.data.message,
+                        text: "",
+                        type: "success",
+                        timer: 3000
+                    }).then(r => {
+                        console.log(r.value);
+                    });
+
+                    this.medicine.addMedicine =false;
+                    this.medicine.show_modal = false;
+                    this.getCategories();
+                 
+                });
+            },
             showEditPharmacy() {
                 this.pharmacy.edit=false;
                 this.pharmacy.id = '';
@@ -364,6 +458,7 @@
                 this.medicine.show_modal = false;
                 this.medicine.addMedicine = false;
                 this.medicine.edit_tablet = false;
+                this.medicine.addCategory = false;
             },
             logout() {
                 localStorage.removeItem("access_token");
@@ -490,7 +585,8 @@
             },
             createMedicine() {
                 let data = {
-                    name: this.medicine.name
+                    name: this.medicine.name,
+                    category_id: this.medicine.category_id
                 };
 
                 const config = {
@@ -589,6 +685,11 @@
             addPharmacyForMedicine(id) {
                 this.medicine.id = id;
                 this.medicine.addMedicine = true;
+                this.medicine.show_modal = true;
+            },
+            addСategoryForMedicine() {
+           
+                this.medicine.addCategory = true;
                 this.medicine.show_modal = true;
             },
             getInfo(id) {
@@ -744,6 +845,11 @@
                 font-size: 30px;
                 color: gray;
                 margin-bottom: 2px;
+            }
+            .notif__logout {
+                color: var(--main-kenes-blue);
+                font-size: 16px;
+                border-bottom: 1px solid  var(--main-kenes-blue);
             }
             .notif__name {
                 color: var(--main-kenes-blue);
