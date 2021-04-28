@@ -5,12 +5,10 @@
             <i class="sign__top_image fas fa-clinic-medical"></i>
             <form class="sign__page__block" @submit.prevent="login_sign">
                 <input type="text" placeholder="Логин" v-model="login" >
-                <input type="text" placeholder="Құпия сөз" v-model="password" >
-                <button type="submit"><p>Жүйеге кіру</p></button>
-                <a  @click="signAsGuest">Қонақ ретінде кіру</a>
-            </form>
-
-        
+                <input type="password" placeholder="Пароль" v-model="password" >
+                <button type="submit"><p>Войти</p></button>
+                <a  @click="signAsGuest">Гость</a>
+            </form>        
         </div>                   
 </template>
 

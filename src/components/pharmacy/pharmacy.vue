@@ -26,7 +26,7 @@
                         <p>Избранное</p>
                         <p>Мои избранные места</p>
                     </div>
-                    <div class="notif__menu">
+                    <div class="notif__menu" @click="show_pharmacies=true">
                         <i class="fas fa-clinic-medical"></i>
                         <p>Аптеки</p>
                         <p>Круглосуточные производственные</p>
@@ -39,6 +39,42 @@
                     </div>
                 </div>
                 
+
+                 <div class="notif__column  notif__categories" v-bind:class="{show__categories: show_pharmacies==true}"  >
+            
+                        <div class="notif__category__title notif__row">
+                            <i class="fas fa-arrow-left" @click="show_pharmacies=false"></i>
+                            <p>Аптеки</p>
+                        </div>
+
+                        <div class="notif__apteka__pharm notif__mb__s" v-for="(apteka,i) in pharmacies" :key="i">
+                                <div class="notif__column notif__mb__xs"> 
+             
+                  
+                                   
+                                    <div class="notif__row notif__ac notif__mb__xs">
+                                          <!-- <i class="fas fa-clinic-medical notif__mr__s"></i> -->
+
+                                          <img :src="'https://api.frezerovka04.kz'+apteka.image_path" alt="">
+                                          <p> {{apteka.name}}</p>
+                                    </div>
+                                    <div class="notif__row notif__ac notif__mb__xs">
+                                        <i class="fas fa-phone-alt notif__mr__s"></i>
+                                        <a :href="'tel:'+apteka.phone"> {{apteka.phone}}</a>
+                                    </div>
+                                    <div class="notif__row notif__ac notif__mb__xs">
+                                          
+                                        <i class="fas fa-location-arrow notif__mr__s"></i>
+                                          <p> {{apteka.address}}</p>
+                                    </div>
+                                    <div class="notif__row notif__ac notif__mb__xs">
+                                        <i class="far fa-clock notif__mr__s"></i>
+                                        <p>{{apteka.time_start+' - '+apteka.time_end}}</p>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                </div>
                 <div class="notif__column  notif__categories" v-bind:class="{show__categories: show_fixed==true}"  >
             
                         <div class="notif__category__title notif__row">
@@ -161,9 +197,10 @@
                 </div>
 
                 <div class="notif__column  notif__plan notif__categories notif__cat" v-bind:class="{show__categories: show_fixed_third==true}" >
-                    <div class="notif__category__title notif__row">
+                    <div class="notif__category__title notif__category__second notif__row notif__ac">
                         <i class="fas fa-arrow-left" @click="show_fixed_third=false"></i>
-                        <p>Избранное</p>
+                        <p style="margin-right: 20px">Избранное</p>
+                        <p style="font-size:12px" @click="deleteIzb">Очистить cписок</p>
                     </div>
                     <div class="notif__row notif__pl notif__ac notif__mb__s" v-for="(item,j) in all_saved" :key="j">
                         <div class="notif__column notif__day notif__ac notif__mr__l">
@@ -223,6 +260,8 @@
          name: 'CalcOrder' ,
         data() {
             return {
+                  show_pharmacies: false,
+                  pharmacies: [],
                   search_page: true,
                   show_fixed_third: false,
                   show_fixed_second: false,
@@ -256,11 +295,24 @@
         mounted() {
             this.getMedicines();
             this.getCategories();
+            this.getPharmacies();
             if(localStorage.getItem("saved")) {
                 this.all_saved = JSON.parse(localStorage.getItem("saved"));
             }
         },
         methods: {
+            deleteIzb() {
+                localStorage.removeItem("saved");
+                this.all_saved = [];
+            },
+            getPharmacies() {
+                this.show_fixed = false;
+                this.show_fixed_second = false;
+                this.$http.get('/pharmacy/get/pharmacies/all')
+                .then(res => {
+                    this.pharmacies = res.data;
+                });
+            },
             closeCategory() {
                 this.show_fixed_second=false;
                 this.medicine.medicines_c = [];
@@ -413,6 +465,26 @@
     .show__categories {
         display: flex !important;
     }
+
+    .notif__apteka__pharm {
+        padding: 15px;
+        border-radius: 20px;
+        margin-bottom: 15px;
+        box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+        
+        width: 80%;
+        align-self: center;
+
+        img {
+            width: 120px;
+            height: 120px;
+            border-radius: 60px;
+            margin-right: 20px;
+             box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+             margin-bottom: 20px;
+            // border: 3px solid var(--main-kenes-blue);
+        }
+    }
     .notif__categories {
         display: none;
         position:fixed !important;
@@ -424,6 +496,8 @@
         height: 100%;
         overflow-y: scroll;
         margin-top: 0 !important;
+
+
         .notif__category__title {
             padding: 25px;
             justify-content: center;
@@ -622,6 +696,9 @@
                     background: #fafafa;
                     border: 2px solid #fafafa;
                     position: relative;
+                    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+                    width: 80%;
+                    align-self: center;
                     .notif__green {
                         background: #82c91f !important;
                     }

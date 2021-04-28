@@ -13,21 +13,21 @@
         </div>
 
         <div class="notif__sort notif__wrap notif__ac notif__mb__s">
-            <div class="notif__type notif__mr__l notif__mb__xs" @click="done=1" v-bind:class="{notif__type__active: done==1}">Дәріханалар</div>
-            <div class="notif__type notif__mb__xs" @click="done=2" v-bind:class="{notif__type__active: done==2}">Дәрілер</div>
-            <div class="notif__type notif__mb__xs" @click="done=3" v-bind:class="{notif__type__active: done==3}">Категориялар</div>
+            <div class="notif__type notif__mr__l notif__mb__xs" @click="done=1" v-bind:class="{notif__type__active: done==1}">Аптеки</div>
+            <div class="notif__type notif__mb__xs" @click="done=2" v-bind:class="{notif__type__active: done==2}">Лекарства</div>
+            <div class="notif__type notif__mb__xs" @click="done=3" v-bind:class="{notif__type__active: done==3}">Категорий</div>
         </div>
 
         <div class="notif__sort notif__row notif__ac notif__mb__s" v-if="pharmacy.edit" >
             <div class="notif__type notif__mr__l notif__type__active" @click="showEditPharmacy" >
                 <i class="fas fa-plus-circle" style="color: white"></i>
-                Дәріхана қосу
+                Добавить аптеку
             </div>
         </div>
 
         <div class="notif__column notif__plans notif__ac" v-if="done==3">
 
-            <div @click="addСategoryForMedicine()">Добавить категорий</div>
+            <div class="notif__add__category" @click="addСategoryForMedicine()">Добавить категорий</div>
             <div class="notif__column notif__plan">
                 <div class="notif__row notif__pl notif__ac notif__mb__s" v-for="(item,index) in medicine.categories" :key="index">
                     <div class="notif__column notif__day notif__ac notif__mr__l">
@@ -140,13 +140,13 @@
 
             <div class="notif__column notif__plan ">
                 <form class="notif__column notif__pl notif__fs"  v-if="!pharmacy.edit"  @submit.prevent="createPharmacy">
-                    <p class="notif__title">Жаңа дәріхана</p>
+                    <p class="notif__title">Добавить аптеку</p>
                     <div class="notif__column notif__phar__input">
-                        <p>Дәріхана атауы</p>
+                        <p>Название аптеки</p>
                         <input type="text" v-model="pharmacy.name" required>
                     </div>
                     <div class="notif__column notif__phar__input ">
-                        <p>Жумыс жасау уақыты</p>
+                        <p>Время работы</p>
                         <div class="notif__row notif__100 notif__jb">
                             <input  class="notif__hour notif__mr__l " type="text" v-model="pharmacy.time_start" required>
                             <input class="notif__hour" type="text" v-model="pharmacy.time_end" required>
@@ -157,20 +157,24 @@
                         <input type="text" v-model="pharmacy.phone" required>
                     </div>
                     <div class="notif__column notif__phar__input">
-                        <p>Мекен-жай</p>
+                        <p>Адрес</p>
                         <input type="text" v-model="pharmacy.address" required>
                     </div>
+                    <div class="notif__column notif__phar__input">
+                        <p>Фото</p>
+                        <input type="file" @change="uploadImage" required>
+                    </div>
 
-                    <button type="submit">Сақтау</button>
+                    <button type="submit">Сохранить</button>
                 </form>
                 <form class="notif__column notif__pl notif__fs" v-if="pharmacy.edit" @submit.prevent="editPharmacy">
-                    <p class="notif__title">Дәріхананы өзгерту</p>
+                    <p class="notif__title">Редактировать аптеку</p>
                     <div class="notif__column notif__phar__input">
-                        <p>Дәріхана атауы</p>
+                        <p>Название аптеки</p>
                         <input type="text" v-model="pharmacy.name" required>
                     </div>
                     <div class="notif__column notif__phar__input ">
-                        <p>Жумыс жасау уақыты</p>
+                        <p>Время работы</p>
                         <div class="notif__row notif__100 notif__jb">
                             <input  class="notif__hour notif__mr__l " type="text" v-model="pharmacy.time_start" required>
                             <input class="notif__hour" type="text" v-model="pharmacy.time_end" required>
@@ -181,11 +185,15 @@
                         <input type="text" v-model="pharmacy.phone" required>
                     </div>
                     <div class="notif__column notif__phar__input">
-                        <p>Мекен-жай</p>
+                        <p>Адрес</p>
                         <input type="text" v-model="pharmacy.address" required>
                     </div>
+                    <div class="notif__column notif__phar__input">
+                        <p>Фото</p>
+                        <input type="file" @change="uploadImage" >
+                    </div>
 
-                    <button type="submit">Сақтау</button>
+                    <button type="submit">Сохранить</button>
                 </form>
                
             </div>
@@ -351,7 +359,8 @@
                       time_start: null,
                       time_end: null,
                       phone: null,
-                      address: null
+                      address: null,
+                      img: null
                   },
                   medicine: {
                       category_id: '',
@@ -400,6 +409,10 @@
 
         },
         methods: {
+            uploadImage (e) {
+                this.pharmacy.img = e.target.files[0]
+               
+            },
             getCategories() {
                 const config = {
                     headers: { 'Authorization': `Bearer ${this.token}` }
@@ -490,23 +503,27 @@
                     this.pharmacy.time_end = res.data.time_end;
                     this.pharmacy.phone = res.data.phone;
                     this.pharmacy.address = res.data.address;
+           
                 });
             },
             createPharmacy() {
               
-                let data = {
-                    name: this.pharmacy.name,
-                    time_start: this.pharmacy.time_start,
-                    time_end: this.pharmacy.time_end,
-                    phone: this.pharmacy.phone,
-                    address: this.pharmacy.address
-                };
+                let fd= new FormData()
+                fd.append('image', this.pharmacy.img);
+                fd.append('name',this.pharmacy.name);
+                fd.append('time_start',this.pharmacy.time_start);
+                fd.append('time_end',this.pharmacy.time_end);
+                fd.append('phone',this.pharmacy.phone);
+                fd.append('address',this.pharmacy.address);
 
                 const config = {
-                    headers: { 'Authorization': `Bearer ${this.token}` }
+                    headers: { 
+                        'Authorization': `Bearer ${this.token}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
                 };
 
-                this.$http.post('/pharmacy/create/pharmacy', data, config)
+                this.$http.post('/pharmacy/create/pharmacy', fd, config)
                 .then(res => { 
 
                     this.$fire({
@@ -517,7 +534,7 @@
                     }).then(r => {
                         console.log(r.value);
                     });
-
+                    this.pharmacy.img = null;
                     this.getPharmacies();
                  
                 });
@@ -546,21 +563,27 @@
                  
                 });
             },
-            editPharmacy() {
-                let data = {
-                    id: this.pharmacy.id,
-                    name: this.pharmacy.name,
-                    time_start: this.pharmacy.time_start,
-                    time_end: this.pharmacy.time_end,
-                    phone: this.pharmacy.phone,
-                    address: this.pharmacy.address
-                };
+            editPharmacy() {                      
+                let fd= new FormData()
+                
+                fd.append('name',this.pharmacy.name);
+                fd.append('time_start',this.pharmacy.time_start);
+                fd.append('time_end',this.pharmacy.time_end);
+                fd.append('phone',this.pharmacy.phone);
+                fd.append('address',this.pharmacy.address);
+                fd.append('id',this.pharmacy.id);
 
+                if(this.pharmacy.img) {
+                    fd.append('image', this.pharmacy.img);
+                    fd.append('has_img', "yes");
+                }
+               
                 const config = {
-                    headers: { 'Authorization': `Bearer ${this.token}` }
+                    headers: { 'Authorization': `Bearer ${this.token}` },
+                    'Content-Type': 'multipart/form-data'
                 };
 
-                this.$http.post('/pharmacy/edit/pharmacy', data, config)
+                this.$http.post('/pharmacy/edit/pharmacy', fd, config)
                 .then(res => { 
 
                     this.$fire({
@@ -797,6 +820,14 @@
 
 <style scoped lang="scss"> 
 
+    .notif__add__category {
+        border-radius: 25px;
+        background: var(--main-kenes-blue);
+        padding:15px;
+        color: white;
+        box-shadow: 0px 0 10px rgba(0, 0, 0, 0.2);
+        
+    }
 
     .notif__analyze__body {
             width: 90%;
