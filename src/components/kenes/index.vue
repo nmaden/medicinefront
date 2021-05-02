@@ -6,11 +6,11 @@
                 <router-link to="#">О нашем магазине</router-link>
                 <router-link to="#">О доставке</router-link>
                 <router-link to="#">Об оплате</router-link>
-                <router-link to="#">Отзывы</router-link>
+                <!-- <router-link to="#">Отзывы</router-link> -->
             </div>
             <div class="header__menu">
                 <p class="header__purple">Перезвоните нам</p>
-                <p class="header__purple">Задать вопрос</p>
+                <!-- <p class="header__purple">Задать вопрос</p> -->
                 <div class="header__menu__last">
                     <p class="header__purple">8 777 777 777</p>
                     <p class="header__gray">- по будням с 9:00 - 21:00</p>
@@ -19,7 +19,7 @@
         </div>
 
         <div class="main__row">
-            <div class="main__actions">
+            <!-- <div class="main__actions">
                 <p class="main__actions__title" @click="$router.push('/kenes')">КЕҢЕС</p>
 
                 <div class="main__sale">
@@ -38,7 +38,7 @@
                 </div>
 
              
-            </div>
+            </div> -->
 
             <div class="main__block">
                 <div class="main__block__header">
@@ -278,7 +278,13 @@
     }
     .main {
         font-family: Lato;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
         .header {
+            width: 80%;
+            
             padding: 10px 20px;
             display: flex;
             flex-direction: row;
@@ -323,7 +329,7 @@
             width: 100%;
             display: flex;
             flex-direction: row;
-            justify-content: space-between;
+            justify-content: center;
             .main__actions {
                 width: 28%;
                 display: flex;
@@ -382,7 +388,7 @@
             }
 
             .main__block {
-                width: 70%;
+                width: 80%;
                 display: flex;
                 flex-direction: column;
                 .main__block__search {

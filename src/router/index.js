@@ -83,12 +83,12 @@
             meta: { guest: true },
            
         },
-        {
-            path: '/',
-            component: LoginMed,
-            meta: { guest: true },
+        // {
+        //     path: '/',
+        //     component: LoginMed,
+        //     meta: { guest: true },
            
-        },        
+        // },        
         {
             path: '/notif',
             component: NotifMain,
@@ -121,10 +121,19 @@
             component: KenesMain,
             meta: { guest: true },
             children: [
-                { path: '/', component: Product },
-                { path: '', component: Main },
+                { path: '/product', component: Product },
+                { path: '/', component: Main },
             ]
         },
+        // {
+        //     path: '/main',
+        //     component: KenesMain,
+        //     meta: { guest: true },
+        //     children: [
+        //         { path: '/', component: Product },
+        //         { path: '', component: Main },
+        //     ]
+        // },
         {
             path: '/',
             component: calc_login,

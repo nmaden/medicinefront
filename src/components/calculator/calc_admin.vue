@@ -22,7 +22,7 @@
                 </div>
                 <div class="calc__column">
                     <p class="calc__type calc__mb" @click="show_page(7)" v-bind:class="{active_color:page==7}">Формулы</p>
-                    <p class="calc__type" @click="show_page(8)" v-bind:class="{active_color:page==8}">Клиенты</p>
+                    <!-- <p class="calc__type" @click="show_page(8)" v-bind:class="{active_color:page==8}">Клиенты</p> -->
                 </div>
         </div>
         <div class="calc__column">
@@ -282,12 +282,12 @@
                                             <p class="calc__input__label" >Толшина <span >:{{ ' '+order.tolwina}}</span></p>
                                         </div>
                                       
-                                        <div class="calc__data calc__row calc__ac">
+                                        <div class="calc__data calc__row calc__ac" v-if="order.count">
                                             <p class="calc__input__label" >Количество <span >:{{ ' '+order.count}}</span></p>
                                         </div>
                                        
 
-                                        <div class="calc__data calc__row calc__ac" v-if="order.choosen_formula">
+                                        <div class="calc__data calc__column" v-if="order.choosen_formula">
                                             <p class="calc__input__label" >Формула <span >:{{' '+order.choosen_formula}}</span></p>
                                             <p class="calc__input__label" >Цена формулы<span >:{{' '+order.choosen_formula_price}} тг</span></p>
                                         </div>

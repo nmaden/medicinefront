@@ -12,11 +12,11 @@
                     
                     <div class="new__element calc__column calc__mb">
 
-                        <div class="calc__column">
+                        <div class="calc__column new__element__inner">
                             <div class="calc__dropdown calc__row  calc__mr calc__mb" >
                                 
                                 <div class="calc__column calc__count calc__mr">
-                                    <p>Выберите элемент</p>
+                                    <p class="new__element__title">Выберите элемент</p>
                                     <select @change="onChange($event,index)" v-model="permanent.elem" >
                                         <option value="">Выберите элемент</option>
                                         <option v-for="(item , index) in i.elements" v-bind:key="index"   >
@@ -56,7 +56,7 @@
                                     <input type="text" placeholder="ширина в мм" v-model="i.wirina" @input="calculateInput(index)">
                                 </div>
                                 <div class="calc__column calc__count calc__mr calc__mb">
-                                    <p>Количество</p>
+                                    <p>Кол.</p>
                                     <input type="text" v-model="i.count" @input="calculateInput(index)">
                                 </div>
 
@@ -105,7 +105,7 @@
                                     <div class="calc__row calc__ac calc__mb">
                                         <img  class="calc__choosen__img calc__mr" :src="'https://api.frezerovka04.kz'+i.choosen_decor.image_path" alt="">
                                         <p class="calc__mr">{{i.choosen_decor.name}}</p>
-                                        <input class="calc__mr" v-on:input="changedDecor(index)" type="text" v-model="i.count_decor">
+                                        <input class="calc__mr calc__input__obkat" v-on:input="changedDecor(index)" type="text" v-model="i.count_decor">
                                         <i @click="deleteRow(index,'decor')" class="calc__pointer fas fa-trash-alt calc__mr"></i>
                                     </div>
 
@@ -1051,6 +1051,11 @@
 
 
 <style scoped lang="scss">
+
+    .calc__input__obkat {
+        width: 50px;
+        padding: 10px;
+    }
     .active__bg {
         background: rgb(212, 90, 90) !important;
     }
@@ -1459,10 +1464,13 @@
                 }
             }
             .new__element {
-                width: 100%;
+               
+                align-self: center;
+                width: 90%;
                 background: white;
                 border-bottom: 5px solid var(--main-kenes-blue);
                 padding: 20px;
+             
                 margin-bottom: 30px;
                 .calc__choosen__img {
                     width: 40px;
@@ -1592,7 +1600,16 @@
                  margin: 10px;
             }
             .calc__inputs__i {
-                flex-direction: column;
+                flex-direction: row;
+                justify-content: space-between;
+                input {
+                    width: 70px;
+                }
+                .calc__count {
+                    width: 70px;
+                    margin-right: 15px;
+                  
+                }
             }
             .calc__dropdown {
                 .calc__count {
@@ -1604,8 +1621,18 @@
             }
             .new__element {
                 flex-direction: column;
-                width: 100%;
+                width: 90%;
                 padding: 0 !important;
+                box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+
+                .new__element__inner {
+                    padding-top: 30px;
+                    .new__element__title {
+                        font-size: 18px;
+                        text-transform: uppercase;
+                        color: var(--main-kenes-blue);
+                    }
+                }
                 .calc__column {
                     align-items: center;
                 }
