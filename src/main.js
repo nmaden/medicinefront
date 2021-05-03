@@ -40,6 +40,14 @@ Vue.prototype.$http = axios.create({
   // https://api.frezerovka04.kz/api/v1
 });
 
+Vue.prototype.$http2 = axios.create({
+  baseURL: 'https://speller.yandex.net'
+  
+  // 'http://127.0.0.1:8000/api/v1',
+
+  // https://api.frezerovka04.kz/api/v1
+});
+
 
 const messages = {
   en: {

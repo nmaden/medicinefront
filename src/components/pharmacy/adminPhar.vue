@@ -57,6 +57,10 @@
                         <p>Название препарата</p>
                         <input type="text" v-model="medicine.name" required>
                     </div>
+                    <div class="notif__column notif__phar__input">
+                        <p>Описание</p>
+                        <textarea rows="4" type="text" v-model="medicine.description" required></textarea>
+                    </div>
 
                     <div class="notif__column notif__phar__input">
                         <p>Выберите категорию</p>
@@ -68,20 +72,20 @@
                     </div>
 
                   
-                    <button type="submit">Сақтау</button>
+                    <button type="submit">Сохранить</button>
                 </form>
                 
                 
 
 
                 <form class="notif__column notif__pl notif__fs" v-if="medicine.edit" @submit.prevent="editInfo">
-                    <p class="notif__title">Дәріні өзгерту</p>
+                    <p class="notif__title">Изменить лекарства</p>
                     <div class="notif__column notif__phar__input">
-                        <p>Дәрі атауы</p>
+                        <p>Название</p>
                         <input type="text" v-model="medicine.name" required>
                     </div>
                     
-                    <button type="submit">Сақтау</button>
+                    <button type="submit">Сохранить</button>
                 </form>
 
                
@@ -120,15 +124,15 @@
                         
                             <div class="notif__column notif__mb__xs"> 
                                 <p class="notif__mb__xs">Аптека: {{apteka.apteka.name}}</p>
-                                <p>Бағасы: {{apteka.price}} тг</p>
+                                <p>Цена: {{apteka.price}} тг</p>
                             </div>
                             <div class="notif__row  notif__ac notif__address notif__mb__xs" @click="getInfo(apteka.id)">
                                 <i class="fas fa-pencil-alt notif__mr__s"></i>
-                                <p>Өзгерту</p>
+                                <p>Изменить</p>
                             </div>
                             <div class="notif__row notif__ac notif__address notif__mb__xs" @click="deleteInfo(apteka.id)">
                                 <i class="fas fa-trash-alt notif__mr__s"></i>
-                                <p>Өшіру</p>
+                                <p>Удалить</p>
                             </div>  
                         </div>
                     </div>
@@ -174,7 +178,7 @@
                         <input type="text" v-model="pharmacy.name" required>
                     </div>
                     <div class="notif__column notif__phar__input ">
-                        <p>Время работы</p>
+                        <p>График работы</p>
                         <div class="notif__row notif__100 notif__jb">
                             <input  class="notif__hour notif__mr__l " type="text" v-model="pharmacy.time_start" required>
                             <input class="notif__hour" type="text" v-model="pharmacy.time_end" required>
@@ -227,11 +231,11 @@
 
                         <div class="notif__row notif__ac notif__address notif__mb__xs" @click="getPharmacy(item.id)">
                             <i class="fas fa-pencil-alt notif__mr__s"></i>
-                            <p>Өзгерту</p>
+                            <p>Изменить</p>
                         </div>
                         <div class="notif__row notif__ac notif__address notif__mb__xs" @click="deletePharmacy(item.id)">
                             <i class="fas fa-trash-alt notif__mr__s"></i>
-                            <p>Өшіру</p>
+                            <p>Удалить</p>
                         </div>    
                     </div>
 
@@ -258,23 +262,23 @@
 
         <div class="notif__modal" v-if="medicine.show_modal">
                 <form class="notif__column notif__modal__form  notif__fs" style="margin-top: 20px" v-if="medicine.price_edit" @submit.prevent="editInfo">
-                        <p class="notif__title notif__mb__s">Дәрі бағасын өзгерту</p>
+                        <p class="notif__title notif__mb__s">Изменить цену</p>
                         <div class="notif__column notif__phar__input notif__mb__s">
-                            <p class="notif__mb__xs">Дәрі бағасы</p>
+                            <p class="notif__mb__xs">Цена</p>
                             <input type="text" v-model="medicine.price" required>
                         </div>
-                        <button class="notif__mb__xs" type="submit">Сақтау</button>
-                        <a  class="notif__mb__s" @click="closeModal">Жабу</a>
+                        <button class="notif__mb__xs" type="submit">Сохранить</button>
+                        <a  class="notif__mb__s" @click="closeModal">Закрыть</a>
                 </form>
                
                  <form class="notif__column notif__modal__form  notif__pl notif__fs " v-if="medicine.addMedicine" @submit.prevent="addPharmacy">
                     
-                    <p class="notif__title">Дәріхана тіркеу</p>
+                    <p class="notif__title">Добавить аптеку</p>
                    
                     <div class="notif__column notif__phar__input notif__mb__xs">
-                        <p class="notif__mb__xs">Дәріхана таңдаңыз</p>
+                        <p class="notif__mb__xs">Выберите аптеку</p>
                         <select class="" v-model="medicine.pharmacy" >
-                            <option value="">Дәріхана таңдаңыз</option>
+                            <option value="">Выберите аптеку</option>
                             <option v-for="(item , index) in pharmacy.pharmacies" v-bind:key="index" :value="item.id"   >
                                     {{item.name}}
                             </option>
@@ -283,7 +287,7 @@
                     
 
                     <div class="notif__column notif__phar__input notif__mb__s">
-                        <p>Бағасы</p>
+                        <p>Цена</p>
                         <input type="text" v-model="medicine.price" required>
                     </div>
 
@@ -293,11 +297,15 @@
 
                  <form class="notif__column notif__modal__form  notif__pl notif__fs " v-if="medicine.edit_tablet" @submit.prevent="editMedicine">
                     
-                    <p class="notif__title">Дәрі атауын өзгерту</p>
+                    <p class="notif__title">Изменить</p>
                    
                     <div class="notif__column notif__phar__input notif__mb__s">
-                        <p>Дәрі атауы</p>
+                        <p>Название</p>
                         <input type="text" v-model="medicine.name" required>
+                    </div>
+                    <div class="notif__column notif__phar__input notif__mb__s">
+                        <p>Описание</p>
+                        <textarea type="text" v-model="medicine.description" required></textarea>
                     </div>
 
                     <button class="notif__mb__xs" type="submit">Сохранить</button>
@@ -377,7 +385,8 @@
                       id: null,
                       name: null,
                       list_apteka: null,
-                      list_price: null
+                      list_price: null,
+                      description: ''
                   },
                   done: 1,
                   page: 1,
@@ -609,7 +618,8 @@
             createMedicine() {
                 let data = {
                     name: this.medicine.name,
-                    category_id: this.medicine.category_id
+                    category_id: this.medicine.category_id,
+                    description: this.medicine.description
                 };
 
                 const config = {
@@ -633,7 +643,8 @@
             editMedicine() {
                 let data = {
                     id: this.medicine.id,
-                    name: this.medicine.name
+                    name: this.medicine.name,
+                    description: this.medicine.description
                 };
 
                 const config = {
@@ -653,6 +664,7 @@
                     });
                     this.medicine.id = '';
                     this.medicine.name = '';
+                    this.medicine.description = '';
 
                     this.medicine.show_modal = false;
                     this.medicine.edit_tablet = false;
@@ -703,6 +715,7 @@
                     this.medicine.id = res.data.id;
                     this.medicine.edit_tablet = true;
                     this.medicine.show_modal = true;
+                    this.medicine.description = res.data.description;
                 });
             },
             addPharmacyForMedicine(id) {
@@ -974,7 +987,7 @@
                            padding-left: 10px;
                            width: 100%;
                         }
-                        input {
+                        input,textarea {
                            color: gray;
                            padding: 7px;
                            border-radius: 20px;

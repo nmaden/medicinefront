@@ -7,13 +7,16 @@
             <div class="notif__jb notif__header notif__mb__s">
 
                 <p class="notif__header__title">Поиск лекарств</p>
-                <div class="notif__search notif__row notif__ac notif__mb__s">
+                <div class="notif__search notif__row notif__ac ">
                     
                     <div class="notif__icon__search">
                         <i class="fas fa-search"></i>
                     </div>
                     <input type="text" v-model="medicine.name"  placeholder="Лекарства" @input="search">
                     
+                </div>
+                <div class="notif__column notif__spell" v-if="spells">
+                    <p v-for="(text,index) in spells" :key="index" @click="chooseCorrect(text)" >{{text}}</p>
                 </div>
             </div>
 
@@ -100,10 +103,14 @@
 
                         <div class="notif__column notif__text">
                                 
-                            <div class="notif__row notif__ac notif__mb__xs notif__phar">
+                            <div class="notif__column  notif__mb__xs notif__phar">
                               
-                                 <i class="fas fa-capsules notif__mr__s"></i>
-                                <p>{{item.name}}</p>
+                                <div class="notif__row notif__ac notif__top">
+                                    <i class="fas fa-capsules notif__mr__s"></i>
+                                    <p class="notif__phar__name">{{item.name}}</p>
+                                </div>
+
+                                <p class="notif__phar__description" v-html="item.description"></p>
                             </div>
   
                             
@@ -152,10 +159,13 @@
 
                         <div class="notif__column notif__text">
                                 
-                            <div class="notif__row notif__ac notif__mb__xs notif__phar">
+                            <div class="notif__column  notif__mb__xs notif__phar">
                               
-                                 <i class="fas fa-capsules notif__mr__s"></i>
-                                <p>{{item.name}}</p>
+                                <div class="notif__row notif__ac notif__top">
+                                    <i class="fas fa-capsules notif__mr__s"></i>
+                                    <p class="notif__phar__name">{{item.name}}</p>
+                                </div>
+                                <p class="notif__phar__description" v-html="item.description"></p>
                             </div>
   
                             
@@ -287,12 +297,14 @@
                       medicines: [],
                       name: null
                   },
-                  all_saved: []
+                  all_saved: [],
+                  spells: []
             }
         },
         components: {
         },
         mounted() {
+          
             this.getMedicines();
             this.getCategories();
             this.getPharmacies();
@@ -301,6 +313,34 @@
             }
         },
         methods: {
+            chooseCorrect(text) {
+                this.medicine.name = text;
+                this.spells = [];
+
+                 let data =  {
+                    name: this.medicine.name
+                };
+                let d = this;
+                setTimeout(function(){ 
+
+                    d.$http.post('/guest/search/medicines',data)
+                    .then(res => {
+                        d.medicine.medicines = res.data.data
+                    });
+                
+                }, 100);
+           
+            },
+            spellCheck() {
+                let d = this;
+                setTimeout(function(){ 
+                   d.$http2.get('/services/spellservice.json/checkTexts?text='+d.medicine.name)
+                    .then(res => {
+                        d.spells = res.data[0][0].s;
+                        console.log(this.spells);
+                    });
+                }, 500);
+            },
             deleteIzb() {
                 localStorage.removeItem("saved");
                 this.all_saved = [];
@@ -401,6 +441,7 @@
                 });
             },
             search() {
+                // this.spellCheck();
                 if(this.medicine.name!='') {
                     this.search_page = false;
                 }
@@ -415,7 +456,7 @@
 
                     d.$http.post('/guest/search/medicines',data)
                     .then(res => {
-                        d.medicine.medicines = res.data
+                        d.medicine.medicines = res.data.data
                     });
                 
                 }, 1000);
@@ -428,7 +469,19 @@
 
 
 <style scoped lang="scss"> 
-
+    .notif__spell {
+        width: 90%;
+        align-self: flex-start;
+        padding: 20px;
+        padding-top: 0;
+        p {
+            padding: 5px;
+            border-bottom: 1px solid #ccc;
+            
+            color: white;
+            border-radius: 20px;
+        }
+    }
     .notif__column {
         display: flex;
         flex-direction: column;
@@ -739,6 +792,17 @@
                         }
                          i,p {
                              color: var(--main-kenes-blue);
+                        }
+                        .notif__top {
+                            margin-bottom: 10px;
+                        }
+                        .notif__phar__name {
+                 
+                            font-size: 20px;
+                        }
+                        .notif__phar__description {
+                            overflow-y: scroll;
+                            max-height: 100px;
                         }
                     }
                     .notif__ok {

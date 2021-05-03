@@ -1019,7 +1019,6 @@
                 this.$http.post('/calculator/create/order', data, config)
                 .then(res => { 
                     
-                  
                     this.$fire({
                     title: res.data.msg,
                     text: "",
@@ -1033,17 +1032,13 @@
         },
         mounted() {
             if(!localStorage.getItem("access_token")) {
-         
                 this.$router.push("/login");
             }
             else {
                 this.token = localStorage.getItem("access_token");
                 this.get_profile();
             }
-
             this.getOwnOrders();
-
-            
         }
     }
     </script>

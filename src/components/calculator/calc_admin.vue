@@ -286,7 +286,6 @@
                                             <p class="calc__input__label" >Количество <span >:{{ ' '+order.count}}</span></p>
                                         </div>
                                        
-
                                         <div class="calc__data calc__column" v-if="order.choosen_formula">
                                             <p class="calc__input__label" >Формула <span >:{{' '+order.choosen_formula}}</span></p>
                                             <p class="calc__input__label" >Цена формулы<span >:{{' '+order.choosen_formula_price}} тг</span></p>
