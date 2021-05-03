@@ -685,6 +685,16 @@
                     this.new_orders = [];
                     this.new_orders = p;
 
+                 
+                    this.$fire({
+                        title: "Ваш заказ успешно отправлено",
+                        text: "",
+                        type: "success",
+                        timer: 3000
+                    });
+                    
+                    this.$router.go(0);
+               
 
                 });
             },
@@ -1029,7 +1039,7 @@
                     }
                     
 
-                    if(this.user.user_id!=19 && this.user.user_id!=20)  {
+                    if(this.user.user_id!=19 || this.user.user_id!=20)  {
                         this.show_own_order = true;
                     }
                 });
@@ -1253,15 +1263,19 @@
 
             },
             logoutPage() {
+                this.token = '';
                 localStorage.setItem('access_token','');
                 this.show_own_order = false;
+                this.login_sign('kenesmebel04@gmail.com','kenesmebel04@gmail.com');
+
+                this.$router.go(0);
             }
             
             
         },
         mounted() {
 
-            if(localStorage.getItem('access_token')=='') {
+            if(!localStorage.getItem('access_token')) {
                 this.login_sign('kenesmebel04@gmail.com','kenesmebel04@gmail.com');
             }
             else {
