@@ -441,7 +441,7 @@
                 });
             },
             search() {
-                // this.spellCheck();
+                this.spellCheck();
                 if(this.medicine.name!='') {
                     this.search_page = false;
                 }
