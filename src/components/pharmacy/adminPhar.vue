@@ -301,11 +301,11 @@
                    
                     <div class="notif__column notif__phar__input notif__mb__s">
                         <p>Название</p>
-                        <input type="text" v-model="medicine.name" required>
+                        <input type="text" v-model="edit.name" required>
                     </div>
                     <div class="notif__column notif__phar__input notif__mb__s">
                         <p>Описание</p>
-                        <textarea type="text" v-model="medicine.description" required></textarea>
+                        <textarea  rows="4" type="text" v-model="edit.description" required></textarea>
                     </div>
 
                     <button class="notif__mb__xs" type="submit">Сохранить</button>
@@ -357,6 +357,10 @@
          name: 'AdminPharmacy' ,
         data() {
             return {
+                  edit: {
+                      name: '',
+                      description: ''
+                  },
                   category_name: '',
                   pharmacy: {
                       edit: false,
@@ -643,8 +647,8 @@
             editMedicine() {
                 let data = {
                     id: this.medicine.id,
-                    name: this.medicine.name,
-                    description: this.medicine.description
+                    name: this.edit.name,
+                    description: this.edit.description
                 };
 
                 const config = {
@@ -711,11 +715,11 @@
                 };
                 this.$http.get('/pharmacy/get/medicine?id='+id, config)
                 .then(res => {
-                    this.medicine.name = res.data.name;
+                    this.edit.name = res.data.name;
                     this.medicine.id = res.data.id;
                     this.medicine.edit_tablet = true;
                     this.medicine.show_modal = true;
-                    this.medicine.description = res.data.description;
+                    this.edit.description = res.data.description;
                 });
             },
             addPharmacyForMedicine(id) {
@@ -841,6 +845,28 @@
         box-shadow: 0px 0 10px rgba(0, 0, 0, 0.2);
         
     }
+         input,textarea {
+            border: 1px solid gray;
+            color: gray;
+            padding: 7px;
+            border-radius: 20px;
+            border: none;
+            outline: none; 
+            padding-left: 10px;
+            width: 100%;
+            
+        }
+        textarea {
+                border: 1px solid gray;
+            color: gray;
+            padding: 7px;
+            border-radius: 20px;
+   
+            outline: none; 
+            padding-left: 10px;
+            width: 100%;
+            
+        }
 
     .notif__analyze__body {
             width: 90%;
@@ -950,6 +976,17 @@
                     border: 2px solid #fafafa;
                     position: relative;
                     width: 90%;
+                          input,textarea {
+                              border: 1px solid #ccc;
+                           color: gray;
+                           padding: 7px;
+                           border-radius: 20px;
+                           border: none;
+                           outline: none; 
+                           padding-left: 10px;
+                           width: 100%;
+                          
+                        }
                     .notif__title {
                         font-size: 20px;
                         color: gray;
@@ -1001,6 +1038,7 @@
                             width: 80%;
                         }
                     }
+                
                     .notif__green {
                         background: #82c91f !important;
                     }
