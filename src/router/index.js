@@ -83,12 +83,12 @@
             meta: { guest: true },
            
         },
-        {
-            path: '/',
-            component: LoginMed,
-            meta: { guest: true },
+        // {
+        //     path: '/',
+        //     component: LoginMed,
+        //     meta: { guest: true },
            
-        },        
+        // },        
         {
             path: '/notif',
             component: NotifMain,
@@ -134,15 +134,24 @@
         //         { path: '', component: Main },
         //     ]
         // },
-        // {
-        //     path: '/',
-        //     component: calc_login,
-        //     meta: { guest: true },
-        //     children: [
-        //         { path: 'login', component: calc_login },
+
+        {
+            path: '/login',
+            component: calc_login,
+            meta: { guest: true },
+            children: [
+                { path: 'login', component: calc_login },
              
-        //     ]
-        // },
+            ]
+        },
+        {
+            path: '/',
+            component: calc_body,
+            meta: { guest: true },
+            children: [
+           
+            ]
+        },
         {
             path: '/register',
             component: calc_register,

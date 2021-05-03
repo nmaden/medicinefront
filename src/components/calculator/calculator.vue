@@ -3,7 +3,9 @@
 
             <div class="calc__row calc__ac calc__types calc__mb">
                 <div class="calc__type" @click="page=1" v-bind:class="{active__bg:page==1}">Заказать</div>
-                <div class="calc__type" @click="page=2" v-bind:class="{active__bg:page==2}">Мои заказы</div>
+                <div class="calc__type" v-if="show_own_order" @click="getOwnOrders" v-bind:class="{active__bg:page==2}">Мои заказы</div>
+                <div class="calc__type" v-if="show_own_order" @click="logoutPage" v-bind:class="{active__bg:page==2}">Выйти</div>
+                <div class="calc__type" @click="loginPage()" v-else>Войти</div>
             </div>  
             <div class="calc__column elements" v-if="page==1" >
                 
@@ -159,7 +161,7 @@
                                 <p class="calc__own__label">Общая сумма заказа : {{order.amount}} тг</p>
                             </div>
                             <p class="calc__own__action" v-if="order.deleted==0" @click="otmenaOrder(order.id)">Отменить заказ</p>
-                            <p class="calc__own__action" v-else>Заказ отменен</p>
+                            <p class="calc__own__action calc__own__red" v-else>Заказ отменен</p>
                         </div>
                     <p class="calc__own__label calc__own__title"><b>Заказанные элементы:</b> </p>
                     <div v-for="(el,e) in order.ordered_elements" :key="e" class="calc__own__order calc__own__order__inner">
@@ -178,6 +180,55 @@
                 </div>
             </div>
 
+             <div class="calc__modal" v-if="pre_register">
+                 <div class="calc__modal__form">
+                    <i class="calc__modal__close fas fa-times-circle calc__mb" @click="pre_register=false"></i>
+                    <div class="calc__column calc__ac">
+                        <div class="calc__modal__choose" @click="has_account='yes'">У меня есть аккаунт</div>
+                        <div class="calc__modal__choose" @click="has_account='no'">Пройти регистрацию</div>
+                    </div>
+
+                    <div class="calc__column" >
+                        <div class="sign__page" v-if="has_account!='' && has_account=='no'">
+                            <p class="sign__page__title">Регистрация</p>
+                            <form class="sign__page__block" @submit.prevent="register_user">
+
+                                <input type="text" placeholder="Телефон" v-model="sign.phone" required >
+                                
+                                <input type="text" placeholder="Имя" v-model="sign.name" required>
+                                <input type="text" placeholder="Фамилия" v-model="sign.surname" required>
+
+                                <input type="text" placeholder="Email" v-model="sign.email" required>
+                                <input type="text" placeholder="Пароль" v-model="sign.password" required>
+
+                                <button type="submit"><p>Создать</p></button>
+                            </form>
+                        </div>
+                        <div class="sign__page" v-if="has_account!='' && has_account=='yes'">
+
+                            <p class="sign__page__title">Вход</p>
+                            <form class="sign__page__block" @submit.prevent="sign_page">
+                                <input type="text" placeholder="Логин" v-model="sign.email" >
+                                <input type="text" placeholder="Пароль" v-model="sign.password" >
+                                <button type="submit"><p>Войти</p></button>                                
+                            </form>
+                            <!-- <button type="submit" @click='$router.push("/register")'><p>Регистрация</p></button> -->
+
+                        </div>      
+                        <div class="sign__page" v-if="has_account!='' && has_account=='yes2'">
+
+                            <p class="sign__page__title">Вход</p>
+                            <form class="sign__page__block" @submit.prevent="sign_page2">
+                                <input type="text" placeholder="Логин" v-model="sign.email" >
+                                <input type="text" placeholder="Пароль" v-model="sign.password" >
+                                <button type="submit"><p>Войти</p></button>                                
+                            </form>
+                            <!-- <button type="submit" @click='$router.push("/register")'><p>Регистрация</p></button> -->
+
+                        </div>              
+                    </div>
+                 </div>
+             </div>
             <div class="calc__modal" v-if="show_modal">
                 
                 <div class="calc__modal__form">
@@ -239,8 +290,13 @@
                                 </v-select>
                             </div>
                     </div>
+
+       
                 </div>
                 
+            </div>
+            <div class="loader" v-if="show_loader">
+                <img src="../../assets/images/gif.gif" alt="">
             </div>
     </div>
 </template>
@@ -250,7 +306,20 @@
     export default {
     name: 'AccountPage' ,
         data() {
-            return {    
+            return { 
+                show_own_order: false,
+                show_loader:false,
+                sign: {
+                    login: '',
+                    password: '',
+                    name: '',
+                    surname: '',
+                    phone: '',
+                    password: '',
+                    email: ''
+                },
+                pre_register: false,
+                has_account: '',   
                 page: 1,
                 other_elements: [],
                 permanent: {
@@ -342,6 +411,120 @@
             }
         },
         methods: {
+            loginPage() {
+                this.pre_register = true;
+                this.has_account='yes2';
+            },
+            register_user() {
+              this.pre_register =false;
+              let obj = {
+                    email: this.sign.email,
+                    password: this.sign.password,
+                    name: this.sign.name,
+                    surname: this.sign.surname,
+                    phone: this.sign.phone,
+                    role: {
+                        name: 'Пользователь МР'
+                    }
+              }
+              this.$http.post('auth/register',
+               obj 
+              )
+              .then(res => {
+                this.$fire({
+                    title: res.data.msg,
+                    text: "Успешно зарегистрирован",
+                    type: "success",
+                    timer: 3000
+                }).then(r => {
+                    console.log(r.value);
+                });
+            
+                this.sign_page();
+              })
+              .catch(errors => {
+                  console.log('Ошибка ' + error.response.data.errors);
+              })
+
+        },
+         sign_page2() {
+                let obj = {
+                    email: this.sign.email,
+                    password: this.sign.password
+                }
+                this.$http.post('auth/login',
+                obj 
+                )
+                .then(res => {
+                    localStorage.setItem("access_token",res.data.token);
+                    this.token = localStorage.getItem("access_token");
+                    this.show_own_order = true;
+                    this.pre_register =false;
+                    this.$router.go(0);
+                    // if(!localStorage.getItem("access_token")) {
+                    //     this.$router.push("/login");
+                    // }
+                    // else {
+                    //     this.token = localStorage.getItem("access_token");
+                    //     this.get_profile();
+                    // }
+                })
+                .catch(errors => {
+                    console.log('Ошибка ' + error.response.data.errors);
+                })
+            },
+            sign_page() {
+                let obj = {
+                    email: this.sign.email,
+                    password: this.sign.password
+                }
+                this.$http.post('auth/login',
+                obj 
+                )
+                .then(res => {
+                    localStorage.setItem("access_token",res.data.token);
+                    this.token = localStorage.getItem("access_token");
+                    this.show_own_order = true;
+                    this.show_loader = true;
+                    this.get_profile2();
+                    // if(!localStorage.getItem("access_token")) {
+                    //     this.$router.push("/login");
+                    // }
+                    // else {
+                    //     this.token = localStorage.getItem("access_token");
+                    //     this.get_profile();
+                    // }
+                })
+                .catch(errors => {
+                    console.log('Ошибка ' + error.response.data.errors);
+                })
+            },
+            login_sign(email,password) {
+                let obj = {
+                    email: 'kenesmebel04@gmail.com',
+                    password: 'kenesmebel04@gmail.com'
+                }
+                this.$http.post('auth/login',
+                obj 
+                )
+                .then(res => {
+                    localStorage.setItem("access_token",res.data.token);
+                    this.token = localStorage.getItem("access_token");
+
+                    
+                    if(!localStorage.getItem("access_token")) {
+                        this.$router.push("/login");
+                    }
+                    else {
+                        this.token = localStorage.getItem("access_token");
+                        this.get_profile();
+                    }
+                })
+                .catch(errors => {
+                    console.log('Ошибка ' + error.response.data.errors);
+                })
+
+            },
             otmenaOrder(id) {
                 const config = {
                     headers: { 'Authorization': `Bearer ${this.token}` }
@@ -470,6 +653,11 @@
                 return arr;
             },
             createOrder() {
+                
+                if(this.user.user_id==20 || this.user.user_id==19){
+                    this.pre_register = true;
+                    return false;
+                }
                 this.$http.post('/calculator/create/order', 
                 {
                     orders: this.new_orders,
@@ -489,11 +677,15 @@
                     }
                     else {
                         this.new_orders[this.choosen_index].price = 1;
-                      
                     }
+
+                    this.pre_register = false;
+                    this.show_loader = false;
                     let p = this.new_orders;
                     this.new_orders = [];
                     this.new_orders = p;
+
+
                 });
             },
             checkFormula(index,formula) {
@@ -787,6 +979,31 @@
                     this.new_orders = permanent;
                 }
             },
+            get_profile2() {
+                this.$http.post('user/me', 
+                {
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${this.token}` 
+                    }
+                }
+                )
+                .then(res => {
+                    this.user.role = res.data.roles[0].id;
+                    this.user.name = res.data.name;
+                    this.user.surname = res.data.surname;
+                    this.user.user_id = res.data.id;
+                    this.user.phone = res.data.phone;
+                    
+                    if(this.user.role != 4 && this.user.role != 5) {
+                        this.$router.push("/login");
+                    }
+                    else {
+
+                        this.createOrder();
+                    }
+                });
+            },
             get_profile() {
                 this.$http.post('user/me', 
                 {
@@ -797,15 +1014,13 @@
                 }
                 )
                 .then(res => {
-                    
-                    
                     this.user.role = res.data.roles[0].id;
                     this.user.name = res.data.name;
                     this.user.surname = res.data.surname;
                     this.user.user_id = res.data.id;
                     this.user.phone = res.data.phone;
 
-
+                    
                     if(this.user.role != 4 && this.user.role != 5) {
                         this.$router.push("/login");
                     }
@@ -813,6 +1028,10 @@
                         this.get_el();
                     }
                     
+
+                    if(this.user.user_id!=19 && this.user.user_id!=20)  {
+                        this.show_own_order = true;
+                    }
                 });
             },
             calculation(type,index) {
@@ -899,14 +1118,18 @@
                 this.$router.push("calculator");
             },
             getOwnOrders() {
-                const config = {
-                    headers: { 'Authorization': `Bearer ${this.token}` }
-                };
+                this.page = 2;
+                if(this.user.user_id!=20 && this.user.user_id!=19){
+                    const config = {
+                        headers: { 'Authorization': `Bearer ${this.token}` }
+                    };
 
-                this.$http.get('/calculator/get/own/orders',  config)
-                .then(res => {
-                    this.own_orders = res.data;
-                })
+                    this.$http.get('/calculator/get/own/orders',  config)
+                    .then(res => {
+                        this.own_orders = res.data;
+                    })
+                }
+               
             },
             getOwnOrder(id) {
                 const config = {
@@ -1028,17 +1251,24 @@
                
                 });
 
+            },
+            logoutPage() {
+                localStorage.setItem('access_token','');
+                this.show_own_order = false;
             }
+            
+            
         },
         mounted() {
-            if(!localStorage.getItem("access_token")) {
-                this.$router.push("/login");
+
+            if(localStorage.getItem('access_token')=='') {
+                this.login_sign('kenesmebel04@gmail.com','kenesmebel04@gmail.com');
             }
             else {
-                this.token = localStorage.getItem("access_token");
+                this.token = localStorage.getItem('access_token');
                 this.get_profile();
             }
-            this.getOwnOrders();
+        
         }
     }
     </script>
@@ -1046,7 +1276,68 @@
 
 
 <style scoped lang="scss">
+    .loader {
+        position: fixed;
 
+        width: 100%;
+        height: 100vh;
+        background: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0.7;
+    }
+    .sign__page {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 70vh;
+      @media only screen and (max-width: 764px) {
+        width: 100%;
+      }
+      .sign__page__title {
+        font-weight: bold;
+        font-size: 26px;
+        margin-bottom: 20px;
+        color: #333;
+      }
+      .sign__page__block {
+        display: flex;
+        flex-direction: column;
+        input {
+          width: 300px;
+          padding: 20px;
+          margin-bottom: 20px;
+          @media only screen and (max-width: 764px) {
+             width: 200px;
+          }
+        }
+        ::placeholder {
+          color: #333;
+        }
+        button {
+          cursor: pointer;
+          text-transform: uppercase;
+          width: 350px;
+          outline: none;
+          border: none;
+          background-color: cornflowerblue;
+          padding: 20px;
+          @media only screen and (max-width: 764px) {
+             width: 250px;
+          }
+          p {
+            color: white;
+            font-weight: bold;
+          }
+        }
+        button:hover {
+          background-color: #285bb6;
+        }
+      }
+      
+    }
     .calc__input__obkat {
         width: 50px;
         padding: 10px;
@@ -1064,15 +1355,19 @@
                 margin-bottom: 10px;
                 border-bottom: 5px solid rgb(212, 90, 90);
             }
+ 
             .calc__own__action {
                 color: white;
                 font-weight: bold;
                 background:  var(--main-kenes-blue);
                 padding: 10px;
-                height: 20px;
+                height: 40px;
             }
             .calc__own__action:hover {
                 color: rgb(212, 90, 90);
+            }
+            .calc__own__red {
+                background: rgb(212, 90, 90);
             }
             .calc__own__label {
                 margin-bottom: 10px;
@@ -1536,7 +1831,10 @@
                 min-height: 300px;
                 background-color: white;
                 padding: 20px;
-         
+                .calc__modal__choose {
+                    color: var(--main-kenes-blue);
+                    margin-bottom: 10px;
+                }
                 .calc__modal__title {
                     font-size: 22px;
                     font-weight: bold;

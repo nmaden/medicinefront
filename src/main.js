@@ -33,7 +33,7 @@ Vue.use(VueSimpleAlert, { reverseButtons: true });
 Vue.use(VModal, { dialog: true });
 
 Vue.prototype.$http = axios.create({
-  baseURL: 'https://api.frezerovka04.kz/api/v1'
+  baseURL: 'http://127.0.0.1:8000/api/v1'
   
   // 'http://127.0.0.1:8000/api/v1',
 
