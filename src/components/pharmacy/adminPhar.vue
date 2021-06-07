@@ -420,11 +420,24 @@
 
             this.getCategories();
 
+            this.getInfos();
+
+
         },
         methods: {
             uploadImage (e) {
                 this.pharmacy.img = e.target.files[0]
                
+            },
+            getInfos() {
+                const config = {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                };
+
+                this.$http.get('/pharmacy/get/all/medicine/info', config)
+                .then(res => {
+                    this.medicine.categories = res.data
+                });
             },
             getCategories() {
                 const config = {

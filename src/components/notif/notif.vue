@@ -180,20 +180,6 @@
                         <button class="notif__submit notif__mb__xs" type="submit">Сақтау</button>
                         <a  class="notif__mb__s" @click="closeModal">Жабу</a>
                 </form> 
-
-                <!-- <form class="notif__column notif__modal__form  notif__fs notif__ac" v-if="notif.done_modal" style="margin-top: 20px" @submit.prevent="addInfo">
-                        <p class="notif__title2 notif__mb__s">Завершить задачу</p>
-                        <div class="notif__column notif__phar__input notif__mb__s">
-                            <p class="notif__label notif__mb__xs">Задача</p>
-                            <p>{{notif.title}}</p>
-                        </div>
-                        <div class="notif__row notif__ac">
-                            <input type="checkbox" v-model="notif.done" class="notif__mr">
-                            <p>Завершено</p>
-                        </div>
-                        <button class="notif__submit notif__mb__xs" type="submit">Cохранить</button>
-                        <a  class="notif__mb__s" @click="closeModal">Закрыть</a>
-                </form>        -->
             </div>
    
     </div>
@@ -259,8 +245,7 @@
 
             },
             signOut() {
-                localStorage.removeItem("access_token");
-                this.$router.push("/");
+                this.$router.push("/target");
             },
             getDone() {
                 const config = {
@@ -336,45 +321,21 @@
                     let day = parseInt(tt.notif.date.split("-")[2]);
 
                     let date = new Date(year, month-1,day, hour,minute);
-                    // var sound = device.platform != 'iOS' ? 'file://img/ringtone.mp3' : 'content://img/ringtone.mp3';
                     cordova.plugins.notification.local.schedule(
                         {
                             id: tt.notif.notif_id,
                             title: tt.notif.title,
                             text: tt.notif.date,
-                            trigger: { at:date  },
-                            sound:  'file://img/ringtone.mp3',
-                            icon: "res://send",
-
+                            trigger: { at:date  }
                         }
                     );
-
-                    // Join BBM Meeting when user has clicked on the notification 
-                    // cordova.plugins.notification.local.on("click", function (notification) {
-                    //     if (notification.id == 10) {
-                    //         joinMeeting(notification.data.meetingId);
-                    //     }
-                    // });
-
-                    // Notification has reached its trigger time (Tomorrow at 8:45 AM)
-                    // cordova.plugins.notification.local.on("trigger", function (notification) {
-                    //     if (notification.id != 10)
-                    //         return;
-
-                    //     // After 10 minutes update notification's title 
-                    //     setTimeout(function () {
-                    //         cordova.plugins.notification.local.update({
-                    //             id: 10,
-                    //             title: "Meeting in 5 minutes!"
-                    //         });
-                    //     }, 600000);
-                    // });
                 });
             },
             createNote() {
                 let data = {
                     title: this.note.title,
                     description: this.note.description,
+                    target_id: this.$route.query.target
                 };
                 const config = {
                     headers: { 'Authorization': `Bearer ${this.token}` }
@@ -396,7 +357,7 @@
                 const config = {
                     headers: { 'Authorization': `Bearer ${this.token}` }
                 };
-                this.$http.get('/notif/get/notes',  config)
+                this.$http.get('/notif/get/notes?target_id='+this.$route.query.target,  config)
                 .then(res => {
 
                     this.notes = res.data;
@@ -442,7 +403,8 @@
                 let data = {
                     title: this.notif.title,
                     date: this.notif.date,
-                    time: this.notif.time
+                    time: this.notif.time,
+                    target_id: this.$route.query.target
                 };
                 const config = {
                     headers: { 'Authorization': `Bearer ${this.token}` }
@@ -481,7 +443,7 @@
                 const config = {
                     headers: { 'Authorization': `Bearer ${this.token}` }
                 };
-                this.$http.get('notif/get/notifs',config)
+                this.$http.get('notif/get/notifs?target_id='+this.$route.query.target,config)
                 .then(res => {
                     this.notifs = res.data.data;
                     this.done = 1;
@@ -627,23 +589,7 @@
 
     
     .notif__home {
-        .notif__header {
-            width: 90%;
-            margin-top: 20px;
-            .notif__salem {
-                font-size: 30px;
-                color: gray;
-                margin-bottom: 2px;
-            }
-            .notif__name {
-                color: #4e28a8;
-                font-size: 30px;
-            }
-            i {
-                font-size: 45px;
-                color: #4e28a8;
-            }
-        }
+      
 
         .notif__sort {
             width: 90%;
@@ -671,78 +617,7 @@
             }
         }
      
-        .notif__plans {
-            width: 100%;
-            height: 100%;
-            margin-bottom: 100px;
-            overflow-y: auto;
-            
-            .notif__plan {
-                width: 90%;
-                margin-bottom: 10px;
-                margin-top: 10px;
-
-                .notif__month {
-                    font-size: 18px;
-                    font-weight: bold;
-                    color: #251a3b;
-                }
-                .notif__pl {
-                    padding: 15px;
-                    border-radius: 20px;
-                    background: #fafafa;
-                    border: 2px solid #fafafa;
-                    position: relative;
-                    .notif__green {
-                        background: #82c91f !important;
-                    }
-                    .notif__ok {
-                        cursor: pointer;
-                        // position: absolute;
-                        // right: 10px;
-                        // bottom: 10px;
-                        width: 28px;
-                        height: 28px;
-                        border-radius: 14px;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        background-color: gray;
-                        i {
-                            color: white;
-                        }
-                    }
-                    .notif__day {
-                        background: #f1eef5;
-                        border-radius: 20px;
-                        padding: 15px;
-                        
-                        p:nth-child(1) {
-                            margin-bottom: 5px;
-                            color:  #4e28a8;
-                        }
-                        p:nth-child(2) {
-                            font-weight: bold;
-                            color:  #4e28a8;
-                            font-size: 22px;
-                        }
-                    }
-                    .notif__text {
-                        .notif__title {
-                            font-size: 18px;
-                            margin-bottom: 10px;
-                            color: #251a3b;
-                        }
-                        .notif__date {
-                            p,i {
-                                color: #ccc;
-                            }
-
-                        }
-                    }
-                }
-            }
-        }
+     
      
     
     }

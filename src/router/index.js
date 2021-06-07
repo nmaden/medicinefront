@@ -14,6 +14,7 @@
     
     
     import NotifMain from '../components/notif/notif.vue'; 
+    import NotifTarget from '../components/notif/notif_target.vue'; 
     import NotifLogin from '../components/notif/login.vue'; 
     import NotifRegister from '../components/notif/register.vue'; 
 
@@ -98,22 +99,30 @@
           
             ]
         },
-        // {
-        //     path: '/',
-        //     component: NotifLogin,
-        //     meta: { guest: true },
-        //     children: [
-        //         { path: '/', component: NotifLogin },
+        {
+            path: '/target',
+            component: NotifTarget,
+            meta: { guest: true },
+            children: [
+                { path: '/', component: NotifTarget },
           
-        //     ]
-        // },
+            ]
+        },
+        {
+            path: '/',
+            component: NotifLogin,
+            meta: { guest: true },
+            children: [
+                { path: '/', component: NotifLogin },
+          
+            ]
+        },
         {
             path: '/register',
             component: NotifRegister,
             meta: { guest: true },
             children: [
                 { path: '/', component: NotifRegister },
-          
             ]
         },
         {
@@ -144,14 +153,14 @@
              
             ]
         },
-        {
-            path: '/',
-            component: calc_body,
-            meta: { guest: true },
-            children: [
+        // {
+        //     path: '/',
+        //     component: calc_body,
+        //     meta: { guest: true },
+        //     children: [
            
-            ]
-        },
+        //     ]
+        // },
         {
             path: '/register',
             component: calc_register,

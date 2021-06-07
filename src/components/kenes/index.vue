@@ -2,14 +2,14 @@
 <template>
   <div class="main">
         <div class="header">
-            <div class="header__menu">
+            <div class="header__menu header__tab">
                 <router-link to="#">О нашем магазине</router-link>
                 <router-link to="#">О доставке</router-link>
                 <router-link to="#">Об оплате</router-link>
                 <!-- <router-link to="#">Отзывы</router-link> -->
             </div>
             <div class="header__menu">
-                <p class="header__purple">Перезвоните нам</p>
+                <!-- <p class="header__purple">Перезвоните нам</p> -->
                 <!-- <p class="header__purple">Задать вопрос</p> -->
                 <div class="header__menu__last">
                     <p class="header__purple">8 777 777 777</p>
@@ -19,27 +19,6 @@
         </div>
 
         <div class="main__row">
-            <!-- <div class="main__actions">
-                <p class="main__actions__title" @click="$router.push('/kenes')">КЕҢЕС</p>
-
-                <div class="main__sale">
-                    <div>
-                        <p class="main__sale__title">Скидки</p>
-                        <p class="main__sale__title">до 50%</p>
-                        <i></i>
-                        
-                    </div>
-                    <p class="main__sale__mini">Успей заказать по выгодной цене</p>
-
-                    <div class="main__sale__button centered__row">
-                        <i class="fas fa-cart-arrow-down"></i>
-                        <p>Сделать заказ</p>
-                    </div>
-                </div>
-
-             
-            </div> -->
-
             <div class="main__block">
                 <div class="main__block__header">
                     <div class="main__block__search">
@@ -62,7 +41,7 @@
                     <p>О нашем магазине</p>
                 </div>
 
-                <div class="">
+                <div class="main__block__description">
                     <p class="main__block__description">Lorean ipnum
                         Lorean ipnumLorean ipnumLorean ipnumLorean ipnumLorean ipnumLorean ipnumLorean ipnum
                         Lorean ipnum
@@ -215,6 +194,27 @@
 </script>
 
 <style lang="scss">
+
+.item__abs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.item__column {
+    display: flex;
+    flex-direction: column;
+}
+.item__ac {
+    align-items: center;
+}
+.item__row {
+    display: flex;
+    flex-direction: row;
+}
+.main__column {
+    display: flex;
+    flex-direction: column;
+}
     .product__order {
         display: flex;
         flex-direction: row;
@@ -294,6 +294,14 @@
             border-bottom: 4px solid #fcfbfb;
             margin-bottom: 20px;
 
+            @media (max-width: 1200px) {
+                width: 100%;
+            }
+            @media (max-width: 900px) {
+                padding: 0;
+                justify-content: flex-end;
+            }
+
         .header__menu {
             display: flex;
             flex-direction: row;
@@ -303,16 +311,25 @@
                 margin-right: 40px;
                 text-decoration: none;
                 border-bottom: 2px solid white;
+                
             }
             a:hover {
                 color: var(--main-kenes-text-color);
                 border-bottom: 2px solid var(--main-kenes-text-color);
+            }
+            .header__menu__last {
+                @media (max-width: 900px) {
+                    padding: 20px;
+                }
             }
             .header__purple {
                 cursor: pointer;
                 margin-right: 40px;
                 text-decoration: none;
                 border-bottom: 2px solid white;
+                @media (max-width: 900px) {
+            
+                }
             }
             .header__purple:hover {
                 color: var(--main-kenes-text-color);
@@ -322,6 +339,12 @@
                 color: gray;
             }
 
+        }
+        .header__tab {
+                       
+            @media (max-width: 900px) {
+                display:none;
+            }
         }
      
         }
@@ -391,11 +414,29 @@
                 width: 80%;
                 display: flex;
                 flex-direction: column;
+                 @media (max-width: 900px) {
+                    width: 100%;
+                  
+                }
+                .main__block__header {
+                    @media (max-width: 900px) {
+                        text-align: center;
+                        width: 100%;
+                        display: flex;
+                        justify-content: center;
+                    
+                    }
+                }
                 .main__block__search {
                     border-radius: 10px;
                     background-color: #f5f5f5;
                     padding: 10px;
                     margin-bottom: 20px;
+                    @media (max-width: 900px) {
+                        width: 90%;
+                        align-self: center;
+                    }
+                
                     ::placeholder {
                         color: black;
                     }
@@ -408,6 +449,9 @@
                         padding: 10px;
                         border: none;
                         background-color: #f5f5f5;
+                        @media (max-width: 900px) {
+                            width: 90%;
+                        }
                     }
                 }
                 .main__block__title {
@@ -418,6 +462,11 @@
                     color: #333;
                     font-size: 28px;
                     font-weight: 400;
+                    @media (max-width: 900px) {
+                        font-size: 22px;
+                        width: 90%;
+                        align-self: center;
+                    }
                     .main__block__round {
                         width: 16px;
                         height: 16px;
@@ -430,6 +479,12 @@
                     font-size: 18px;
                     color: #ccc;
                     margin-bottom: 40px;
+                    @media (max-width: 900px) {
+                        width: 90%;
+                        overflow-x:scroll;
+                        align-self: center;
+                    }
+
                 }
                 .main__block__categories {
                     display: flex;
@@ -437,6 +492,11 @@
                     align-items: center;
                     overflow-x: auto;
                     margin-bottom: 20px;
+
+                    @media (max-width: 900px) {
+                        width: 100%;
+                        overflow-x:scroll;
+                    }
 
                     .main__block__arrow {
                         display: flex;
@@ -458,6 +518,11 @@
                         padding: 20px;
                         border-radius: 5px;
                         background-color: #f5f5f5;
+                         
+                        @media (max-width: 900px) {
+                            width: 100%;
+                       
+                        }
                     }
                 }
 
@@ -468,15 +533,23 @@
                     flex-wrap: wrap;
                     justify-content: space-between;
                     margin-bottom: 20px;
+                    @media(max-width: 900px) {
+                        justify-content: center;
+                    }
                     
                     .main__block__product {
-                        width: 250px;
+                        width: 280px;
                         height: 400px;
                         border-radius: 5px;
                         display: flex;
                         flex-direction: column;
                         background-color: #f5f5f5;
                         padding: 20px;
+                        margin-bottom: 20px;
+                        // box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+                        @media(max-width: 900px) {
+                            width: 85%;
+                        }
                         .product__item {
                             width: 90%;
                             align-self:center;
@@ -560,18 +633,35 @@
                     display: flex;
                     flex-direction: row;
                     justify-content: space-between;
+                    @media(max-width:900px) {
+                        width: 100%;
+                        overflow-x: scroll;
+                    }
                     .plus__title {
                         color: var(--main-kenes-blue);
                         font-size: 18px;
                         font-weight: 700;
                         margin-bottom: 20px;
                     }
+                    .plus__description {
+                        @media(max-width:900px) {
+                            width: 290px;
+                      
+                        }  
+                    }
+                  
                     .main__block__plus {
                         width: 200px;
                         border-radius: 10px;
                         padding: 20px;
                         background-color: #f7f6f7;
                         text-align: center;
+                        @media(max-width:900px) {
+                            width: 100%;
+                            margin-right: 20px;
+                            margin-left: 20px;
+                      
+                        }
 
                         .fa-truck,.fa-cubes {
                             font-size: 36px;
@@ -592,6 +682,10 @@
                             }
                         }
                     }
+                    // .main__block__plus:last-child {
+                    //     margin-left: 0;
+                    //     margin-right: 40px;
+                    // }
                 }
             }
 

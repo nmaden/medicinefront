@@ -32,6 +32,8 @@
               </div>
           </div>
 
+          
+
           <div class="product__column product__info">
               <div class="product__stars main__mb__s">
 

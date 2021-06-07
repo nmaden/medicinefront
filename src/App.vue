@@ -247,4 +247,132 @@ body {
               font-weight: bold;
             }
     }
+
+
+       .notif__plans {
+            width: 100%;
+            height: 100%;
+            margin-bottom: 100px;
+            overflow-y: auto;
+            
+            .notif__plan {
+                width: 90%;
+                margin-bottom: 10px;
+                margin-top: 10px;
+
+                .notif__month {
+                    font-size: 18px;
+                    font-weight: bold;
+                    color: #251a3b;
+                }
+                .notif__pl {
+                    padding: 15px;
+                    border-radius: 20px;
+                    background: #fafafa;
+                    border: 2px solid #fafafa;
+                    position: relative;
+                    .notif__green {
+                        background: #82c91f !important;
+                    }
+                    .notif__ok {
+                        cursor: pointer;
+                        // position: absolute;
+                        // right: 10px;
+                        // bottom: 10px;
+                        width: 28px;
+                        height: 28px;
+                        border-radius: 14px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        background-color: gray;
+                        i {
+                            color: white;
+                        }
+                    }
+                    .notif__day {
+                        background: #f1eef5;
+                        border-radius: 20px;
+                        padding: 15px;
+                        
+                        p:nth-child(1) {
+                            margin-bottom: 5px;
+                            color:  #4e28a8;
+                        }
+                        p:nth-child(2) {
+                            font-weight: bold;
+                            color:  #4e28a8;
+                            font-size: 22px;
+                        }
+                    }
+                    .notif__text {
+                        .notif__title {
+                            font-size: 18px;
+                            margin-bottom: 10px;
+                            color: #251a3b;
+                        }
+                        .notif__target__title {
+                            font-size: 18px;
+                            margin-bottom: 10px;
+                            color: #251a3b;
+                            text-transform: uppercase;
+                            margin-bottom: 0;
+                        }
+                        .notif__date {
+                            p,i {
+                                color: #ccc;
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+
+
+        .notif__sort {
+            width: 90%;
+            .notif__type {
+                width: 100%;
+                padding: 13px;
+                border-radius: 20px;
+                background-color: #f8f8fa;
+                color: #251a3b;;
+                text-align: center;
+                font-size: 16px;
+                justify-content: center;
+                i {
+                    margin-right: 20px;
+                }
+                p,i {
+                    color: white;
+                }
+                
+            }
+
+            .notif__type__active {
+                background:  #683fcc;
+                color: white;
+            }
+        }
+
+
+          .notif__header {
+            width: 90%;
+            margin-top: 20px;
+            .notif__salem {
+                font-size: 25px;
+                color: gray;
+                margin-bottom: 2px;
+            }
+            .notif__name {
+                color: #4e28a8;
+                font-size: 25px;
+            }
+            i {
+                font-size: 45px;
+                color: #4e28a8;
+            }
+        }
+     
 </style>

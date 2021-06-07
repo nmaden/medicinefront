@@ -8,12 +8,10 @@
 
                 <p class="notif__header__title">Поиск лекарств</p>
                 <div class="notif__search notif__row notif__ac ">
-                    
                     <div class="notif__icon__search">
                         <i class="fas fa-search"></i>
                     </div>
-                    <input type="text" v-model="medicine.name"  placeholder="Лекарства" @input="search">
-                    
+                    <input type="text" v-model="medicine.name"  placeholder="Лекарства" @input="search">   
                 </div>
                 <div class="notif__column notif__spell" v-if="spells">
                     <p v-for="(text,index) in spells" :key="index" @click="chooseCorrect(text)" >{{text}}</p>
@@ -168,7 +166,7 @@
                                 <p class="notif__phar__description" v-html="item.description"></p>
                             </div>
   
-                            
+                    
                             <div class="notif__apteka notif__mb__s" v-for="(apteka,i) in item.info" :key="i">
                                 <div class="notif__column notif__mb__xs"> 
              
