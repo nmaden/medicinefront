@@ -307,9 +307,7 @@
                 cordova.plugins.notification.local.cancel([10]);
             },
             registerToPhone() {
-                let tt = this; 
-                
-          
+                let tt = this;
                 Vue.cordova.on('deviceready', () => {
                     // Schedule notification for tomorrow to remember about the meeting
                     // firstAt: "sunday_1_52_am",
@@ -321,6 +319,7 @@
                     let day = parseInt(tt.notif.date.split("-")[2]);
 
                     let date = new Date(year, month-1,day, hour,minute);
+
                     cordova.plugins.notification.local.schedule(
                         {
                             id: tt.notif.notif_id,
@@ -419,12 +418,17 @@
                     });
                     
                     this.notif.show_modal = false;
+
+                    this.page =1;
+                    this.getNotifs();
+
+
                     if(res.data.id!='') {
                         this.notif.notif_id = res.data.id;
                         this.registerToPhone();
                     }
-                    
-                    this.getNotifs();
+
+
                 });
             },
             getAnalytics() {
@@ -432,7 +436,7 @@
                 const config = {
                     headers: { 'Authorization': `Bearer ${this.token}` }
                 };
-                this.$http.get('notif/get/analytics',config)
+                this.$http.get('notif/get/analytics?target_id='+this.$route.query.target,config)
                 .then(res => {
                     this.chartOptions = res.data.count_notif.chartOptions;
                     this.series = res.data.count_notif.series;
@@ -464,9 +468,7 @@
                     id: id
                 };
 
-                Vue.cordova.on('deviceready', () => {
-                    cordova.plugins.notification.local.cancel([id]);
-                });
+
                
                 const config = {
                     headers: { 'Authorization': `Bearer ${this.token}` }
@@ -480,7 +482,13 @@
                         timer: 3000
                     });
                     this.getNotifs();
+
+                    Vue.cordova.on('deviceready', () => {
+                      cordova.plugins.notification.local.cancel([id]);
+                    });
                 });
+
+
             },
             doneNotif(id) {
                 let data = {

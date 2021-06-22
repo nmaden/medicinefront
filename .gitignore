@@ -59,3 +59,8 @@ yarn-error.log*
 /medicine-cordova/platforms
 /medicine-cordova/plugins
 /public/cordova.js
+
+# Cordova
+/notifs-cordova/platforms
+/notifs-cordova/plugins
+/public/cordova.js

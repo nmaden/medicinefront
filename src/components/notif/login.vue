@@ -62,7 +62,7 @@
             .then(res => { 
                 this.user.role = res.data.roles[0].id;
                
-                    this.$router.push("/notif");
+                    this.$router.push("/target");
 
             });
         }
