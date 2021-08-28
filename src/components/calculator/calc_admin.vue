@@ -1849,6 +1849,7 @@
             .calc__order {
                 margin-bottom: 30px;
                 background-color: white;
+                width: 100%;
                 
                 p {
                     padding: 20px;

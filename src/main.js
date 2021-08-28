@@ -71,7 +71,6 @@ const messages = {
       female: 'Female',
       confirmation: 'Confirmation',
       next: 'Next',
-      registration: 'Registration',
       empty_line: 'Fill this field',
       agreement: 'By clicking the "Registration" button, you will accept the terms',
       agreement_link: 'User agreement',
@@ -124,7 +123,6 @@ const messages = {
       female: 'Мужской',
       confirmation: 'Подтверждение',
       next: 'Далее',
-      registration: 'Регистрация',
       empty_line: 'Заполните это поле',
       agreement: 'Нажимая кнопку «Зарегистрироваться», вы принимаете условия',
       agreement_link: 'Пользовательского соглашения',
@@ -153,13 +151,13 @@ const messages = {
       email_error: 'Please enter a valid email address',
       email_empty: 'Enter your email',
       locale: 'ru'
-      
-      
+
+
     }
   },
   kaz: {
     message: {
-  
+
       adver_text_1: "«Каспий» тұрғын үй кешенінен пәтерді 1-2-3 бөлме көлемінде сатып алуға болады",
       adver_text_2: "ауданы 55-тен 116 шаршы метрге дейін және төбелері 3.2 метр.",
       send_request: "Өтінім қалдыру",
@@ -178,7 +176,6 @@ const messages = {
       female: 'Әйел',
       confirmation: 'Растау',
       next: 'Жалғастыру',
-      registration: 'Тіркелу',
       empty_line: 'Бұл жолды толтырыңыз',
       agreement: '«Тіркелу» батырмасын басу арқылы сіз шарттарды қабылдайсыз',
       agreement_link: 'Пайдаланушы келісімі',

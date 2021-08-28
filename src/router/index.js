@@ -108,15 +108,15 @@
           
             ]
         },
-        {
-            path: '/',
-            component: NotifLogin,
-            meta: { guest: true },
-            children: [
-                { path: '/', component: NotifLogin },
-          
-            ]
-        },
+        // {
+        //     path: '/',
+        //     component: NotifLogin,
+        //     meta: { guest: true },
+        //     children: [
+        //         { path: '/', component: NotifLogin },
+        //
+        //     ]
+        // },
         {
             path: '/register',
             component: NotifRegister,
@@ -153,14 +153,14 @@
              
             ]
         },
-        // {
-        //     path: '/',
-        //     component: calc_body,
-        //     meta: { guest: true },
-        //     children: [
+        {
+            path: '/',
+            component: calc_body,
+            meta: { guest: true },
+            children: [
            
-        //     ]
-        // },
+            ]
+        },
         {
             path: '/register',
             component: calc_register,

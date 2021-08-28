@@ -4,7 +4,7 @@
             <div class="calc__row calc__ac calc__types calc__mb">
                 <div class="calc__type" @click="page=1" v-bind:class="{active__bg:page==1}">Заказать</div>
                 <div class="calc__type" v-if="show_own_order" @click="getOwnOrders" v-bind:class="{active__bg:page==2}">Мои заказы</div>
-                <div class="calc__type" v-if="show_own_order" @click="logoutPage" v-bind:class="{active__bg:page==2}">Выйти</div>
+                <div class="calc__type" v-if="show_own_order" @click="logoutPage" v-bind:class="{active__bg:page==3}">Выйти</div>
                 <div class="calc__type" @click="loginPage()" v-else>Войти</div>
             </div>  
             <div class="calc__column elements" v-if="page==1" >
@@ -41,10 +41,10 @@
                             </div>
 
 
-                            <div class="calc__row calc__inputs__i" v-if="i.element && i.element.length!=0">
-                                <div class="calc__column calc__count calc__mr calc__mb">
+                            <div class="calc__wrap calc__inputs__i" v-if="i.element && i.element.length!=0">
+                                <div class="calc__column calc__count calc__select__heights calc__mr calc__mb">
                                     <p>Толшина</p>
-                                    <select name="" id="" v-model="i.tolwina" @change ="calculateTolwina(index)" >
+                                    <select name=""  id="" v-model="i.tolwina" @change ="calculateTolwina(index)" >
                                         <option value="16">16</option>
                                         <option value="8">8</option>
                                     </select>
@@ -63,28 +63,30 @@
                                 </div>
 
                             </div>
-                                                            <p class="calc__result calc__mb" style="display: none" v-if="Math.round(i.dlina*i.wirina*i.count*0.001)!=0">Общая плошадь:  {{i.dlina+'*'+i.wirina+'*'+i.count+' = '}}<span class="calc__value">{{Math.round(i.dlina*i.wirina*i.count*0.001)}} кв м</span></p>
-                                <p class="calc__result calc__mb" v-if="i.price!=1">Сумма: <span class="calc__value">{{i.price_order+' тг' }}</span></p>
-                            <div  class="calc__row calc__ac calc__mb" v-if="i.choosen_element && i.choosen_element.length!=0">
-                                <div class="calc__column">
-                                    <p>Элемент</p>
-                                    <div class="calc__row calc__ac calc__mb calc__element__added">
-                                        <img class="calc__choosen__img calc__mr" :src="'https://api.frezerovka04.kz'+i.choosen_element.image_path" alt="">
-                                        <p class="calc__mr">{{i.choosen_element.name}}</p>
-                                        <i @click="deleteRow(index,'element')" class="calc__pointer fas fa-trash-alt"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="calc__row calc__ac" v-if="i.choosen_plenka && i.choosen_plenka.length!=0">
-                                <div class="calc__column">
-                                    <p class="calc__mb">Пленка</p>
-                                    <div class="calc__row calc__ac calc__mb">
-                                        <img  class="calc__choosen__img calc__mr" :src="'https://api.frezerovka04.kz'+i.choosen_plenka.image_path" alt="">
-                                        <p class="calc__mr">{{i.choosen_plenka.name}}</p>
-                                        <i @click="deleteRow(index,'plenka')" class="calc__pointer fas fa-trash-alt"></i>
-                                    </div>
+                            <p class="calc__result calc__mb" style="display: none" v-if="Math.round(i.dlina*i.wirina*i.count*0.001)!=0">Общая плошадь:  {{i.dlina+'*'+i.wirina+'*'+i.count+' = '}}<span class="calc__value">{{Math.round(i.dlina*i.wirina*i.count*0.001)}} кв м</span></p>
+                            <p class="calc__result calc__mb" v-if="i.price!=1">Сумма: <span class="calc__value">{{i.price_order+' тг' }}</span></p>
 
+                            <div class="calc__wrap">
+                              <div  class="calc__row calc__ac calc__mb calc__mr" v-if="i.choosen_element && i.choosen_element.length!=0">
+                                <div class="calc__column ">
+                                  <p class="calc__mb">Фрезировка</p>
+                                  <div class="calc__row calc__ac  calc__element__added">
+                                    <img class="calc__choosen__img calc__mr" :src="'https://api.frezerovka04.kz'+i.choosen_element.image_path" alt="">
+                                    <p class="calc__mr">{{i.choosen_element.name}}</p>
+                                    <i @click="deleteRow(index,'element')" class="calc__pointer fas fa-trash-alt"></i>
+                                  </div>
                                 </div>
+                              </div>
+                              <div class="calc__row calc__ac" v-if="i.choosen_plenka && i.choosen_plenka.length!=0">
+                                <div class="calc__column">
+                                  <p class="calc__mb">Пленка</p>
+                                  <div class="calc__row calc__ac calc__mb">
+                                    <img  class="calc__choosen__img calc__mr" :src="'https://api.frezerovka04.kz'+i.choosen_plenka.image_path" alt="">
+                                    <p class="calc__mr">{{i.choosen_plenka.name}}</p>
+                                    <i @click="deleteRow(index,'plenka')" class="calc__pointer fas fa-trash-alt"></i>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
 
                             <div class="calc__row calc__ac" v-if="i.choosen_obkat && i.choosen_obkat.length!=0">
@@ -121,8 +123,6 @@
                         </div>
 
 
-
-                    
                     </div>
                 </div>
 
@@ -151,14 +151,14 @@
 
             </div>
 
-            <div class="calc__column calc__own__orders" v-if="page==2">
+            <div class="calc__column calc__own__orders item__ac" v-if="page==2">
                
-                <div class="calc__column calc__own__order" v-for="(order,w) in own_orders" :key="w" >
+                <div class="calc__column calc__own__order calc__shadow"  v-for="(order,w) in own_orders" :key="w" >
                         <div class="calc__row ">
                             <div class="calc__column">
                                 <p class="calc__own__label">№: {{order.id}}</p>
                                 <p class="calc__own__label">Дата заказа : {{order.created_at}}</p>
-                                <p class="calc__own__label">Общая сумма заказа : {{order.amount}} тг</p>
+                                <p class="calc__own__label">Сумма : {{order.amount}} тг</p>
                             </div>
                             <p class="calc__own__action" v-if="order.deleted==0" @click="otmenaOrder(order.id)">Отменить заказ</p>
                             <p class="calc__own__action calc__own__red" v-else>Заказ отменен</p>
@@ -170,10 +170,14 @@
                             <img class="calc__mr" :src="'https://frezerovka04.kz/'+el.image_path" alt="">
                             <div class="calc__column">
                                 <p class="calc__own__label">Название: {{el.type_name}}</p>
-                                <p class="calc__own__label"  v-if="el.dlina">Длина: {{el.dlina}}</p>
-                                <p class="calc__own__label"  v-if="el.wirina">Ширина: {{el.wirina}}</p>
-                                <p class="calc__own__label" v-if="el.count">Количество: {{el.count}}</p>
-                                <p class="calc__own__label" v-if="el.order_price">Цена: {{el.order_price}} тг</p>
+                                <div class="calc__wrap item__ac calc__numbers">
+                                    <p class="calc__own__label"  v-if="el.dlina">Длина: {{el.dlina}} мм</p>
+                                    <p class="calc__own__label"  v-if="el.wirina">Ширина: {{el.wirina}} мм</p>
+                                    <p class="calc__own__label" v-if="el.count">Количество: {{el.count}} мм</p>
+                                    <p class="calc__own__label" v-if="el.order_price">Цена: {{el.order_price}} тг</p>
+                                </div>
+
+
                             </div>
                         </div>
                     </div>
@@ -236,9 +240,9 @@
                
                     <div class="calc__dropdown calc__row calc__ac calc__mr" v-if="current_chosen=='Фрезировка'">
                         <div v-for="(item,index) in types_frez" :key="index">
-                            <p>{{ item }}</p>
+                            <p>{{ item.name }}</p>
                      
-                            <v-select :options="sort_category(item,new_orders[choosen_index].element)" @input="selectedEl" class="calc__mr"  style="width: 250px" placeholder="Выберите элемент" label="name" >
+                            <v-select :options="sort_category(item.id,new_orders[choosen_index].element)" @input="selectedEl" class="calc__mr"  style="width: 250px" placeholder="Выберите элемент" label="name" >
                                 <template slot="option" slot-scope="option">
                                     <div class="calc__row calc__ac">
                                         <img  :src="'https://api.frezerovka04.kz'+option.image_path" alt="">
@@ -252,8 +256,8 @@
                     <div class="calc__dropdown calc__row calc__ac calc__mr" v-else-if="current_chosen=='Пленка'">
 
                         <div v-for="(item,index) in types_plenka" :key="index">
-                            <p>{{item}}</p>
-                            <v-select  :options="sort_category(item,new_orders[choosen_index].plenka)"  @input="selectedEl"  class="calc__mr"  style="width: 250px" placeholder="Выберите элемент" label="name" >
+                            <p>{{item.name}}</p>
+                            <v-select  :options="sort_category(item.id,new_orders[choosen_index].plenka)"  @input="selectedEl"  class="calc__mr"  style="width: 250px" placeholder="Выберите элемент" label="name" >
                                 <template slot="option" slot-scope="option">
                                     <div class="calc__row calc__ac">
                                         <img   :src="'https://api.frezerovka04.kz'+option.image_path" alt="">
@@ -315,7 +319,6 @@
                     name: '',
                     surname: '',
                     phone: '',
-                    password: '',
                     email: ''
                 },
                 pre_register: false,
@@ -460,7 +463,9 @@
                     this.token = localStorage.getItem("access_token");
                     this.show_own_order = true;
                     this.pre_register =false;
-                    this.$router.go(0);
+
+                    this.token = res.data.token;
+                    // this.$router.go(0);
                     // if(!localStorage.getItem("access_token")) {
                     //     this.$router.push("/login");
                     // }
@@ -470,8 +475,8 @@
                     // }
                 })
                 .catch(errors => {
-                    console.log('Ошибка ' + error.response.data.errors);
-                })
+                    console.log('Ошибка ' + errors.response.data.errors);
+                });
             },
             sign_page() {
                 let obj = {
@@ -496,7 +501,7 @@
                     // }
                 })
                 .catch(errors => {
-                    console.log('Ошибка ' + error.response.data.errors);
+                    console.log('Ошибка ' + errors.response.data);
                 })
             },
             login_sign(email,password) {
@@ -510,8 +515,6 @@
                 .then(res => {
                     localStorage.setItem("access_token",res.data.token);
                     this.token = localStorage.getItem("access_token");
-
-                    
                     if(!localStorage.getItem("access_token")) {
                         this.$router.push("/login");
                     }
@@ -522,7 +525,7 @@
                 })
                 .catch(errors => {
                     console.log('Ошибка ' + error.response.data.errors);
-                })
+                });
 
             },
             otmenaOrder(id) {
@@ -654,10 +657,16 @@
             },
             createOrder() {
                 
-                if(this.user.user_id==20 || this.user.user_id==19){
+                if(this.user.user_id==20 || this.user.user_id==19) {
                     this.pre_register = true;
                     return false;
                 }
+
+
+                if(!this.user.phone) {
+                  this.pre_register = true;
+                }
+
                 this.$http.post('/calculator/create/order', 
                 {
                     orders: this.new_orders,
@@ -871,11 +880,16 @@
                 this.new_orders = [];
                 this.new_orders = p;
 
-
-                if(val.target.value=='Фрезировка') {
+                let el = {
+                  'id':'',
+                  'value': ''
+                };
+              if(val.target.value=='Фрезировка') {
                     if(this.types_frez.length==0) {
                         for (let index = 0; index < this.new_orders[s].element.length; index++) {
-                            this.types_frez.push(this.new_orders[s].element[index].type);  
+                            this.types_frez.push(el);
+                            this.types_frez[index].id = this.new_orders[s].element[index].type;
+                            this.types_frez[index].name = this.new_orders[s].element[index].name;
                         }
                         this.types_frez =  this.types_frez.filter((item,index)=>this.types_frez.indexOf(item)===index);  
                     }
@@ -883,7 +897,10 @@
                 else {
                     if(this.types_plenka.length==0) {
                         for (let index = 0; index < this.new_orders[s].plenka.length; index++) {
-                            this.types_plenka.push(this.new_orders[s].plenka[index].type);  
+                          // this.types_plenka.push(this.new_orders[s].plenka[index].type);
+                          this.types_plenka.push(el);
+                          this.types_plenka[index].id = this.new_orders[s].plenka[index].type;
+                          this.types_plenka[index].name = this.new_orders[s].plenka[index].name;
                         }
                         this.types_plenka = this.types_plenka.filter((item,index)=>this.types_plenka.indexOf(item)===index);
                     }
@@ -892,7 +909,6 @@
                 this.choosen_index = s;
                 this.current_chosen = val.target.value;
                 this.show_modal = true;
-
                 this.permanent.elem = '';
             },
             chooseDecor(many,el) {
@@ -1009,7 +1025,6 @@
                         this.$router.push("/login");
                     }
                     else {
-
                         this.createOrder();
                     }
                 });
@@ -1030,14 +1045,12 @@
                     this.user.user_id = res.data.id;
                     this.user.phone = res.data.phone;
 
-                    
-                    if(this.user.role != 4 && this.user.role != 5) {
-                        this.$router.push("/login");
-                    }
-                    else {
-                        this.get_el();
-                    }
-                    
+                    // if(this.user.role != 4 && this.user.role != 5) {
+                    //     this.$router.push("/login");
+                    // }
+                    // else {
+
+                    // }
 
                     if(this.user.user_id!=19 || this.user.user_id!=20)  {
                         this.show_own_order = true;
@@ -1209,7 +1222,7 @@
                         price_order: 0
                     }
                     this.new_orders.push(obj);
-                   
+
                     for (let index = 0; index < res.data.length; index++) {
                         if(res.data[index].type=='Пленка' || res.data[index].type=='Фрезировка' ) { 
                             this.elements.push(res.data[index]);
@@ -1274,15 +1287,20 @@
             
         },
         mounted() {
+            this.get_el();
 
-            if(!localStorage.getItem('access_token')) {
-                this.login_sign('kenesmebel04@gmail.com','kenesmebel04@gmail.com');
+            // if(!localStorage.getItem('access_token')) {
+            //     this.login_sign('kenes04@gmail.com','kenes04@gmail.com');
+            // }
+            // else {
+            //
+            //     this.token = localStorage.getItem('access_token');
+
+            // }
+            if(localStorage.getItem('access_token')) {
+              this.token = localStorage.getItem('access_token');
             }
-            else {
-                this.token = localStorage.getItem('access_token');
-                this.get_profile();
-            }
-        
+            this.get_profile();
         }
     }
     </script>
@@ -1360,10 +1378,20 @@
         background: rgb(212, 90, 90) !important;
     }
     .calc__own__orders {
+        .calc__shadow {
+          box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+          border-radius: 3px;
+          padding: 15px;
+        }
         .calc__own__order {
              .calc__own__title {
                 font-size: 22px;
                 color: var(--main-kenes-blue);
+            }
+            .calc__numbers {
+               p {
+                 margin-right: 5px;
+               }
             }
             .calc__own__order__inner {
                 margin-bottom: 10px;
@@ -1373,9 +1401,12 @@
             .calc__own__action {
                 color: white;
                 font-weight: bold;
-                background:  var(--main-kenes-blue);
-                padding: 10px;
-                height: 40px;
+                //background:  var(--main-kenes-blue);
+                padding: 3px;
+                font-size: 12px;
+                text-align: center;
+                color: var(--main-kenes-blue);
+                cursor: pointer;
             }
             .calc__own__action:hover {
                 color: rgb(212, 90, 90);
@@ -1386,7 +1417,6 @@
             .calc__own__label {
                 margin-bottom: 10px;
                 font-size: 16px;
-                padding: 10px;
             }
            
             img {
@@ -1398,6 +1428,11 @@
             border-bottom: 5px solid var(--main-kenes-blue);
 
         }
+    }
+
+    .calc__wrap {
+      display: flex;
+      flex-wrap: wrap;
     }
        .calc__type {
                 text-transform: uppercase;
@@ -1781,20 +1816,23 @@
                     height: 40px;
                 }
             }
+
             .calc__count {
-                width: 300px;
-             
+
                 p {
                     margin-bottom: 3px;
                     font-weight: bold;
-                    
                 }
                 input {
-                    padding: 10px;
+                    padding: 5px;
+                    width: 70px;
                 }
                 select {
-                    padding: 12px;
+                    padding: 6px;
                 }
+            }
+            .calc__select__heights {
+              width: 100px;
             }
             .calc__height {
                 margin-bottom: 20px;
@@ -1846,8 +1884,12 @@
                 background-color: white;
                 padding: 20px;
                 .calc__modal__choose {
+                    cursor: pointer;
                     color: var(--main-kenes-blue);
                     margin-bottom: 10px;
+                }
+                .calc__modal__choose:hover {
+                  opacity: 0.8;
                 }
                 .calc__modal__title {
                     font-size: 22px;
@@ -1879,6 +1921,9 @@
         }
 
         @media only screen and (max-width: 600px) {
+            .calc__own__order {
+              width: 90% !important;
+            }
              .calc__element__added {
                 width: 100%;
                 justify-content: space-between;
@@ -1907,10 +1952,16 @@
                  margin: 10px;
             }
             .calc__inputs__i {
+                align-self: center;
                 flex-direction: row;
-                justify-content: space-between;
+                justify-content: center;
+                div {
+                  margin-bottom: 2px;
+                  margin-right: 2px;
+                }
                 input {
                     width: 70px;
+                    padding: 5px !important;
                 }
                 .calc__count {
                     width: 70px;
@@ -1934,6 +1985,7 @@
 
                 .new__element__inner {
                     padding-top: 30px;
+                    align-items: center;
                     .new__element__title {
                         font-size: 18px;
                         text-transform: uppercase;
