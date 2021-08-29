@@ -15,7 +15,7 @@
                     <div class="new__element calc__column calc__mb">
 
                         <div class="calc__column new__element__inner">
-                            <div class="calc__dropdown calc__row  calc__mr calc__mb" >
+                            <div class="calc__dropdown calc__wrap  calc__mr calc__mb" >
                                 
                                 <div class="calc__column calc__count calc__mr">
                                     <p class="new__element__title">Выберите элемент</p>
@@ -66,7 +66,7 @@
                             <p class="calc__result calc__mb" style="display: none" v-if="Math.round(i.dlina*i.wirina*i.count*0.001)!=0">Общая плошадь:  {{i.dlina+'*'+i.wirina+'*'+i.count+' = '}}<span class="calc__value">{{Math.round(i.dlina*i.wirina*i.count*0.001)}} кв м</span></p>
                             <p class="calc__result calc__mb" v-if="i.price!=1">Сумма: <span class="calc__value">{{i.price_order+' тг' }}</span></p>
 
-                            <div class="calc__wrap">
+                            <div class="calc__wrap item__ac">
                               <div  class="calc__row calc__ac calc__mb calc__mr" v-if="i.choosen_element && i.choosen_element.length!=0">
                                 <div class="calc__column ">
                                   <p class="calc__mb">Фрезировка</p>
@@ -87,6 +87,9 @@
                                   </div>
                                 </div>
                               </div>
+                              <button v-if="i.choosen_element && i.choosen_element.length!=0 &&  i.choosen_plenka.length==0" type="submit" class="button calc__mb__xs">Выберите пленку</button>
+
+
                             </div>
 
                             <div class="calc__row calc__ac" v-if="i.choosen_obkat && i.choosen_obkat.length!=0">
@@ -161,7 +164,7 @@
                                 <p class="calc__own__label">Сумма : {{order.amount}} тг</p>
                             </div>
                             <p class="calc__own__action" v-if="order.deleted==0" @click="otmenaOrder(order.id)">Отменить заказ</p>
-                            <p class="calc__own__action calc__own__red" v-else>Заказ отменен</p>
+                            <p class="calc__own__action" v-else>Заказ отменен</p>
                         </div>
                     <p class="calc__own__label calc__own__title"><b>Заказанные элементы:</b> </p>
                     <div v-for="(el,e) in order.ordered_elements" :key="e" class="calc__own__order calc__own__order__inner">
@@ -238,9 +241,9 @@
                 <div class="calc__modal__form">
                     <i class="calc__modal__close fas fa-times-circle calc__mb" @click="show_modal=false"></i>
                
-                    <div class="calc__dropdown calc__row calc__ac calc__mr" v-if="current_chosen=='Фрезировка'">
+                    <div class="calc__dropdown calc__wrap calc__ac calc__mr" v-if="current_chosen=='Фрезировка'">
                         <div v-for="(item,index) in types_frez" :key="index">
-                            <p>{{ item.name }}</p>
+                            <p class="calc__mb__xs">{{ item.name }}</p>
                      
                             <v-select :options="sort_category(item.id,new_orders[choosen_index].element)" @input="selectedEl" class="calc__mr"  style="width: 250px" placeholder="Выберите элемент" label="name" >
                                 <template slot="option" slot-scope="option">
@@ -253,10 +256,10 @@
                          
                         </div>
                     </div>
-                    <div class="calc__dropdown calc__row calc__ac calc__mr" v-else-if="current_chosen=='Пленка'">
+                    <div class="calc__dropdown calc__wrap calc__ac calc__mr" v-else-if="current_chosen=='Пленка'">
 
-                        <div v-for="(item,index) in types_plenka" :key="index">
-                            <p>{{item.name}}</p>
+                        <div v-for="(item,index) in types_plenka" :key="index" class="calc__mb">
+                            <p  class="calc__mb__xs">{{item.name}}</p>
                             <v-select  :options="sort_category(item.id,new_orders[choosen_index].plenka)"  @input="selectedEl"  class="calc__mr"  style="width: 250px" placeholder="Выберите элемент" label="name" >
                                 <template slot="option" slot-scope="option">
                                     <div class="calc__row calc__ac">
@@ -267,9 +270,9 @@
                             </v-select>
                         </div>
                     </div>
-                    <div class="calc__dropdown calc__row calc__ac calc__mr" v-else-if="current_chosen=='Декор'">
+                    <div class="calc__dropdown calc__wrap calc__ac calc__mr" v-else-if="current_chosen=='Декор'">
                         <div class="calc__column">
-                            <p class="calc__mb">Декор</p>
+                            <p  class="calc__mb__xs">Декор</p>
                             <v-select :options="new_orders[choosen_index].decors"  @input="selectedOther"  class="calc__mr"  style="width: 250px" placeholder="Выберите элемент" label="name" >
                                 <template slot="option" slot-scope="option">
                                     <div class="calc__row calc__ac">
@@ -281,9 +284,9 @@
                         </div>
                            
                     </div>
-                    <div class="calc__dropdown calc__row calc__ac calc__mr" v-else-if="current_chosen=='Обкат'">
+                    <div class="calc__dropdown calc__wrap calc__ac calc__mr" v-else-if="current_chosen=='Обкат'">
                             <div class="calc__column">
-                                <p class="calc__mb">Обкат</p>
+                                <p  class="calc__mb__xs">Обкат</p>
                                 <v-select :options="new_orders[choosen_index].obkats"  @input="selectedOther"  class="calc__mr"  style="width: 250px" placeholder="Выберите элемент" label="name" >
                                     <template slot="option" slot-scope="option">
                                         <div class="calc__row calc__ac">
@@ -490,7 +493,7 @@
                     localStorage.setItem("access_token",res.data.token);
                     this.token = localStorage.getItem("access_token");
                     this.show_own_order = true;
-                    this.show_loader = true;
+                    // this.show_loader = true;
                     this.get_profile2();
                     // if(!localStorage.getItem("access_token")) {
                     //     this.$router.push("/login");
@@ -656,13 +659,14 @@
                 return arr;
             },
             createOrder() {
-                
+                if(this.new_orders.length==0) {
+                  return false;
+                }
+
                 if(this.user.user_id==20 || this.user.user_id==19) {
                     this.pre_register = true;
                     return false;
                 }
-
-
                 if(!this.user.phone) {
                   this.pre_register = true;
                 }
@@ -693,18 +697,13 @@
                     let p = this.new_orders;
                     this.new_orders = [];
                     this.new_orders = p;
-
-                 
                     this.$fire({
                         title: "Ваш заказ успешно отправлено",
                         text: "",
                         type: "success",
                         timer: 3000
                     });
-                    
                     this.$router.go(0);
-               
-
                 });
             },
             checkFormula(index,formula) {
@@ -858,8 +857,7 @@
                 if(!this.new_orders[s].element) {
                     this.new_orders[s].element = [];
                 }
-
-                if(val.target.value=='Пленка') {
+                 if(val.target.value=='Пленка') {
 
                     for (let index = 0; index < this.elements.length; index++) {
                         if(this.elements[index].type==val.target.value) {
@@ -882,22 +880,30 @@
 
                 let el = {
                   'id':'',
-                  'value': ''
+                  'name': ''
                 };
+
               if(val.target.value=='Фрезировка') {
                     if(this.types_frez.length==0) {
                         for (let index = 0; index < this.new_orders[s].element.length; index++) {
+                            el = {
+                              'id':'',
+                              'name': ''
+                            };
+                            el.id = this.new_orders[s].element[index].type;
+                            el.name = this.new_orders[s].element[index].name;
                             this.types_frez.push(el);
-                            this.types_frez[index].id = this.new_orders[s].element[index].type;
-                            this.types_frez[index].name = this.new_orders[s].element[index].name;
                         }
-                        this.types_frez =  this.types_frez.filter((item,index)=>this.types_frez.indexOf(item)===index);  
+                        this.types_frez =  this.types_frez.filter((item,index)=>this.types_frez.indexOf(item)===index);
                     }
                 }
                 else {
                     if(this.types_plenka.length==0) {
                         for (let index = 0; index < this.new_orders[s].plenka.length; index++) {
-                          // this.types_plenka.push(this.new_orders[s].plenka[index].type);
+                          el = {
+                            'id':'',
+                            'name': ''
+                          };
                           this.types_plenka.push(el);
                           this.types_plenka[index].id = this.new_orders[s].plenka[index].type;
                           this.types_plenka[index].name = this.new_orders[s].plenka[index].name;
@@ -905,7 +911,7 @@
                         this.types_plenka = this.types_plenka.filter((item,index)=>this.types_plenka.indexOf(item)===index);
                     }
                 }
-            
+
                 this.choosen_index = s;
                 this.current_chosen = val.target.value;
                 this.show_modal = true;
@@ -1021,12 +1027,11 @@
                     this.user.user_id = res.data.id;
                     this.user.phone = res.data.phone;
                     
-                    if(this.user.role != 4 && this.user.role != 5) {
-                        this.$router.push("/login");
-                    }
-                    else {
-                        this.createOrder();
-                    }
+                    // if(this.user.role != 4 && this.user.role != 5) {
+                    //     this.$router.push("/login");
+                    // }
+                    // else {
+                    // }
                 });
             },
             get_profile() {
@@ -2108,4 +2113,46 @@
         }
 
 
+
+    .button {
+      background-color: #004A7F;
+      -webkit-border-radius: 10px;
+      border-radius: 15px;
+      border: none;
+      color: #FFFFFF;
+      cursor: pointer;
+      font-family: Arial;
+      font-size: 14px;
+      padding: 8px;
+      text-align: center;
+      text-decoration: none;
+      height: 32px;
+      -webkit-animation: glowing 1500ms infinite;
+      -moz-animation: glowing 1500ms infinite;
+      -o-animation: glowing 1500ms infinite;
+      animation: glowing 1500ms infinite;
+    }
+    @-webkit-keyframes glowing {
+      0% { background-color: #449DED; -webkit-box-shadow: 0 0 3px #449DED; }
+      50% { background-color: #449DED; -webkit-box-shadow: 0 0 40px #449DED; }
+      100% { background-color: #449DED; -webkit-box-shadow: 0 0 3px #449DED; }
+    }
+
+    @-moz-keyframes glowing {
+      0% { background-color: #449DED; -moz-box-shadow: 0 0 3px #449DED; }
+      50% { background-color: #449DED; -moz-box-shadow: 0 0 40px #449DED; }
+      100% { background-color: #B20000; -moz-box-shadow: 0 0 3px #B20000; }
+    }
+
+    @-o-keyframes glowing {
+      0% { background-color: #449DED; box-shadow: 0 0 3px #449DED; }
+      50% { background-color: #449DED; box-shadow: 0 0 40px #449DED; }
+      100% { background-color: #449DED; box-shadow: 0 0 3px #449DED; }
+    }
+
+    @keyframes glowing {
+      0% { background-color: #449DED; box-shadow: 0 0 3px #449DED; }
+      50% { background-color: #449DED; box-shadow: 0 0 40px #449DED; }
+      100% { background-color: #449DED; box-shadow: 0 0 3px #449DED; }
+    }
     </style>
