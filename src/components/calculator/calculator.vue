@@ -96,14 +96,12 @@
                                 <div class="calc__column">
                                     <p class="calc__mb">Обкат</p>
 
-                                    
                                     <div class="calc__row calc__ac calc__mb">
                                         <img  class="calc__choosen__img calc__mr" :src="'https://api.frezerovka04.kz'+i.choosen_obkat.image_path" alt="">
-                                        <p class="calc__mr">{{i.choosen_plenka.name}}</p>
+                                        <p class="calc__mr">{{i.choosen_obkat.name}}</p>
                                         <!-- <input class="calc__mr" v-on:input="changedObkat(index)" type="text" v-model="i.count_obkat"> -->
                                         <i @click="deleteRow(index,'obkat')" class="calc__pointer fas fa-trash-alt calc__mr"></i>
                                     </div>
-      
                                 </div>
                             </div>
                             <div class="calc__row calc__ac" v-if="i.choosen_decor && i.choosen_decor.length!=0">
@@ -467,6 +465,8 @@
                     this.show_own_order = true;
                     this.pre_register =false;
 
+                    this.get_profile2();
+
                     this.token = res.data.token;
                     // this.$router.go(0);
                     // if(!localStorage.getItem("access_token")) {
@@ -663,12 +663,13 @@
                   return false;
                 }
 
-                if(this.user.user_id==20 || this.user.user_id==19) {
-                    this.pre_register = true;
-                    return false;
-                }
+                // if(this.user.user_id==20 || this.user.user_id==19) {
+                //     this.pre_register = true;
+                //     return false;
+                // }
                 if(!this.user.phone) {
                   this.pre_register = true;
+                  return false;
                 }
 
                 this.$http.post('/calculator/create/order', 
@@ -703,7 +704,7 @@
                         type: "success",
                         timer: 3000
                     });
-                    this.$router.go(0);
+                    // this.$router.go(0);
                 });
             },
             checkFormula(index,formula) {
@@ -886,29 +887,34 @@
               if(val.target.value=='Фрезировка') {
                     if(this.types_frez.length==0) {
                         for (let index = 0; index < this.new_orders[s].element.length; index++) {
+                          if(this.new_orders[s].element[index].category) {
                             el = {
                               'id':'',
                               'name': ''
                             };
-                            el.id = this.new_orders[s].element[index].type;
-                            el.name = this.new_orders[s].element[index].name;
                             this.types_frez.push(el);
+                            el.id = this.new_orders[s].element[index].category.id;
+                            el.name = this.new_orders[s].element[index].category.name;
+                          }
                         }
-                        this.types_frez =  this.types_frez.filter((item,index)=>this.types_frez.indexOf(item)===index);
+                        this.types_frez = this.sortArray(this.types_frez);
                     }
                 }
                 else {
                     if(this.types_plenka.length==0) {
                         for (let index = 0; index < this.new_orders[s].plenka.length; index++) {
-                          el = {
-                            'id':'',
-                            'name': ''
-                          };
-                          this.types_plenka.push(el);
-                          this.types_plenka[index].id = this.new_orders[s].plenka[index].type;
-                          this.types_plenka[index].name = this.new_orders[s].plenka[index].name;
+                          if(this.new_orders[s].plenka[index].category) {
+                            el = {
+                              'id':'',
+                              'name': ''
+                            };
+                            this.types_plenka.push(el);
+                            this.types_plenka[index].id = this.new_orders[s].plenka[index].category.id;
+                            this.types_plenka[index].name = this.new_orders[s].plenka[index].category.name;
+
+                          }
                         }
-                        this.types_plenka = this.types_plenka.filter((item,index)=>this.types_plenka.indexOf(item)===index);
+                        this.types_plenka = this.sortArray(this.types_plenka);
                     }
                 }
 
@@ -916,6 +922,15 @@
                 this.current_chosen = val.target.value;
                 this.show_modal = true;
                 this.permanent.elem = '';
+            },
+            sortArray(data) {
+              const seen = new Set();
+              const filteredArr = data.filter(el => {
+                const duplicate = seen.has(el.id);
+                seen.add(el.id);
+                return !duplicate;
+              });
+              return filteredArr;
             },
             chooseDecor(many,el) {
                 this.choosenFalse();
@@ -1026,7 +1041,8 @@
                     this.user.surname = res.data.surname;
                     this.user.user_id = res.data.id;
                     this.user.phone = res.data.phone;
-                    
+
+                     this.pre_register = false;
                     // if(this.user.role != 4 && this.user.role != 5) {
                     //     this.$router.push("/login");
                     // }
@@ -1050,6 +1066,7 @@
                     this.user.user_id = res.data.id;
                     this.user.phone = res.data.phone;
 
+                    this.pre_register = false;
                     // if(this.user.role != 4 && this.user.role != 5) {
                     //     this.$router.push("/login");
                     // }
@@ -1304,8 +1321,8 @@
             // }
             if(localStorage.getItem('access_token')) {
               this.token = localStorage.getItem('access_token');
+              this.get_profile();
             }
-            this.get_profile();
         }
     }
     </script>

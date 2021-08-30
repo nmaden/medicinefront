@@ -223,7 +223,7 @@
                                     <div class="calc__row calc__ac calc__border__line">
                                         <p class="calc__user__label">{{index+1}} - заказ</p>
                                         <i class="fas fa-trash-alt"  @click="delete_order(index)"></i>
-                                        <i class="fas fa-eye calc__mr" @click="show_ordered_elements(index)"></i>
+                                        <i class="fas fa-eye calc__mr" @click="show_ordered_elements(index)"><span style="margin-left: 10px">Посмотреть заказ</span></i>
                                         <p class="active_color" style="color: white" v-if="el.deleted==1">Заказ отменен</p>
                                     </div>
 
@@ -232,20 +232,27 @@
                                         <p class="calc__user__label">Заказщик:</p>
                                         <p>{{el.who}}</p>
                                     </div>
+
                                     <div class="calc__row calc__ac">
-                                        <p class="calc__user__label">Примечание:</p>
-                                        <p v-if="el.comment">{{el.comment}}</p>
+                                      <p class="calc__user__label">Телефон:</p>
+                                      <a :href="'tel:'+el.phone">{{el.phone}}</a>
                                     </div>
+<!--                                    <div class="calc__row calc__ac">-->
+<!--                                        <p class="calc__user__label">Примечание:</p>-->
+<!--                                        <p v-if="el.comment">{{el.comment}}</p>-->
+<!--                                    </div>-->
                                     
-                                    <div class="calc__row calc__ac">
-                                        <p class="calc__user__label">Толшина:</p>
-                                        <p>{{el.height}}</p>
-                                    </div>
+<!--                                    <div class="calc__row calc__ac">-->
+<!--                                        <p class="calc__user__label">Толшина:</p>-->
+<!--                                        <p>{{el.height}}</p>-->
+<!--                                    </div>-->
                                     <div class="calc__row calc__ac">
                                         <p class="calc__user__label">Сумма заказа:</p>
                                         <p v-if="el.amount">{{el.amount}} тг</p>
                                         <p v-else>0 тг</p>
                                     </div>
+
+
 
                                     <div class="calc__row calc__ac">
                                         <p class="calc__user__label">Дата заказа:</p>
