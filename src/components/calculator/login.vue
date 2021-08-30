@@ -10,7 +10,7 @@
 
                 
             </form>
-            <button type="submit" @click='$router.push("/register")'><p>Регистрация</p></button>
+<!--            <button type="submit" @click='$router.push("/register")'><p>Регистрация</p></button>-->
 
         </div>                   
 </template>
