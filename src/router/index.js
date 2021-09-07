@@ -19,12 +19,16 @@
     import NotifRegister from '../components/notif/register.vue'; 
 
 
-    import calculator_header from '../components/calculator/calc_header.vue'; 
-    import calc_admin  from '../components/calculator/calc_admin.vue'; 
+    import calculator_header from '../components/calculator/calc_header.vue';
+    import kazyna_header from '../components/kazyna/kazyna_header.vue';
+    import kazyna_admin  from '../components/kazyna/admin.vue';
 
     import calc_register  from '../components/calculator/calc_register.vue'; 
     import calc_body  from '../components/calculator/calculator.vue';
-    import calc_login  from '../components/calculator/login.vue'; 
+    import calc_login  from '../components/calculator/login.vue';
+    import calc_admin  from '../components/calculator/calc_admin.vue';
+
+    import calc_login_kazyna  from '../components/kazyna/login.vue';
 
     import Burger from '../components/burger/burger.vue'; 
     import Korzina from '../components/burger/busket.vue';
@@ -144,23 +148,32 @@
         //     ]
         // },
 
+        // {
+        //     path: '/login',
+        //     component: calc_login,
+        //     meta: { guest: true },
+        //     children: [
+        //         { path: 'login', component: calc_login },
+        //
+        //     ]
+        // },
         {
-            path: '/login',
-            component: calc_login,
+            path: '/kazyna/login',
+            component: calc_login_kazyna,
             meta: { guest: true },
             children: [
-                { path: 'login', component: calc_login },
-             
+                { path: 'login', component: calc_login_kazyna },
+
             ]
         },
-        {
-            path: '/',
-            component: calc_body,
-            meta: { guest: true },
-            children: [
-           
-            ]
-        },
+        // {
+        //     path: '/',
+        //     component: calc_body,
+        //     meta: { guest: true },
+        //     children: [
+        //
+        //     ]
+        // },
         {
             path: '/register',
             component: calc_register,
@@ -176,9 +189,19 @@
             children: [
                 { path: 'main', component: calc_body },
                 { path: 'admin', component: calc_admin },
-                
+
             ]
         },
+        {
+            path: '/kazyna',
+            component: kazyna_header,
+            meta: { guest: true },
+            children: [
+                { path: 'admin', component: kazyna_admin },
+
+            ]
+        },
+
         {
             path: '/burger',
             component: Burger,
