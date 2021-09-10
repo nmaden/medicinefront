@@ -1,11 +1,13 @@
 <!-- template -->
 <template>
   <div class="calls item__ac item__column">
-      <div class="calls__item item__row item__ac" v-for="(item,index) in calls" :key="index">
+      <div class="calls__item item__column " v-for="(item,index) in calls" :key="index">
           <p>{{item.name}}</p>
           <div class="item__row item__ac">
             <i class="fa fa-phone"></i><a :href="'tel:'+item.phone">{{item.phone}}</a>
           </div>
+          <br>
+          <p><b>Заявка создано: </b>&nbsp; {{convertDate(item.created_at)}}</p>
       </div>
   </div>
 </template>
@@ -32,6 +34,15 @@ export default {
       }
   },
   methods: {
+    convertDate(date) {
+      if (!date) {
+        return false;
+      }
+      date = date.split(" ");
+      let dateFirst = date[0].split("-");
+      let time = date[1].split(":");
+      return dateFirst[2] + '.' + dateFirst[1] + '.' + dateFirst[0] + ' ' + time[0] + ':' + time[1];
+    },
     get_calls() {
       this.$http.post('get/calls',
           {
